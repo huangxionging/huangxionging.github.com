@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="author" content="Redman"/><meta name="created" content="2014-07-16 05:48:41 +0000"/><meta name="updated" content="2014-07-16 06:02:56 +0000"/><title>视图切换</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+模态视图切换，一般的应用程序都不会只有一个视图页面，当我们有多个视图页面，怎样合理的切换视图是一件有意思的事。在MVC设计模式中就会大量的涉及这些东西。单视图只能完成有限的工作，多视图才能满足我们的需求。
+<div><br/></div>
+<div>切换模态视图，点击按钮，触发动作，执行相应的方法体，进行视图转移</div>
+<div>
+<div>- (IBAction)registerOnClick:(id)sender</div>
+<div>{</div>
+<div>    //通过名字得到故事版</div>
+<div>    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName: @"Main" bundle: nil];</div>
+<div/>
+<div>    // 获取故事版中的模态视图控制器</div>
+<div>    UIViewController *registerViewController = [mainStoryboard instantiateViewControllerWithIdentifier: @"registerViewController"];</div>
+<div/>
+<div>    // 设置转移风格</div>
+<div>    registerViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;</div>
+<div/>
+<div>    [self presentViewController: registerViewController animated: YES completion:</div>
+<div>     ^{</div>
+<div>         NSLog(@"模态视图出现了");</div>
+<div>     }];</div>
+<div>}</div>
+</div>
+<div><br/></div>
+<div>// 模态视图关闭</div>
+<div>
+<div>- (IBAction)done:(id)sender</div>
+<div>{</div>
+<div>    // 关闭模态视图</div>
+<div><br/></div>
+<div>    [self dismissViewControllerAnimated: YES completion:</div>
+<div>     ^{</div>
+<div>         NSLog(@"模态视图关闭了");</div>
+<div/>
+<div>         NSMutableDictionary *dataDict = [NSMutableDictionary dictionaryWithObject: self.txtUsername.text forKey: @"username"];</div>
+<div>         [dataDict setValue: self.password.text forKey: @"password"];</div>
+<div/>
+<div>         [[NSNotificationCenter defaultCenter] postNotificationName: @"RegisterComplete" object:nil userInfo: dataDict];</div>
+<div/>
+<div>         [self.txtUsername resignFirstResponder];</div>
+<div>         [self.password resignFirstResponder];</div>
+<div>     }];</div>
+<div>}</div>
+</div>
+</body></html>

@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="created" content="2015-03-13 08:43:40 +0000"/><meta name="source" content="Clearly"/><meta name="source-url" content="http://blog.csdn.net/justinjing0612/article/details/38322353"/><meta name="updated" content="2015-03-13 08:43:40 +0000"/><title>微信、陌陌等著名IM软件设计架构详解 - justinjing的专栏 - 博客频道 - CSDN.NET</title></head><body><div>
+ <div>
+  <div>
+   <h1> <a shape="rect" href="http://blog.csdn.net/justinjing0612/article/details/38322353" target="_blank"> 微信、陌陌等著名IM软件设计架构详解 </a> </h1>
+  </div> 
+  <div>
+    分类： 
+   <a shape="rect" href="http://blog.csdn.net/jinglijun/article/category/925686" target="_blank">iphone开发学习和总结</a> 2014-09-08 17:06 37039人阅读 
+   <a shape="rect" href="#comments" target="_blank">评论</a>(23) 
+   <a shape="rect" href="#" title="收藏" target="_blank">收藏</a> 
+   <a shape="rect" href="#report" title="举报" target="_blank">举报</a> 
+  </div> 
+  <div>
+   对微信、陌陌等进行了分析，发出来分享一下（时间有些久了）
+  </div> 
+  <div>
+   电量：对于移动设备最大的瓶颈就是电量了。因为用户不可能随时携带电源，充电宝。所以必须考虑到电量问题。那就要检查我们工程是不是有后台运行，心跳包发送时间是不是合理。
+  </div> 
+  <div>
+   流量：对于好多国内大部分屌丝用户来说可能还是包月30M，那么我们必须站在广大用户角度来考虑问题了。一个包可以解决的就一个包。
+  </div> 
+  <div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/6AF50656-6A1B-42E5-8DC1-AC4B69EFE9E8.png" height="984" width="1964"/>
+   </div>
+  </div> 
+  <div>
+   这个也是IM最核心的内容了，我们要做到在任何网络下等顺畅聊天那就不容易了，好多公司都用的xmpp框架，如果在强网络环境下，xmpp完全没有问题。但是那种弱网络环境下xmpp就束手无策啦，用户体验就很垃圾了。
+  </div> 
+  <div>
+   个人觉得xmpp 可以玩玩（参考看这个 
+   <a shape="rect" href="http://wiki.jabbercn.org/RFC3920" target="_blank">RFC3920</a>和
+   <a shape="rect" href="http://wiki.jabbercn.org/RFC3921" target="_blank">RFC3921</a>   ）， 但是用来真正的产品就差远了。如果遇到一个做IM 的朋友张口闭口都说xmpp 的话，那么不用沟通了，肯定不是什么好产品。微信、QQ以前也曾用过xmpp，但是最后也放弃了xmpp，就知道xmpp有很多弊端了，还有就是报文太大，好臃肿，浪费流量。为了保证稳定，微信用了长链接和短链接相结合，例如：
+  </div> 
+  <div>
+   微信划分了short   链接），分别应对状态协议和数据传输协议
+  </div> 
+  <div>
+   <a shape="rect" href="http://ong.weixin.qq.com/" target="_blank">ong.weixin.qq.com</a>  dns check 112.64.237.188 112.64.200.218
+  </div> 
+  <div>
+    
+   <a shape="rect" href="http://short.weixin.qq.com/" target="_blank">short.weixin.qq.com</a>  dns check  ( 112.64.237.186 112.64.200.240)
+  </div> 
+  <div>
+   <a shape="rect" href="http://hort.weixin.qq.com/" target="_blank">hort.weixin.qq.com</a>  
+  </div> 
+  <div>
+   8080 端口http body为二进制（protobuf）。
+  </div> 
+  <div>
+    主要用途（接口）
+  </div> 
+  <div>
+   用户登录验证
+  </div> 
+  <div>
+   好友关系（获取，添加）；
+  </div> 
+  <div>
+   sync (newsync)
+  </div> 
+  <div>
+   获取用户图像；
+  </div> 
+  <div>
+   用户注销；
+  </div> 
+  <div>
+   行为日志上报。
+  </div> 
+  <div>
+   朋友圈发表刷新
+  </div> 
+  <div>
+    2.2  
+   <a shape="rect" href="http://long.weixin.qq.com/" target="_blank">long.weixin.qq.com</a>  
+  </div> 
+  <div>
+   ，类似微软activesync的二进制协议。
+  </div> 
+  <div>
+    主要用途（接口）
+  </div> 
+  <div>
+   发送文本消息；
+  </div> 
+  <div>
+   发送语音；
+  </div> 
+  <div>
+   发送图片；
+  </div> 
+  <div>
+   发送视频文件等。
+  </div> 
+  <div>
+   所有上面请求都是基于长连接。在发送图片和视频文件等时，分为两个请求；第一个请求是缩略图的方式，第二个请求是全数据的方式。
+  </div> 
+  <div>
+   2.2.1 数据报文方面
+  </div> 
+  <div>
+   增量上传策略：
+  </div> 
+  <div>
+   左右大小数据上传，服务器确认；在继续传输。
+  </div> 
+  <div>
+   图片上传：
+  </div> 
+  <div>
+   先传缩略图，传文本消息，再传具体文件
+  </div> 
+  <div>
+   先下载缩略图，在下载原图
+  </div> 
+  <div>
+   下载的时候，全部一次推送。
+  </div> 
+  <div>
+   用户登录验证
+  </div> 
+  <div>
+   POST /cgi-bin/micromsg-bin/auth HTTP/1.1
+  </div> 
+  <div>
+   Accept: **
+  </div> 
+  <div>
+   User-Agent: Mozilla/4.0
+  </div> 
+  <div>
+   Content-Type: application/x-www-form-urlencoded
+  </div> 
+  <div>
+   Host: 
+   <a shape="rect" href="http://short.weixin.qq.com/" target="_blank">short.weixin.qq.com</a>
+  </div> 
+  <div>
+   Content-Length: 174
+  </div> 
+  <div>
+   sync (newsync)
+  </div> 
+  <div>
+   POST /cgi-bin/micromsg-bin/newsync HTTP/1.1
+  </div> 
+  <div>
+   Host: 
+   <a shape="rect" href="http://short.weixin.qq.com/" target="_blank">short.weixin.qq.com</a>
+  </div> 
+  <div>
+   User-Agent: Android QQMail HTTP Client
+  </div> 
+  <div>
+   Cache-Control: no-cache
+  </div> 
+  <div>
+   Connection: Keep-Alive
+  </div> 
+  <div>
+   Content-Type: application/octet-stream
+  </div> 
+  <div>
+   accept: **
+  </div> 
+  <div>
+   Content-Length:  206
+  </div> 
+  <div>
+   POST /cgi-bin/micromsg-bin/iphoneunreg HTTP/1.1
+  </div> 
+  <div>
+   Accept: */*
+  </div> 
+  <div>
+   User-Agent: Mozilla/4.0
+  </div> 
+  <div>
+   Cotent-Type: application/x-www-form-urlencoded
+  </div> 
+  <div>
+   Host: 
+   <a shape="rect" href="http://short.weixin.qq.com/" target="_blank">short.weixin.qq.com</a>
+  </div> 
+  <div>
+   Content-Length: 271
+  </div> 
+  <div>
+   行为日志上报
+  </div> 
+  <div>
+   POST /cgi-bin/stackreport?version=240000a7&amp;filelength=1258&amp;sum=7eda777ee26a76a5c93b233eed504c7d&amp;reporttype=1&amp;username=jolestar HTTP/1.1
+  </div> 
+  <div>
+   Content-Length: 736
+  </div> 
+  <div>
+   Content-Type: binary/octet-stream
+  </div> 
+  <div>
+   Host: 
+   <a shape="rect" href="http://weixin.qq.com/" target="_blank">weixin.qq.com</a>
+  </div> 
+  <div>
+   Connection: Keep-Alive
+  </div> 
+  <div>
+   User-Agent: Apache-HttpClient/UNAVAILABLE (java 1.4)
+  </div> 
+  <div>
+   从现在互联网的发展而言，和视频（包括里面视频通话）是一个方向，这些都应该成为互联网的基础设施，就像浏览器一样。现在还没有一个很好的解决方案，并不能很好地做到业务逻辑独立开来。从的本质来看，其实就是将一条消息从一个地方传输到另外一个地方，这个和很像，为什么不实现一个高级点的协议了，只是将TCP/IP地址换成了一个类似而已，其他的很多细节都可以照搬协议。有了这个协议之后，将业务逻辑在现有HTTP server的基础上做，例如发送语音和图片就相当于上传一个文件，服务器在处理完这个文件后就发一条特殊的消息。客户端收到这个消息后，按照HTTP server取语音文件和图片文件。将HTTP serverIM server打通之后，可以做很多事情。但将这个两个server合并在一块并不是一个好事，不然腾讯也不会有年的战略转型了。从现在的情况来看，应用除了游戏，都没怎么赚钱，现在能够承载赚钱业务的还是以不可以赚钱，但没有却是不行的，就像一个地方要致富，不修路是不行的道理一样。
+  </div> 
+  <div>
+   上面说到了protobuf ，就简单介绍下：
+  </div> 
+  <div> 
+   <p>           JSON相信大家都知道是什么东西，如果不知道，那可就真的了，GOOGLE一下去。这里就不介绍啥的了。</p> 
+   <p> Protobuffer大家估计就很少听说了，但如果说到是GOOGLE搞的，相信大家都会有兴趣去试一下，毕竟GOOGLE出口，多属精品。</p> 
+   <p> Protobuffer是一个类似的一个传输协议，其实也不能说是协议，只是一个数据传输的东西罢了。</p> 
+   <p> 那它跟有什么区别呢？</p> 
+   <p>         跨语言，这是它的一个优点。它自带了一个编译器，protoc，只需要用它进行编译，可以编译成、python、代码，暂时只有这三个，其他就暂时不要想了，然后就可以直接使用，不需要再写任何其他代码。连解析的那些都已经自带有的。当然也是跨语言的，但这个跨语言是建立在编写代码的基础上。</p> 
+  </div> 
+  <div>
+   <strong>陌陌设计：</strong>
+  </div> 
+  <div> 
+   <div>
+    <strong>陌陌发展刚开始</strong>由于规模小，30-40WAndroid后台长连接用户），也使用的缺点：流量大（基于），不可靠（为传统固定网络设计，没有考虑WIFI/2G/3G/电梯等复杂网络场景），交互复杂（登陆需次，尤其是TLS握手）；丢消息的根本原因：服务端和客户端处于状态，客户端假连接状态，服务端有收不到回执；Server端连接层和逻辑层代码没有解耦分离，常常重启导致不可用；
+   </div> 
+  </div> 
+  <div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/891BC4A5-F0F4-446B-B66B-4067CB5509C5.png" height="972" width="1296"/>
+   </div>
+  </div> 
+  <div>
+   消息中转：
+  </div> 
+  <div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/BA5E1698-0796-43D6-9826-EA603EFF1F3F.png" height="1052" width="1446"/>
+   </div>
+  </div> 
+  <div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/31C083E4-D158-454C-B833-62ACA1DCFC7C.png" height="874" width="1524"/>
+   </div>
+  </div> 
+  <div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/3F965606-99A2-421D-AC76-985AC7085BFD.png" height="872" width="1382"/>
+   </div>
+  </div> 
+  <div>
+   通讯协议设计：
+  </div> 
+  <div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/B9083B68-CA48-4F44-80F4-B1F219038939.png" height="878" width="1468"/>
+   </div>
+  </div> 
+  <div>
+   高效：弱网络快速的收发
+  </div> 
+  <div>
+   可靠：不会丢消息
+  </div> 
+  <div>
+   协议格式：
+  </div> 
+  <div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/B47975DF-2D58-421E-9851-BAFC5179B9FA.png" height="888" width="1484"/>
+   </div>
+  </div> 
+  <div>
+   Redis协议：
+  </div> 
+  <div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/8C412A19-7D04-46B8-97CA-10A28EA59A1B.png" height="1072" width="1494"/>
+   </div>
+  </div> 
+  <div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/5952C281-2DD4-478B-8491-86E6DDE8F01B.png" height="1072" width="1472"/>
+   </div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/AB52EE30-A5BD-4FA0-8827-0009623D32C7.png" height="966" width="1484"/>
+   </div>
+  </div> 
+  <div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/17AFB721-DA7D-4555-8BBD-AF6954178F0D.png" height="1106" width="1452"/>
+   </div>
+  </div> 
+  <div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/BE5D6F88-53B0-44BB-93C7-154B72D1B093.png" height="1060" width="1448"/>
+   </div>
+  </div> 
+  <div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/574F5453-54C1-4C01-9496-F262718F179C.png" height="1184" width="1494"/>
+   </div>
+  </div> 
+  <div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/574F5453-54C1-4C01-9496-F262718F179C.png" height="1184" width="1494"/>
+   </div>
+  </div> 
+  <div>
+   阿萨德发阿发a
+  </div> 
+  <div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/CC4E56FA-071E-4280-9BA6-1A37628236CF.png" height="1108" width="1512"/>
+   </div>
+  </div> 
+  <div> 
+   <div>
+    连接层（参见通讯服务器组成）：只做消息转发，允许随时重启更新，设计原则简单异步；单台压测试连接数亿用户，月活5000W+1200W+逻辑层（参见通讯服务器组成）：用户会话验证即登陆、消息存取、异步队列采用私有通讯协议，目标：高效，弱网络快速收发；可靠：不会丢消息；易于扩展；参考协议格式：REDIS协议；参见协议格式、基于队列的消息协议、基于队列的交互、基于版本号的消息协议、基于版本号的交互等；核心的长连接只用于传输轻量的实时数据，图片、语音等都开新的            一切就绪后，最重要的就是监控，写一个查看所有的运营状态，每天观察；如何选择最优路线，即智能路由；
+    <strong>二、智能路由、连接策略：</strong>
+    <strong>多端口、双协议支持</strong>应对移动网关代理的端口限制列表进行并发测速（后端根据终端连接情况，定时更新终端的备选终端在连接空闲时上报测速数据，便于后端决策协议不通，自动切换到优先使用最近可用        并发测速，根据终端所处的位置下发多组，不用域名，手机上的DNS50%
+   </div> 
+   <div> 
+    <div> 
+     <div> 
+      <div> 
+       <div> 
+        <p>负载均衡器(LVS...)的问题</p> 
+        <p>      单点性能瓶颈<br clear="none"/>       负载均衡从客户端开始做起域名负载的问题</p> 
+        <p>      域名系统不可靠更新延迟大  </p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+  </div> 
+  <div>
+   <strong>WNS（wireless network services）</strong>
+  </div> 
+  <div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/39644351-DECC-4DD9-A1D6-2FF515D36A77.png" height="1080" width="1808"/>
+   </div>
+  </div> 
+  <div> 
+   <div>
+    1解决移动互联网开发常见问题：
+   </div> 
+   <div>
+    通道：数据交互、大数据上传、push
+   </div> 
+   <div>
+    网络连接：大量长链接管理、链接不上、慢、多地分布
+   </div> 
+   <div>
+    运营支撑：海量监控、简化问题定位
+   </div> 
+   <div>
+    登录&amp;安全：登录鉴权、频率控制
+   </div> 
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/191300E4-A769-4C19-9F8B-E5C1DA32E9B3.png" height="1018" width="2036"/>
+   </div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/A4A02A89-4B3D-4E99-A2D1-A1CDC8AA774F.png" height="1014" width="2012"/>
+   </div>
+  </div> 
+  <div> 
+   <div>
+    移动互联网特点：
+   </div> 
+   <div>
+    1、高延时：  信道建立耗时（ 高RTT）
+   </div> 
+   <div>
+    2、低宽带、
+   </div> 
+   <div>
+    3、多运营商（电信，移动，联通等）
+   </div> 
+   <div>
+    4、复杂网络  
+   </div> 
+   <div>
+        －2G，3G，4G，wifi。cmwap，cmnet。。
+   </div> 
+   <div>
+        －网关限制：协议，端口
+   </div> 
+   <div>
+    5、用户流动性大，上网环境复杂
+   </div> 
+  </div> 
+  <div>
+   <strong>WNS 性能指标：</strong>
+  </div> 
+  <div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/489DEB12-69D9-4797-AB52-A61E6B008AE0.png" height="1082" width="2022"/>
+   </div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/9D53E3EA-1048-4C14-8F88-A5A316CCFC74.png" height="1120" width="1944"/>
+   </div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/25B672AF-C9A0-4883-95D7-9965FED1040B.png" height="1060" width="1868"/>
+   </div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/C16EF21A-AFBA-4F39-8D8A-9F328A9254F3.png" height="1052" width="2054"/>
+   </div>
+  </div> 
+  <div>
+   1、开发时间：历史一年半
+  </div> 
+  <div>
+   2、链接成功率－99.9%
+  </div> 
+  <div>
+   3、极端网络环境下成功率－由于常见app
+  </div> 
+  <div>
+   4、crash率 －0.02%（crash次数／登录用户数）
+  </div> 
+  <div>
+   <strong>微信后台系统架构</strong>
+  </div> 
+  <div>
+   A、分布式问题收敛
+  </div> 
+  <div>
+     后台逻辑模块专注逻辑，快速开发
+  </div> 
+  <div>
+   可能读取到过时的数据是个痛点
+  </div> 
+  <div>
+   需要看到一致的数据
+  </div> 
+  <div>
+   B、内部定义
+  </div> 
+  <div>
+     数据拥有两个以上的副本
+  </div> 
+  <div>
+   如果成功提交了变更，那么不会再返回旧数据
+  </div> 
+  <div>
+   1增加一个数据
+  </div> 
+  <div>
+   2 序列号发生器，偏序
+  </div> 
+  <div>
+    约束：只能有一个client操作
+  </div> 
+  <div>
+   client有解决冲突的能力
+  </div> 
+  <div>
+   问题转移：client如何分布？
+  </div> 
+  <div>
+   3 修改集群中一个制定的key的value
+  </div> 
+  <div>
+   1）覆盖他
+  </div> 
+  <div>
+   2）根据value的内容做修改
+  </div> 
+  <div>
+   if value ＝ 1 then value ：＝2 
+  </div> 
+  <div>
+   通用解法：
+  </div> 
+  <div>
+   1）paxos算法
+  </div> 
+  <div>
+   分布式算法设计：
+  </div> 
+  <div>
+    2）quorum算法（2011）
+  </div> 
+  <div>
+   再单个key上面运算
+  </div> 
+  <div>
+   真是系统约束
+  </div> 
+  <div>
+   类paxos方案，简化
+  </div> 
+  <div>
+   为每次变更选举（by key）
+  </div> 
+  <div>
+    提议／变更／同步／广播
+  </div> 
+  <div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/F4805C9F-E8EA-4131-9FE1-01A69D17E263.png" height="1330" width="1684"/>
+   </div>
+  </div> 
+  <div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/41EEF455-2041-4A58-88FD-0249E1FD38EB.png" height="1420" width="2108"/>
+   </div>
+  </div> 
+  <div>
+   Replication &amp; Sharding 
+  </div> 
+  <div>
+     自治，负载均衡，扩散控制
+  </div> 
+  <div>
+    replication－&gt;relation
+  </div> 
+  <div>
+   同城（上海）多数派存活
+  </div> 
+  <div>
+   三园区（独立供电，独立）
+  </div> 
+  <div>
+   Sharding
+  </div> 
+  <div>
+   一组KV6 为一个单位
+  </div> 
+  <div>
+   1、人工阶段
+  </div> 
+  <div>
+    局部扩容，影响收敛9
+  </div> 
+  <div>
+   2均匀分布 制定分段hash32 （string）
+  </div> 
+  <div>
+   3一致性哈希
+  </div> 
+  <div>
+   具体实现？
+  </div> 
+  <div>
+   1、业务侧快速开发
+  </div> 
+  <div>
+    存储需要提供强一致性
+  </div> 
+  <div>
+   丰富的数据模型支持（结构化、类SQL／KV）
+  </div> 
+  <div>
+   条件读，条件写
+  </div> 
+  <div>
+   2 业务增长迅速，系统要能够方便的横向扩容
+  </div> 
+  <div>
+   3设备故障／短时节点实效便成为常态，容灾自动化，主碑可写无需人工介入
+  </div> 
+  <div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/59279D89-8C48-4517-9D3D-268440046776.png" height="1374" width="1950"/>
+   </div>
+  </div> 
+  <div>
+   Bitcask
+  </div> 
+  <div>
+   LSM－tree
+  </div> 
+  <div>
+   <div>
+    <img src="%E5%BE%AE%E4%BF%A1%E3%80%81%E9%99%8C%E9%99%8C%E7%AD%89%E8%91%97%E5%90%8DIM%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3%20-%20justinjing%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/68FB70EF-2B0A-4776-8237-497A9293D43C.png" height="1294" width="1904"/>
+   </div>
+  </div> 
+  <div>
+   解决放大问题
+  </div> 
+  <div>
+   2、数据按变更聚集存储
+  </div> 
+  <div>
+   3、Affected1
+  </div> 
+  <div>
+      ChangeTable
+  </div> 
+  <div>
+   （1＋2+。。。。＋n－1+total）／n
+  </div> 
+  <div>
+   4、分裂与合并
+  </div> 
+  <div>
+   1、自动化迁移
+  </div> 
+  <div>
+   2、节点同时做代理
+  </div> 
+  <div>
+   3、合并磁盘io
+  </div> 
+  <div>
+   数据vs 操作
+  </div> 
+  <div>
+   3、保底策略
+  </div> 
+  <div>
+    1、动态合并
+  </div> 
+  <div>
+       100K qps
+  </div> 
+  <div>
+       200% －10%
+  </div> 
+  <div>
+   3、权衡与估算
+  </div> 
+  <div>
+   1、吞吐量
+  </div> 
+  <div>
+   2、异步化
+  </div> 
+  <div>
+   3、复杂度
+  </div> 
+  <div>
+   4、libco
+  </div> 
+  <div>
+   自动修复系统
+  </div> 
+  <div>
+   1、不要让错误累计
+  </div> 
+  <div>
+   2、全量扫描
+  </div> 
+  <div>
+   bitcask 的一些变化
+  </div> 
+  <div>
+   1、内存限制
+  </div> 
+  <div>
+   2、全内存
+  </div> 
+ </div>
+</div></body></html>

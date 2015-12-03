@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="19.19364356994629"/><meta name="author" content="Redman"/><meta name="created" content="2014-07-09 12:36:21 +0000"/><meta name="latitude" content="22.53845633627557"/><meta name="longitude" content="113.9399135339575"/><meta name="updated" content="2014-07-09 12:57:55 +0000"/><title>普通选择器</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+普通选择器是UIPickerView, 是日期选择器的父类，非常灵活，拨盘的个数可以设定，从这个控件开始，频繁的使用NSString、NSDictionary、NSArray这三个最常用的数据结构。使用他们来保存数据非常好用，也经常使用他们来读取文件中的数据，文件中的数据其实是XML格式保存的。用来保存数据非常方便。
+<div><br/></div>
+<div>普通选择器除了有UIPickerViewDelegate委托代理协议，还有UIPickerViewDataSource数据源协议，此时需要在视图控制器ViewController的父类区，加上这两个协议，表示将由ViewController类来实现这两个协议的方法。</div>
+<div>在</div>
+<div><font color="#EE4787">@interface</font> ViewController : UIViewController<font color="#EE4787">&lt;UIPickerViewDelegate, UIPickerViewDataSource&gt;</font></div>
+<div><font color="#EE4787"><br/></font></div>
+<div>
+<div>- (IBAction)onClick:(id)sender</div>
+<div>{</div>
+<div>    // 枚举城市</div>
+<div>    NSEnumerator *enumer = [self.pickerCities objectEnumerator];</div>
+<div>    id obj;</div>
+<div>    while (obj = [enumer nextObject])</div>
+<div>    {</div>
+<div>        NSLog(@"%@", obj);</div>
+<div>    }</div>
+<div/>
+<div>    NSInteger row1 = [self.pickerView selectedRowInComponent: 0];</div>
+<div>    NSInteger row2 = [self.pickerView selectedRowInComponent: 1];</div>
+<div/>
+<div>    NSString *selected1 = [self.pickerProvince objectAtIndex: row1];</div>
+<div/>
+<div>    NSString *selected2 = [self.pickerCities objectAtIndex: row2];</div>
+<div/>
+<div>    NSString *title = [[NSString alloc] initWithFormat: @"%@, %@市", selected1, selected2];</div>
+<div>    self.label.text = title;</div>
+<div/>
+<div>    self.pickerView.delegate = self;</div>
+<div>    self.pickerView.dataSource = self;</div>
+<div/>
+<div>}</div>
+<div><br/></div>
+<div>// 委托与数据源协议</div>
+<div>#pragma  mark 实现协议UIPickerViewDataSource</div>
+<div>// 这个方法告诉选择器拨轮的个数</div>
+<div>- (NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView</div>
+<div>{</div>
+<div>    return 2;</div>
+<div>}</div>
+<div><br/></div>
+<div>// 从方法名字中可以看出，此方法的含义是获取第n个拨轮中的行数</div>
+<div>- (NSInteger) pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component</div>
+<div>{</div>
+<div>    if (component == 0)</div>
+<div>    {</div>
+<div>        // 表示省的个数</div>
+<div>        return [self.pickerProvince count];</div>
+<div>    }</div>
+<div>    else</div>
+<div>    {</div>
+<div>        // 表示市的个数</div>
+<div>        return [self.pickerCities count];</div>
+<div>    }</div>
+<div>}</div>
+<div><br/></div>
+<div>#pragma mark 实现delegate</div>
+<div><br/></div>
+<div>// 此方法是获取第n个拨轮上的数据</div>
+<div>- (NSString *) pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component</div>
+<div>{</div>
+<div>    if (component == 0)</div>
+<div>    {</div>
+<div>        // 省份</div>
+<div>        return [self.pickerProvince objectAtIndex: row];</div>
+<div>    }</div>
+<div>    else</div>
+<div>    {</div>
+<div>        // 市名</div>
+<div>        return [self.pickerCities  objectAtIndex: row];</div>
+<div>    }</div>
+<div>}</div>
+<div><br/></div>
+<div>// 此方法是选择了第n个拨轮上的第row行数据，对其他拨轮的数据更新</div>
+<div>- (void) pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component</div>
+<div>{</div>
+<div>    if (component == 0)</div>
+<div>    {</div>
+<div>        NSString *selectedProvince = [self.pickerProvince objectAtIndex: row];</div>
+<div>        NSArray *array = [self.pickerData objectForKey: selectedProvince];</div>
+<div/>
+<div>        self.pickerCities = array;</div>
+<div/>
+<div>        [self.pickerView reloadComponent: 1];</div>
+<div>    }</div>
+<div>}</div>
+</div>
+</body></html>

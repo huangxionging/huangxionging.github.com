@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="18.69624137878418"/><meta name="author" content="Redman"/><meta name="created" content="2014-07-01 12:23:59 +0000"/><meta name="latitude" content="22.53754672129965"/><meta name="longitude" content="113.9402036430767"/><meta name="updated" content="2014-07-01 13:02:16 +0000"/><title>webView控件</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+     网页视图控件webView，是用来加载网页使用的，利用这个控件可以很方便的开发一个浏览器。<span><a href="webView%E6%8E%A7%E4%BB%B6.resources/Redmann%E2%80%98s%20browser.zip">Redmann‘s browser.zip</a></span>
+<div><span>这个工程就是我自己利用之前所学的知识所开发的一个简单的浏览器应用。</span></div>
+<div><span><br/></span></div>
+<div><span>     首先利用UITextField控件接收用户输入的网址，然后利用</span>-(BOOL) textFieldShouldReturn:(UITextField *)textField，来关闭键盘，并调用Go方法，而Go方法又是点击Go按钮所触发的动作方法，所以在文本控件输入网址时，点击键盘上的返回按钮不仅可以关闭键盘还能调用Go方法来请求网页并加载网页。而界面上的Back按钮与webView的goBack动作连接起来，但单击Back按钮时，发出按钮的touch down事件，这时候会触发webView的goBack动作，webView因此会回退网页，相当于我们平常使用浏览器的后退动作。</div>
+<div><br/></div>
+<div><br/></div>
+<div>Go 方法的内容：</div>
+<div><br/></div>
+<div>首先获取到UITextField控件的文本字符串，就是获得网址；</div>
+<div>然后将字符串转换成NSURL 类型的地址；</div>
+<div>再利用这个地址来发送网页请求；</div>
+<div>由[NSRequest requiredWithURL: pagePath]来发送网页请求，得到的结果被webView加载到控件上，这样就在网页上显示出网页。</div>
+<div>
+<div> // 获取文本控件webPath的字符串，也就是获得网址</div>
+<div>    NSString *path = self.webPath.text;</div>
+<div/>
+<div>    // 将字符串网址转换成地址类</div>
+<div>    NSURL *pagePath = [NSURL URLWithString: path];</div>
+<div/>
+<div>    // 通过地址类来发送网页请求</div>
+<div>    NSURLRequest *request = [NSURLRequest requestWithURL: pagePath];</div>
+<div/>
+<div>    // 网页视图控件加载请求的网页</div>
+<div>    [self.webView loadRequest: request];</div>
+<div>}</div>
+</div>
+</body></html>

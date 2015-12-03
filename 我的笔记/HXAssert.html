@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="38.54558563232422"/><meta name="author" content="Redman"/><meta name="created" content="2015-03-20 16:17:13 +0000"/><meta name="latitude" content="22.58743057234433"/><meta name="longitude" content="113.9620982647807"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2015-03-23 12:45:51 +0000"/><title>HXAssert</title></head><body>
+<div><span style="font-family: Menlo;"><span style="color: rgb(187, 43, 161);">参照 NSAssert 而创建的宏定义</span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(187, 43, 161);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(187, 43, 161);">#define HXAssert(condition, desc, ...) \</span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(187, 43, 161);">if (condition) { \</span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(187, 43, 161);">    [[NSAssertionHandler currentHandler] handleFailureInMethod:_cmd \</span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(187, 43, 161);">object:self file:[NSString stringWithUTF8String: __FILE__] \</span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(187, 43, 161);">    lineNumber: __LINE__ description:(desc), __FILE__, ##__VA_ARGS__];</span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(187, 43, 161);">}</span></span></div>
+</body></html>

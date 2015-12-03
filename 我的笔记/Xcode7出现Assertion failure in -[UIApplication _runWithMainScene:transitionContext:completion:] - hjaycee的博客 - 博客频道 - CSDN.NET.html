@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="created" content="2015-10-10 02:40:39 +0000"/><meta name="source" content="Clearly"/><meta name="source-url" content="http://blog.csdn.net/hjaycee/article/details/48546405"/><meta name="updated" content="2015-10-10 02:40:39 +0000"/><title>Xcode7出现Assertion failure in -[UIApplication _runWithMainScene:transitionContext:completion:] - hjaycee的博客 - 博客频道 - CSDN.NET</title></head><body><div>
+ <div>
+  <div>
+   <h1> <a shape="rect" href="http://blog.csdn.net/hjaycee/article/details/48546405" target="_blank"> Xcode7出现Assertion failure in -[UIApplication _runWithMainScene:transitionContext:completion:] </a> </h1>
+  </div> 
+  <div>
+    分类： 
+   <a shape="rect" href="http://blog.csdn.net/hjaycee/article/category/5809871" target="_blank">iOS</a> 2015-09-18 14:38 486人阅读 
+   <a shape="rect" href="#comments" target="_blank">评论</a>(2) 
+   <a shape="rect" href="#" title="收藏" target="_blank">收藏</a> 
+   <a shape="rect" href="#report" title="举报" target="_blank">举报</a> 
+  </div> 
+  <p>原文链接：<a shape="rect" href="http://blog.csdn.net/hjaycee/article/details/48728507" target="_blank">http://blog.csdn.net/hjaycee/article/details/48546405</a></p> 
+  <h2>完整报错内容：</h2> 
+  <h2>Assertion failure in -[UIApplication _runWithMainScene:transitionContext:completion:], /BuildRoot/Library/Caches/com.apple.xbs/Sources/UIKit/UIKit-3505.16/UIApplication.m:3294</h2> 
+  <h2>Xcode7需要所有UIWindow必须有一个rootViewController</h2> 
+  <h2>解决办法： <br clear="none"/><br clear="none"/>UIWindow *window = [[UIWindowallocinitWithFrameUIScreenmainScreenbounds<br clear="none"/> window.rootViewControllerUIViewController </h2> 
+ </div>
+</div></body></html>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="created" content="2015-03-13 02:23:38 +0000"/><meta name="source" content="Clearly"/><meta name="source-url" content="http://johnny.logdown.com/posts/69881-rsa-encryption-method-on-ios"/><meta name="updated" content="2015-03-13 02:23:38 +0000"/><title>iOS 上的 RSA 加密方法 « Hello, World.</title></head><body><div>
+ <div>
+  <div>
+   <h1>iOS 上的 RSA 加密方法 « Hello, World.</h1>
+  </div> 
+  <p>由於工作上需要，最近在研究 iOS 上的 RSA 加密/解密，網路上的文章實在少之又少，<br clear="none"/> 下了一番苦工之後，終於讓我找齊資料成功在iOS上用 RSA 來加密/解密字串!</p> 
+  <p>不過不是自己寫出來的，我要是有這麼神就好了 XD<br clear="none"/> 這篇文章主要是把網路上的資料蒐集起來，讓有需要的人可以快速上手，真正還是要感謝寫出這些 code 的神人 (對我來說啦..||)<br clear="none"/> 文末也會附上資料來源，希望這篇文章對你有幫助 :)</p> 
+  <p>RSA加密方法簡單的說就是有一組 <strong>公鑰(Public Key)</strong> 還有一組 <strong>私鑰(Private Key)</strong><br clear="none"/> 私鑰拿來解密，公鑰則拿來加密用。</p> 
+  <p>所以我們來產生一組公鑰跟私鑰吧! 打開你的 <strong>Terminal</strong>，輸入以下指令</p> 
+  <ul><li>cd Desktop</li><li>openssl req -x509 -out public_key.der -outform der -new -newkey rsa:2048 -keyout private_key.pem days 3650 -nodes</li></ul> 
+  <p>產生公鑰私鑰的過程中會要你輸入一些資訊，可填可不填，應該是不會有什麼影響<br clear="none"/> 如果沒問題的話，你的桌面上現在應該會產生兩個檔案：public_key.der 還有 private_key.pem，這兩個分別是我們的公鑰和私鑰。</p> 
+  <p>接下來是加密用的 Class，如何在Xcode新增新的Class就不在此冗述了，以下是代碼：<br clear="none"/> 使用前必須先導入 <strong>Security.framework</strong>，並且把你剛剛產生的 <em>publickey.der</em> 新增到你的 Project 裡面。</p> 
+  <h2>RSAEncrypt.h</h2> 
+  
+   <div>
+    <pre>#import &lt;Foundation/Foundation.h&gt;
+@interface RSAEncrypt : NSObject {
+    SecKeyRef publicKey;
+    SecCertificateRef certificate;
+    SecPolicyRef policy;
+    SecTrustRef trust;
+    size_t maxPlainLen;
+}
+- (NSData *) encryptWithData:(NSData *)content;
+- (NSData *) encryptWithString:(NSString *)content;
+- (NSString *) encryptToString:(NSString *)content;
+@end
+</pre>
+   </div> 
+  
+  <h2>RSAEncrypt.m</h2> 
+  
+   <div>
+    <pre>#import "RSAEncrypt.h"
+@implementation RSAEncrypt
+
+- (id)init {
+    
+    self = [super init];
+    NSString *publicKeyPath = [[NSBundle mainBundle] pathForResource:@"public_key" ofType:@"der"]; 
+    //從檔案讀取公鑰
+    
+    if (publicKeyPath == nil) {
+        NSLog(@"Can not find pub.der");
+        return nil;
+    }
+    
+    NSDate *publicKeyFileContent = [NSData dataWithContentsOfFile:publicKeyPath];
+    if (publicKeyFileContent == nil) {
+        NSLog(@"Can not read from pub.der");
+        return nil;
+    }
+    
+    certificate = SecCertificateCreateWithData(kCFAllocatorDefault, ( __bridge CFDataRef)publicKeyFileContent);
+    if (certificate == nil) {
+        NSLog(@"Can not read certificate from pub.der");
+        return nil;
+    }
+    
+    policy = SecPolicyCreateBasicX509();
+    OSStatus returnCode = SecTrustCreateWithCertificates(certificate, policy, &amp;trust);
+    if (returnCode != 0) {
+        NSLog(@"SecTrustCreateWithCertificates fail. Error Code: %ld", returnCode);
+        return nil;
+    }
+    
+    SecTrustResultType trustResultType;
+    returnCode = SecTrustEvaluate(trust, &amp;trustResultType);
+    if (returnCode != 0) {
+        return nil;
+    }
+    
+    publicKey = SecTrustCopyPublicKey(trust);
+    if (publicKey == nil) {
+        NSLog(@"SecTrustCopyPublicKey fail");
+        return nil;
+    }
+    
+    maxPlainLen = SecKeyGetBlockSize(publicKey) - 12;
+    return self;
+}
+
+- (NSData *) encryptWithData:(NSData *)content {
+    
+    size_t plainLen = [content length];
+    if (plainLen &gt; maxPlainLen) {
+        NSLog(@"content(%ld) is too long, must &lt; %ld", plainLen, maxPlainLen);
+        return nil;
+    }
+    
+    void *plain = malloc(plainLen);
+    [content getBytes:plain
+               length:plainLen];
+    
+    size_t cipherLen = 256; // 目前使用的RSA加密長度為2048bits(即256bytes)
+    void *cipher = malloc(cipherLen);
+    
+    OSStatus returnCode = SecKeyEncrypt(publicKey, kSecPaddingPKCS1, plain,
+                                        plainLen, cipher, &amp;cipherLen);
+    
+    NSData *result = nil;
+    if (returnCode != 0) {
+        NSLog(@"SecKeyEncrypt fail. Error Code: %ld", returnCode);
+    }
+    else {
+        result = [NSData dataWithBytes:cipher length:cipherLen];
+    }
+    
+    free(plain);
+    free(cipher);
+    
+    return result;
+}
+
+- (NSData *) encryptWithString:(NSString *)content {
+    return [self encryptWithData:[content dataUsingEncoding:NSUTF8StringEncoding]];
+}
+
+- (NSString *) encryptToString:(NSString *)content {
+    NSData *data = [self encryptWithString:content];
+    return [self base64forData:data];
+}
+
+// convert NSData to NSString
+- (NSString *)base64forData:(NSData *)theData {
+    const uint8_t* input = (const uint8_t*)[theData bytes];
+    NSInteger length = [theData length];
+    
+    static char table[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+    
+    NSMutableData* data = [NSMutableData dataWithLength:((length + 2) / 3) * 4];
+    uint8_t* output = (uint8_t*)data.mutableBytes;
+    
+    NSInteger i;
+    for (i=0; i &lt; length; i += 3) {
+        NSInteger value = 0;
+        NSInteger j;
+        for (j = i; j &lt; (i + 3); j++) {
+            value &lt;&lt;= 8;
+            
+            if (j &lt; length) {
+                value |= (0xFF &amp; input[j]);
+            }
+        }
+        
+        NSInteger theIndex = (i / 3) * 4;
+        output[theIndex + 0] =                    table[(value &gt;&gt; 18) &amp; 0x3F];
+        output[theIndex + 1] =                    table[(value &gt;&gt; 12) &amp; 0x3F];
+        output[theIndex + 2] = (i + 1) &lt; length ? table[(value &gt;&gt; 6)  &amp; 0x3F] : '=';
+        output[theIndex + 3] = (i + 2) &lt; length ? table[(value &gt;&gt; 0)  &amp; 0x3F] : '=';
+    }
+    
+    return [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+}
+
+- (void)dealloc{
+    CFRelease(certificate);
+    CFRelease(trust);
+    CFRelease(policy);
+    CFRelease(publicKey);
+}
+@end
+</pre>
+   </div> 
+   
+  
+   <div>
+    <pre>RSAEncrypt *rsa = [[RSAEncrypt alloc] init];
+    if (rsa != nil) {
+    NSString *string = [rsa encryptToString:@"Hello Objective-C"]
+    } else {
+        NSLog(@"Error");
+    }
+</pre>
+   </div> 
+  
+  <p><strong>string</strong> 即可得RSA加密後的字串。<br clear="none"/> 還有其他兩個方法可以使用，就讓大家自己去發掘啦 XD</p> 
+  
+   <div>
+    <pre>- (NSData *) encryptWithData:(NSData *)content;
+- (NSData *) encryptWithString:(NSString *)content;
+</pre>
+   </div> 
+  
+  <h2>Reference</h2> 
+ </div>
+</div></body></html>

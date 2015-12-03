@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="20.49856948852539"/><meta name="author" content="Redman"/><meta name="created" content="2014-07-22 12:39:52 +0000"/><meta name="latitude" content="22.53822765881459"/><meta name="longitude" content="113.9399941653739"/><meta name="updated" content="2014-07-23 01:09:59 +0000"/><title>UILabel标签</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+标签，可以当矩形使用，还可以当直线，哈哈。
+<div><br/></div>
+<div>初始化的两种方法</div>
+<div>UILabel *label = [UILabel alloc] init] 或者 [UILabel alloc] initWithFrame: CGRectMake(x, y, width, height)];</div>
+<div><br/></div>
+<div><br/></div>
+<div>// 属性</div>
+<div><br/></div>
+<div>
+<div>// 文本</div>
+<div>@property(nonatomic,copy)   NSString           *text;            // default is nil</div>
+<div><br/></div>
+<div>// 字体</div>
+<div>@property(nonatomic,retain) UIFont             *font;            // default is nil (system font 17 plain)</div>
+<div><br/></div>
+<div>// 文本颜色</div>
+<div>@property(nonatomic,retain) UIColor            *textColor;       // default is nil (text draws black)</div>
+<div><br/></div>
+<div>// 阴影颜色</div>
+<div>@property(nonatomic,retain) UIColor            *shadowColor;     // default is nil (no shadow)</div>
+<div><br/></div>
+<div>// 阴影尺寸</div>
+<div>@property(nonatomic)        CGSize             shadowOffset;    // default is CGSizeMake(0, -1) -- a top shadow</div>
+<div><br/></div>
+<div>// 文本框排版</div>
+<div>@property(nonatomic)        NSTextAlignment    textAlignment;   // default is NSTextAlignmentLeft</div>
+<div><br/></div>
+<div>// 换行</div>
+<div>@property(nonatomic)        NSLineBreakMode    lineBreakMode;   // default is NSLineBreakByTruncatingTail. used for single and multiple lines of text</div>
+<div><br/></div>
+<div>// the underlying attributed string drawn by the label, if set, the label ignores the properties above.</div>
+<div><br/></div>
+<div>// 属性</div>
+<div>@property(nonatomic,copy)   NSAttributedString *attributedText NS_AVAILABLE_IOS(6_0);  // default is nil</div>
+<div><br/></div>
+<div>// the 'highlight' property is used by subclasses for such things as pressed states. it's useful to make it part of the base class as a user property</div>
+<div><br/></div>
+<div>// 高亮文本颜色</div>
+<div>@property(nonatomic,retain)               UIColor *highlightedTextColor; // default is nil</div>
+<div><br/></div>
+<div>// 高亮</div>
+<div>@property(nonatomic,getter=isHighlighted) BOOL    highlighted;          // default is NO</div>
+<div><br/></div>
+<div>// 用户交互</div>
+<div>@property(nonatomic,getter=isUserInteractionEnabled) BOOL userInteractionEnabled;  // default is NO</div>
+<div><br/></div>
+<div>// 可以。。。</div>
+<div>@property(nonatomic,getter=isEnabled)                BOOL enabled;                 // default is YES. changes how the label is drawn</div>
+<div><br/></div>
+<div>// this determines the number of lines to draw and what to do when sizeToFit is called. default value is 1 (single line). A value of 0 means no limit</div>
+<div>// if the height of the text reaches the # of lines or the height of the view is less than the # of lines allowed, the text will be</div>
+<div>// truncated using the line break mode.</div>
+<div><br/></div>
+<div>// 行数</div>
+<div>@property(nonatomic) NSInteger numberOfLines;</div>
+<div><br/></div>
+<div>// these next 3 property allow the label to be autosized to fit a certain width by scaling the font size(s) by a scaling factor &gt;= the minimum scaling factor</div>
+<div>// and to specify how the text baseline moves when it needs to shrink the font.</div>
+<div><br/></div>
+<div>// 调整字体大小来适合宽度</div>
+<div>@property(nonatomic) BOOL adjustsFontSizeToFitWidth;         // default is NO</div>
+<div><br/></div>
+<div>// 调整文本空间来适应宽度</div>
+<div>@property(nonatomic) BOOL adjustsLetterSpacingToFitWidth NS_DEPRECATED_IOS(6_0,7_0); // deprecated - hand tune by using NSKernAttributeName to affect tracking</div>
+<div><br/></div>
+<div>// 字体最小尺寸</div>
+<div>@property(nonatomic) CGFloat minimumFontSize NS_DEPRECATED_IOS(2_0, 6_0); // NOTE: deprecated - use minimumScaleFactor. default is 0.0</div>
+<div><br/></div>
+<div>// 基线调整</div>
+<div>@property(nonatomic) UIBaselineAdjustment baselineAdjustment; // default is UIBaselineAdjustmentAlignBaselines</div>
+<div><br/></div>
+<div>// 最小调整因素</div>
+<div>@property(nonatomic) CGFloat minimumScaleFactor NS_AVAILABLE_IOS(6_0); // default is 0.0</div>
+<div><br/></div>
+<div>// override points. can adjust rect before calling super.</div>
+<div>// label has default content mode of UIViewContentModeRedraw</div>
+<div>// 限制行数</div>
+<div>- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(NSInteger)numberOfLines;</div>
+<div><br/></div>
+<div>// 绘制文本矩形</div>
+<div>- (void)drawTextInRect:(CGRect)rect;</div>
+<div><br/></div>
+<div>// Support for constraint-based layout (auto layout)</div>
+<div>// If nonzero, this is used when determining -intrinsicContentSize for multiline labels</div>
+<div><br/></div>
+<div>// 偏爱的最大布局宽度</div>
+<div>@property(nonatomic) CGFloat preferredMaxLayoutWidth NS_AVAILABLE_IOS(6_0);</div>
+</div>
+<div><br/></div>
+<div><br/></div>
+</body></html>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="22.04493141174316"/><meta name="author" content="Redman"/><meta name="created" content="2015-07-11 06:50:33 +0000"/><meta name="latitude" content="22.54691434911823"/><meta name="longitude" content="113.9366183340752"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2015-07-11 06:50:58 +0000"/><title>CoreGraphics 框架之 CGGradient</title></head><body>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* CoreGraphics - CGGradient.h<br/>
+   Copyright (c) 2006-2011 Apple Inc.<br/>
+   All rights reserved. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#ifndef CGGRADIENT_H_<br/>
+#define CGGRADIENT_H_<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">typedef</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">struct</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CGGradient</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*CGGradientRef;<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;stdint.h&gt;</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">enum</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">{<br/>
+  kCGGradientDrawsBeforeStartLocation = (1 &lt;&lt; 0),<br/>
+  kCGGradientDrawsAfterEndLocation = (1 &lt;&lt; 1)<br/>
+};<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">typedef</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">uint32_t</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGGradientDrawingOptions;<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGBase.h&gt;</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/>
+#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGColorSpace.h&gt;</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/>
+#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGContext.h&gt;</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">CF_IMPLICIT_BRIDGING_ENABLED</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* A CGGradient defines a transition between colors. The transition is<br/>
+   defined over a range from 0 to 1 inclusive. A gradient specifies a color<br/>
+   at location 0, one at location 1, and possibly additional colors assigned<br/>
+   to locations between 0 and 1.<br/>
+<br/>
+   A CGGradient has a color space. When a gradient is created, all colors<br/>
+   specified are converted to that color space, and interpolation of colors<br/>
+   occurs using the components of that color space. See the documentation of<br/>
+   each creation function for more details. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Return the CFTypeID for CGGradients. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CFTypeID</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGGradientGetTypeID(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)<br/>
+ </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">CG_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_10_5, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Creates a gradient by pairing the color components provided in<br/>
+   `components' with locations provided in `locations'. If `locations' is<br/>
+   NULL, the first color in `colors' will be at location 0, the last color<br/>
+   in `colors' will be at location 1, and intervening colors will be at<br/>
+   equal intervals in between. Otherwise, each location in `locations'<br/>
+   should be a CGFloat between 0 and 1. Each set of color components should<br/>
+   specify a color in the color space `space' (which may not be a pattern or<br/>
+   indexed color space). The number of locations is specified by `count';<br/>
+   the number of color components is the product of `count' and the number<br/>
+   of color components of `space'. If no color is provided for 0 or 1, the<br/>
+   gradient will use the color provided at the locations closest to 0 and 1<br/>
+   for those values. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CGGradientRef</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGGradientCreateWithColorComponents(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CGColorSpaceRef</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+  space,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CGFloat</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">components[],</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CGFloat</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">locations[],</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">size_t</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">count)<br/>
+ </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">CG_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_10_5, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Creates a gradient by pairing the colors provided in `colors' with the<br/>
+   locations provided in `locations'. `colors' should be a non-empty array<br/>
+   of CGColor objects. The colors may be in any color space other than a<br/>
+   pattern or indexed color space. If `space' is non-NULL, each color will<br/>
+   be converted to that color space and the gradient will drawn in that<br/>
+   space; otherwise, each color will be converted to and drawn in the<br/>
+   "Generic" RGB color space. If `space' is specified, it may not be a<br/>
+   pattern or indexed color space. If `locations' is NULL, the first color<br/>
+   in `colors' will be at location 0, the last color in `colors' will be at<br/>
+   location 1, and intervening colors will be at equal intervals in between.<br/>
+   Otherwise, each location in `locations' should be a CGFloat between 0 and<br/>
+   1; the array of locations should should contain the same number of items<br/>
+   as `colors'. If no color is provided for 0 or 1, the gradient will use<br/>
+   the color provided at the locations closest to 0 and 1 for those<br/>
+   values. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CGGradientRef</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGGradientCreateWithColors(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CGColorSpaceRef</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">space,<br/>
+ </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CFArrayRef</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">colors,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CGFloat</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">locations[])<br/>
+ </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">CG_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_10_5, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Equivalent to `CFRetain' except that it doesn't crash (as `CFRetain'<br/>
+   does) if `gradient' is NULL. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CGGradientRef</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGGradientRetain(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CGGradientRef</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">gradient)<br/>
+ </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">CG_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_10_5, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Equivalent to `CFRelease' except that it doesn't crash (as `CFRelease'<br/>
+   does) if `gradient' is NULL. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGGradientRelease(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CGGradientRef</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">gradient)<br/>
+ </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">CG_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_10_5, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">CF_IMPLICIT_BRIDGING_DISABLED</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#endif</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* CGGRADIENT_H_ */</span></div>
+</body></html>

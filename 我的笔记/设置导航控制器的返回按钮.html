@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="author" content="Redman"/><meta name="created" content="2014-08-03 07:20:27 +0000"/><meta name="updated" content="2014-08-03 07:45:42 +0000"/><title>设置导航控制器的返回按钮</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+系统默认会有返回按钮，但是英文的back，如果我们想要改成中文，应该在导航控制器在子视图出现之前更改返回按钮的标题。因为 self.navigationItem.backBarButtonItem 设置之后只能在下一个页面使用；所以必须在当前页面设置.
+<div><br/></div>
+<div>UIBarButtonitem *back = [[UIBarButtonitem alloc] init];</div>
+<div>back.title = @"返回";</div>
+<div>self.navigationItem.backBarButtonItem = back;</div>
+<div>之后的页面就可以看到中文的返回按钮了。</div>
+<div><br/></div>
+<div><br/></div>
+<div>如果自定义的话，应当self.navigationItem.leftBarButtonItem 设置为返回按钮，向左的箭头需要自己切图片；</div>
+<div><br/></div>
+<div>
+<div> UIButton *button = [UIButton buttonWithType: UIButtonTypeCustom];</div>
+<div/>
+<div>    button.frame = CGRectMake(0, 0, 44, 44);</div>
+<div/>
+<div>    [button addTarget: self action: @selector(back:) forControlEvents: UIControlEventTouchUpInside];</div>
+<div/>
+<div>    [button setImage: [UIImage imageNamed: @"back_normal"] forState: UIControlStateNormal];</div>
+<div>    button.titleLabel.font = [UIFont systemFontOfSize: 14.0];</div>
+<div>    button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);</div>
+<div>    button.titleEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);</div>
+<div/>
+<div>    [button setTitleColor: [UIColor blackColor] forState: UIControlStateNormal];</div>
+<div><br/></div>
+<div>    button.showsTouchWhenHighlighted = YES;</div>
+<div>    [button setTitle: @"返回" forState: UIControlStateNormal];</div>
+<div/>
+<div/>
+<div>    // 使用自定义视图来初始化</div>
+<div>    UIBarButtonItem *back = [[UIBarButtonItem alloc] initWithCustomView: button];</div>
+<div><br/></div>
+<div>    // 自定义返回</div>
+<div>    self.navigationItem.leftBarButtonItem = back;</div>
+</div>
+</body></html>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="author" content="Redman"/><meta name="created" content="2014-07-22 12:45:46 +0000"/><meta name="updated" content="2014-07-23 01:11:20 +0000"/><title>UIColor</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+颜色 UIColor
+<div><br/></div>
+<div>
+<div>// 白色</div>
+<div>+ (UIColor *)colorWithWhite:(CGFloat)white alpha:(CGFloat)alpha;</div>
+<div><br/></div>
+<div>// 色调、饱和度、亮度、透明度</div>
+<div>+ (UIColor *)colorWithHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha;</div>
+<div><br/></div>
+<div>// 三原色 + 透明度</div>
+<div>+ (UIColor *)colorWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha;</div>
+<div><br/></div>
+<div>// 通过CGColor来创建</div>
+<div>+ (UIColor *)colorWithCGColor:(CGColorRef)cgColor;</div>
+<div><br/></div>
+<div>// 通过匹配图片创建颜色</div>
+<div>+ (UIColor *)colorWithPatternImage:(UIImage *)image;</div>
+<div><br/></div>
+<div>// 通过CIColor创建</div>
+<div>+ (UIColor *)colorWithCIColor:(CIColor *)ciColor NS_AVAILABLE_IOS(5_0);</div>
+<div><br/></div>
+<div>// 创建非 autorealesed Color</div>
+<div>// Initializers for creating non-autoreleased colors</div>
+<div>- (UIColor *)initWithWhite:(CGFloat)white alpha:(CGFloat)alpha;</div>
+<div>- (UIColor *)initWithHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha;</div>
+<div>- (UIColor *)initWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha;</div>
+<div>- (UIColor *)initWithCGColor:(CGColorRef)cgColor;</div>
+<div>- (UIColor *)initWithPatternImage:(UIImage*)image;</div>
+<div>- (UIColor *)initWithCIColor:(CIColor *)ciColor NS_AVAILABLE_IOS(5_0);</div>
+<div><br/></div>
+<div>// Some convenience methods to create colors.  These colors will be as calibrated as possible.</div>
+<div>// These colors are cached.</div>
+<div><br/></div>
+<div>// 黑色</div>
+<div>+ (UIColor *)blackColor;      // 0.0 white</div>
+<div><br/></div>
+<div>// 深灰色</div>
+<div>+ (UIColor *)darkGrayColor;   // 0.333 white</div>
+<div><br/></div>
+<div>// 亮灰色</div>
+<div>+ (UIColor *)lightGrayColor;  // 0.667 white</div>
+<div><br/></div>
+<div>// 白色</div>
+<div>+ (UIColor *)whiteColor;      // 1.0 white</div>
+<div><br/></div>
+<div>// 灰色</div>
+<div>+ (UIColor *)grayColor;       // 0.5 white</div>
+<div><br/></div>
+<div>// 红色</div>
+<div>+ (UIColor *)redColor;        // 1.0, 0.0, 0.0 RGB</div>
+<div><br/></div>
+<div>// 绿色</div>
+<div>+ (UIColor *)greenColor;      // 0.0, 1.0, 0.0 RGB</div>
+<div><br/></div>
+<div>// 蓝色</div>
+<div>+ (UIColor *)blueColor;       // 0.0, 0.0, 1.0 RGB</div>
+<div><br/></div>
+<div>// 青色</div>
+<div>+ (UIColor *)cyanColor;       // 0.0, 1.0, 1.0 RGB</div>
+<div><br/></div>
+<div>// 黄色</div>
+<div>+ (UIColor *)yellowColor;     // 1.0, 1.0, 0.0 RGB</div>
+<div><br/></div>
+<div>// 洋红色</div>
+<div>+ (UIColor *)magentaColor;    // 1.0, 0.0, 1.0 RGB</div>
+<div><br/></div>
+<div>// 橙色</div>
+<div>+ (UIColor *)orangeColor;     // 1.0, 0.5, 0.0 RGB</div>
+<div><br/></div>
+<div>// 紫色</div>
+<div>+ (UIColor *)purpleColor;     // 0.5, 0.0, 0.5 RGB</div>
+<div><br/></div>
+<div>// 棕色</div>
+<div>+ (UIColor *)brownColor;      // 0.6, 0.4, 0.2 RGB</div>
+<div><br/></div>
+<div>// 清楚颜色</div>
+<div>+ (UIColor *)clearColor;      // 0.0 white, 0.0 alpha</div>
+<div><br/></div>
+<div>// Set the color: Sets the fill and stroke colors in the current drawing context. Should be implemented by subclassers.</div>
+<div><br/></div>
+<div>// 设置Color需要被子类实现</div>
+<div>- (void)set;</div>
+<div><br/></div>
+<div>// Set the fill or stroke colors individually. These should be implemented by subclassers.</div>
+<div>- (void)setFill;</div>
+<div>- (void)setStroke;</div>
+<div><br/></div>
+<div>// Convenience methods for getting components.</div>
+<div>// If the receiver is of a compatible color space, any non-NULL parameters are populated and 'YES' is returned. Otherwise, the parameters are left unchanged and 'NO' is returned.</div>
+<div><br/></div>
+<div>// 获取白色值和透明度</div>
+<div>- (BOOL)getWhite:(CGFloat *)white alpha:(CGFloat *)alpha NS_AVAILABLE_IOS(5_0);</div>
+<div><br/></div>
+<div>// 获取 色调、饱和度、亮度、透明度</div>
+<div>- (BOOL)getHue:(CGFloat *)hue saturation:(CGFloat *)saturation brightness:(CGFloat *)brightness alpha:(CGFloat *)alpha NS_AVAILABLE_IOS(5_0);</div>
+<div><br/></div>
+<div>// 获取红色、绿色、蓝色、透明度</div>
+<div>- (BOOL)getRed:(CGFloat *)red green:(CGFloat *)green blue:(CGFloat *)blue alpha:(CGFloat *)alpha NS_AVAILABLE_IOS(5_0);</div>
+<div><br/></div>
+<div>// Returns a color in the same color space as the receiver with the specified alpha component.</div>
+<div><br/></div>
+<div>// 只改变透明度</div>
+<div>- (UIColor *)colorWithAlphaComponent:(CGFloat)alpha;</div>
+<div><br/></div>
+<div>// Access the underlying CGColor or CIColor.</div>
+<div>@property(nonatomic,readonly) CGColorRef CGColor;</div>
+<div>- (CGColorRef)CGColor NS_RETURNS_INNER_POINTER;</div>
+<div>@property(nonatomic,readonly) CIColor   *CIColor NS_AVAILABLE_IOS(5_0);</div>
+</div>
+</body></html>

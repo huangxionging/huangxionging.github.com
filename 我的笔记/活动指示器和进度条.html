@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="author" content="Redman"/><meta name="created" content="2014-07-03 11:18:26 +0000"/><meta name="updated" content="2014-07-03 11:39:13 +0000"/><title>活动指示器和进度条</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+这是用于请求的任务完成之前，活动指示器可以消除用户的心理等待时间，而进度条可以指示请求的进度。
+<div><br/></div>
+<div>// 点击了Upload按钮，修改活动指示器的状态</div>
+<div>
+<div>- (IBAction)startMove:(id)sender</div>
+<div>{</div>
+<div>    // 如果活动指示器已经在旋转，那么让它停止</div>
+<div>    if ([self.myActivityIndicatorView isAnimating])</div>
+<div>    {</div>
+<div>        [self.myActivityIndicatorView stopAnimating];</div>
+<div>    }</div>
+<div>    else</div>
+<div>    {</div>
+<div>        // 如果本身是停止的，那么让它旋转</div>
+<div>        [self.myActivityIndicatorView startAnimating];</div>
+<div>    }</div>
+<div>}</div>
+</div>
+<div><br/></div>
+<div><br/></div>
+<div>// 点击Download按钮</div>
+<div>
+<div>- (IBAction)downloadProgress:(id)sender</div>
+<div>{</div>
+<div>    timer = [NSTimer scheduledTimerWithTimeInterval: 1.0 target:self selector: @selector(download) userInfo:nil repeats:YES];</div>
+<div>}</div>
+<div><br/></div>
+<div>- (void)download</div>
+<div>{</div>
+<div>    self.myProgressView.progress = self.myProgressView.progress + 0.1;</div>
+<div/>
+<div>    if (self.myProgressView.progress == 1.0)</div>
+<div>    {</div>
+<div>        [timer invalidate];</div>
+<div>        UIAlertView *alter = [[UIAlertView alloc] initWithTitle: @"download completed!" message: @"" delegate:nil cancelButtonTitle: @"OK" otherButtonTitles:nil, nil];</div>
+<div/>
+<div>        [alter show];</div>
+<div>        self.myProgressView.progress = 0;</div>
+<div>    }</div>
+<div>}</div>
+</div>
+</body></html>

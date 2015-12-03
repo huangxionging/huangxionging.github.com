@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="21.93664360046387"/><meta name="author" content="Redman"/><meta name="created" content="2015-04-16 07:41:37 +0000"/><meta name="latitude" content="22.54699338161106"/><meta name="longitude" content="113.9365518139959"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2015-06-30 06:28:49 +0000"/><title>CoreGraphics 框架学习(2) CGContext</title></head><body>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextRef 是绘图环境, 绘图设备都可以.</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><font face="Menlo">在 iOS 中大多会使用 UIKit 中 <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">UIGraphics.h 中的 <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">UIGraphicsGetCurrentContext 这个函数来获得 CGContext</span></span></font></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(0, 143, 0);"><br/></span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextRotateCTM(CGContextRef c, CGFloat angle) <span style="color: rgb(253, 64, 103);">//</span> 该函数的功能是旋转整个 CGContext, angle 是角度 0~2π.</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextScaleCTM(CGContextRef c, CGFloat sx, CGFloat sy) <span style="color: rgb(253, 64, 103);">//</span> 缩放 sx, sy 是横纵缩放比例</span></span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextTranslateCTM(CGContextRef c, CGFloat tx, CGFloat ty) <span style="color: rgb(253, 64, 103);">//</span> 平移 tx ty 是平移坐标</span></span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><span style="color: rgb(253, 64, 103);">CGAffineTransform</span> CGContextGetCTM(CGContextRef c) // 获取当前绘图环境的仿射变换</span></span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetLineWidth(CGContextRef c, CGFloat width) // 设置线宽</span></span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetLineCap(CGContextRef c, CGLineCap cap) // 设置线帽 </span></span><span style="font-family: Menlo;"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGLineCap 为线帽</span></span><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetLineJoin(CGContextRef c, CGLineJoin join) // 连接方式 </span></span><span style="font-family: Menlo;"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGLineJoin 是连接方式</span></span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetMiterLimit(CGContextRef c, CGFloat limit) // 设置转角限量</span></span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetLineDash(CGContextRef c, CGFloat phase,<span style="color: rgb(4, 51, 255);"> </span></span></span><span style="font-family: Menlo;"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGFloat lengths[], size_t count) // 添加虚线 lengths[]是虚线数组, 从第一个数字开始, 依次按实虚实虚的秩序绘制 phase, 是绘制第一条实线省去的长度 count 是 lengths 数组的个数</span></span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetFlatness(CGContextRef c, CGFloat flatness) // </span><span style="font-family: Menlo;"><span style="font-family: 'Courier New';"><span style="color: rgb(51, 51, 51);">设置弯曲的路径中的图形上下文的准确性。路径平滑的程度</span></span></span></div>
+<div><span style="font-family: 'Courier New';"><span style="color: rgb(51, 51, 51);"><br/></span></span></div>
+<div><span style="font-family: 'Courier New';"><span style="color: rgb(51, 51, 51);"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetAlpha(CGContextRef c, CGFloat alpha) // 设置 alpha 值, 可见度</span></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetBlendMode(CGContextRef context, CGBlendMode mode) // 设置混合模式</span></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextBeginPath(CGContextRef c) // 开始绘制新的路径, 旧路径被抛弃</span></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextMoveToPoint(CGContextRef c, CGFloat x, CGFloat y) // 移动到原点</span></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextAddLineToPoint(CGContextRef c, CGFloat x, CGFloat y) // 从原点到目标点绘制直线</span></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextAddCurveToPoint(CGContextRef c, CGFloat cp1x, </span></span></span><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);">CGFloat cp1y, CGFloat cp2x, CGFloat cp2y, CGFloat x, CGFloat y) // 绘制曲线, 使用贝塞尔方法绘制, 三次贝塞尔曲线</span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextAddQuadCurveToPoint(CGContextRef c, CGFloat cpx, </span></span></span><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);">CGFloat cpy, CGFloat x, CGFloat y) // 绘制二次曲线, 二次贝塞尔曲线</span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextClosePath(CGContextRef c) // 关闭当前的绘制路径</span></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextAddRect(CGContextRef c, CGRect rect) // 添加矩形</span></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextAddRects(CGContextRef c,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGRect rects[], </span></span></span></span><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);">size_t count) // 批量添加矩形</span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextAddLines(CGContextRef c,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPoint points[], </span></span></span><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);">size_t count) // 批量添加线条</span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextAddEllipseInRect(CGContextRef context, CGRect rect) // 绘制椭圆</span></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextAddArc(CGContextRef c, CGFloat x, CGFloat y, </span></span></span><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);">CGFloat radius, CGFloat startAngle, CGFloat endAngle,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">int</span> <span style="color: rgb(51, 51, 51);"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">clockwise) // 绘制扇形, x, y 是中心, radius 是半径, startAngle 是开始角度, endAngle 是结束角度, clockwise 是顺时针, clockwise 值为1表示顺时针,0表示不是.</span></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><br/></span></span></div>
+<div><span style="font-size: 18px;"><span style="font-family: Menlo;"><span style="color: rgb(51, 51, 51);"><span style="font-style: normal; font-variant: normal; font-weight: normal;">CGContextAddArcToPoint(CGContextRef c, CGFloat x1, CGFloat y1, </span></span><span style="color: rgb(51, 51, 51);">CGFloat x2, CGFloat y2, CGFloat radius) // 两个点之间加上半径确立扇形</span></span></span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextAddPath(CGContextRef context, CGPathRef path) // 添加路径</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">CG_EXTERN <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextReplacePathWithStrokedPath(CGContextRef c) // 功能是使用新的Path 来替代之前的 path 通常 </span></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">CGContextClip 后面使用</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(0, 143, 0);"><br/></span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextIsPathEmpty(CGContextRef context) // 判断当前 context 是否有 path 路径</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN CGPoint CGContextGetPathCurrentPoint(CGContextRef context) // 获取当前路径所在的点, 比如绘制了一条线之后, 路径当前的位置</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN CGRect CGContextGetPathBoundingBox(CGContextRef context) // 获取能够包含路径上所有点的最小矩形</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN CGPathRef CGContextCopyPath(CGContextRef context) // 复制当前 context 上的 path</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font-style: normal; font-variant: normal; font-weight: normal;"><span style="font-family: Menlo;">CGContextPathContainsPoint(CGContextRef context, CGPoint point,</span></span></div>
+<div><span style="font-family: Menlo;">  CGPathDrawingMode mode) // 检测 context 是否包含点</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextDrawPath(CGContextRef c, CGPathDrawingMode mode) // 绘制 path</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextFillPath(CGContextRef c) // 填充路径</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextEOFillPath(CGContextRef c) // 使用奇偶数规则填充</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextStrokePath(CGContextRef c) // 绘制线条</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextFillRect(CGContextRef c, CGRect rect) // 填充矩形</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextFillRects(CGContextRef c,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font-style: normal; font-variant: normal; font-weight: normal;"><span style="font-family: Menlo;">CGRect rects[],</span></span></div>
+<div><span style="font-family: Menlo;">  size_t count) // 填充很多矩形</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextStrokeRect(CGContextRef c, CGRect rect) // 绘制矩形</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font-style: normal; font-variant: normal; font-weight: normal;"><span style="font-family: Menlo;">CGContextStrokeRectWithWidth(CGContextRef c, CGRect rect,</span></span></div>
+<div><span style="font-family: Menlo;">  CGFloat width) // 使用当前的 Stroke 颜色和线宽去绘制矩形</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextClearRect(CGContextRef c, CGRect rect) // 使指定矩形透明</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextFillEllipseInRect(CGContextRef context, CGRect rect) // 在指定矩形内填充椭圆</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextStrokeEllipseInRect(CGContextRef context, CGRect rect)</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">// 在指定矩形内绘制椭圆</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font-style: normal; font-variant: normal; font-weight: normal;"><span style="font-family: Menlo;">CGContextStrokeLineSegments(CGContextRef c,</span></span></div>
+<div><span style="font-family: Menlo;">  <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPoint points[], size_t count)</span></span></div>
+<div><span style="font-family: Menlo;"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">// 等价于</span></span><span style="color: rgb(0, 143, 0);"><span style="font-family: Menlo;">/* Stroke a sequence of line segments one after another in `context'. The</span></span></div>
+<div><span style="font-style: normal; font-variant: normal; font-weight: normal;"><span style="font-family: Menlo;"><span style="color: rgb(0, 143, 0);">   line segments are specified by `points', an array of `count' CGPoints.<br/>
+   This function is equivalent to<br/>
+<br/>
+     CGContextBeginPath(context);<br/>
+     for (k = 0; k &lt; count; k += 2) {<br/>
+       CGContextMoveToPoint(context, s[k].x, s[k].y);<br/>
+       CGContextAddLineToPoint(context, s[k+1].x, s[k+1].y);<br/>
+     }</span></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(0, 143, 0);">     CGContextStrokePath(context); */</span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(0, 143, 0);"><br/></span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextClip(CGContextRef c) // </span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">剪切</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextEOClip(CGContextRef c) // 奇偶剪切</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font-style: normal; font-variant: normal; font-weight: normal;"><span style="font-family: Menlo;">CGContextClipToMask(CGContextRef c, CGRect rect,</span></span></div>
+<div><span style="font-family: Menlo;">  CGImageRef mask) // 将指定矩形剪切到面具, 该方法尝试失败</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-style: normal; font-variant: normal; font-weight: normal;"><span style="font-family: Menlo;"><span style="color: rgb(0, 143, 0);">/* Return the bounding box of the clip path of `c' in user space. The<br/>
+   bounding box is the smallest rectangle completely enclosing all points in</span></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(0, 143, 0);">   the clip. */</span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN CGRect CGContextGetClipBoundingBox(CGContextRef c) // 获取裁剪边界矩形, 就是包含了裁剪范围的最小矩形</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/** Clipping convenience functions. **/</span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Intersect the current clipping path with `rect'. Note that this function</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(0, 143, 0);">   resets the context's path to the empty path. */</span></span></div>
+<div><span style="font-family: Menlo;">CG_EXTERN <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextClipToRect(CGContextRef c, CGRect rect)</span></span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Intersect the current clipping path with the clipping region formed by<br/>
+   creating a path consisting of all rects in `rects'. Note that this<br/>
+   function resets the context's path to the empty path. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextClipToRects(CGContextRef c,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font-style: normal; font-variant: normal; font-weight: normal;"><span style="font-family: Menlo;">CGRect rects[],</span></span></div>
+<div><span style="font-family: Menlo;">  size_t count) CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/** Primitive color functions. **/</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Set the current fill color in the context `c' to `color'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font-style: normal; font-variant: normal; font-weight: normal;"><span style="font-family: Menlo;">CGContextSetFillColorWithColor(CGContextRef c, CGColorRef color)</span></span></div>
+<div><span style="font-family: Menlo;">  CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0); // 填充颜色</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Set the current stroke color in the context `c' to `color'. */</span></div>
+<div><span style="font-family: Menlo;">CG_EXTERN <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font-style: normal; font-variant: normal; font-weight: normal;">CGContextSetStrokeColorWithColor(CGContextRef c,</span></span></div>
+<div><span style="font-family: Menlo;">  CGColorRef color) CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0); // 绘制颜色</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetFillColorSpace(CGContextRef context,<br/>
+  CGColorSpaceRef space) CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0); // 填充颜色空间</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetStrokeColorSpace(CGContextRef context,<br/>
+  CGColorSpaceRef space) CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0); // 绘制颜色空间<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/** Color functions. **/</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Set the components of the current fill color in `context' to the values<br/>
+   specifed by `components'. The number of elements in `components' must be<br/>
+   one greater than the number of components in the current fill color space<br/>
+   (N color components + 1 alpha component). The current fill color space<br/>
+   must not be a pattern color space. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span></div>
+<div><span style="font-family: Menlo;">CG_EXTERN <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetFillColor(CGContextRef context,</span></span></div>
+<div><span style="font-family: Menlo;">  <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> CGFloat components[]) // 填充颜色, 数组形式, 包含 r, g, b, alpha 值</span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetStrokeColor(CGContextRef context,</span></div>
+<div><span style="font-family: Menlo;">  <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> CGFloat components[]) </span><span style="font-family: Menlo;">// 绘制颜色, 数组形式, 包含 r, g, b, alpha 值</span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/** Pattern functions. **/</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Set the components of the current fill color in `context' to the values<br/>
+   specifed by `components', and set the current fill pattern to `pattern'.<br/>
+   The number of elements in `components' must be one greater than the<br/>
+   number of components in the current fill color space (N color components<br/>
+   + 1 alpha component). The current fill color space must be a pattern<br/>
+   color space. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span></div>
+<div><span style="font-family: Menlo;">CG_EXTERN <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetFillPattern(CGContextRef context,</span></span></div>
+<div><span style="font-family: Menlo;">  CGPatternRef pattern, <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> CGFloat components[]) // 填充样式</span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Set the components of the current stroke color in `context' to the values<br/>
+   specifed by `components', and set the current stroke pattern to<br/>
+   `pattern'. The number of elements in `components' must be one greater<br/>
+   than the number of components in the current stroke color space (N color<br/>
+   components + 1 alpha component). The current stroke color space must be a<br/>
+   pattern color space. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span></div>
+<div><span style="font-family: Menlo;">CG_EXTERN <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetStrokePattern(CGContextRef context,</span></span></div>
+<div><span style="font-family: Menlo;">  CGPatternRef pattern, <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> CGFloat components[]) // 绘制样式</span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Set the pattern phase in the current graphics state of `context' to<br/>
+   `phase'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+// 样式阶段<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetPatternPhase(CGContextRef context, CGSize phase)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/** Color convenience functions. **/</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Set the current fill color space in `context' to `DeviceGray' and set the<br/>
+   components of the current fill color to `(gray, alpha)'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+// 灰度值填充以及透明度<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetGrayFillColor(CGContextRef context, CGFloat gray,<br/>
+  CGFloat alpha) CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Set the current stroke color space in `context' to `DeviceGray' and set</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(0, 143, 0);">   the components of the current stroke color to `(gray, alpha)'. */</span></span></div>
+<div><span style="font-family: Menlo;">// 绘制灰度</span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetGrayStrokeColor(CGContextRef context, CGFloat gray,<br/>
+  CGFloat alpha) CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Set the current fill color space in `context' to `DeviceRGB' and set the<br/>
+   components of the current fill color to `(red, green, blue, alpha)'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+// RGB 填充<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetRGBFillColor(CGContextRef context, CGFloat red,<br/>
+  CGFloat green, CGFloat blue, CGFloat alpha)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Set the current stroke color space in `context' to `DeviceRGB' and set<br/>
+   the components of the current stroke color to `(red, green, blue,<br/>
+   alpha)'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+// RGB 绘制<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetRGBStrokeColor(CGContextRef context, CGFloat red,<br/>
+  CGFloat green, CGFloat blue, CGFloat alpha)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Set the current fill color space in `context' to `DeviceCMYK' and set the<br/>
+   components of the current fill color to `(cyan, magenta, yellow, black,</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(0, 143, 0);">   alpha)'. */</span></span></div>
+<div><span style="font-family: Menlo;">// 设备 CMY, 青色, 洋红, 黄色, 黑色, alpha 值</span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetCMYKFillColor(CGContextRef context, CGFloat cyan,<br/>
+  CGFloat magenta, CGFloat yellow, CGFloat black, CGFloat alpha)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Set the current stroke color space in `context' to `DeviceCMYK' and set<br/>
+   the components of the current stroke color to `(cyan, magenta, yellow,<br/>
+   black, alpha)'. */</span></div>
+<div><span style="font-family: Menlo;">// 设备 CMY, 青色, 洋红, 黄色, 黑色, alpha 值</span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetCMYKStrokeColor(CGContextRef context, CGFloat cyan,<br/>
+  CGFloat magenta, CGFloat yellow, CGFloat black, CGFloat alpha)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/** Rendering intent. **/</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Set the rendering intent in the current graphics state of `context' to</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(0, 143, 0);">   `intent'. */</span></span></div>
+<div><span style="font-family: Menlo;">// 渲染目的</span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetRenderingIntent(CGContextRef context,<br/>
+  CGColorRenderingIntent intent)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/** Image functions. **/</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Draw `image' in the rectangular area specified by `rect' in the context<br/>
+   `c'. The image is scaled, if necessary, to fit into `rect'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+// 绘制图形, 指定矩形<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextDrawImage(CGContextRef c, CGRect rect,<br/>
+  CGImageRef image) CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Draw `image' tiled in the context `c'. The image is scaled to the size<br/>
+   specified by `rect' in user space, positioned at the origin of `rect' in<br/>
+   user space, then replicated, stepping the width of `rect' horizontally<br/>
+   and the height of `rect' vertically, to fill the current clip region.<br/>
+   Unlike patterns, the image is tiled in user space, so transformations<br/>
+   applied to the CTM affect the final result. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+// 平铺绘制<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextDrawTiledImage(CGContextRef c, CGRect rect,<br/>
+  CGImageRef image) CG_AVAILABLE_STARTING(__MAC_10_5, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Return the interpolation quality for image rendering of `context'. The<br/>
+   interpolation quality is a gstate parameter which controls the level of<br/>
+   interpolation performed when an image is interpolated (for example, when<br/>
+   scaling the image). Note that it is merely a hint to the context: not all<br/>
+   contexts support all interpolation quality levels. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+// 插入质量渲染<br/>
+CG_EXTERN CGInterpolationQuality<br/>
+  CGContextGetInterpolationQuality(CGContextRef context)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Set the interpolation quality of `context' to `quality'. */</span></div>
+<div><span style="font-family: Menlo;">// 插值质量</span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetInterpolationQuality(CGContextRef context,<br/>
+  CGInterpolationQuality quality)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/** Shadow support. **/</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Set the shadow parameters in `context'. `offset' specifies a translation<br/>
+   in base-space; `blur' is a non-negative number specifying the amount of<br/>
+   blur; `color' specifies the color of the shadow, which may contain a<br/>
+   non-opaque alpha value. If `color' is NULL, it's equivalent to specifying<br/>
+   a fully transparent color. The shadow is a gstate parameter. After a<br/>
+   shadow is specified, all objects drawn subsequently will be shadowed. To<br/>
+   turn off shadowing, set the shadow color to a fully transparent color (or</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(0, 143, 0);">   pass NULL as the color), or use the standard gsave/grestore mechanism. */</span></span></div>
+<div><span style="font-family: Menlo;">// 阴影, 模糊度</span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetShadowWithColor(CGContextRef context, CGSize offset,<br/>
+  CGFloat blur, CGColorRef color)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Equivalent to calling<br/>
+     CGContextSetShadowWithColor(context, offset, blur, color)<br/>
+   where color is black with 1/3 alpha (i.e., RGBA = {0, 0, 0, 1.0/3.0}) in<br/>
+   the DeviceRGB color space. */</span><span style="font-style: normal; font-variant: normal; font-weight: normal;"><span style="font-family: Menlo;"><br/>
+<br/></span></span></div>
+<div><span style="font-family: Menlo;">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetShadow(CGContextRef context, CGSize offset,</span></div>
+<div><span style="font-family: Menlo;">  CGFloat blur) CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0); // 设置阴影, 黑色</span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/** Gradient and shading functions. **/</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+// 斜度和阴影, 绘制渐变色使用<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Fill the current clipping region of `context' with a linear gradient from<br/>
+   `startPoint' to `endPoint'. The location 0 of `gradient' corresponds to<br/>
+   `startPoint'; the location 1 of `gradient' corresponds to `endPoint';<br/>
+   colors are linearly interpolated between these two points based on the<br/>
+   values of the gradient's locations. The option flags control whether the</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(0, 143, 0);">   gradient is drawn before the start point or after the end point. */</span></span></div>
+<div><span style="font-family: Menlo;">// 绘制线性渐变色</span></div>
+<div><span style="font-family: Menlo;">绘制线性渐变色, startPoint 为起点, endPoint 为终点, 每一个线条与两点构成的直线垂直</span></div>
+<div><span style="font-family: Menlo;">两点之间的范围就是两点构成的直线与这条直线垂直的线条构成的直线区域块</span></div>
+<div><img src="CoreGraphics%20%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0(2)%20CGContext.resources/C14AD9D1-EB96-4B43-A289-7C4612812C64.png" height="144" width="291"/></div>
+<div><br/></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextDrawLinearGradient(CGContextRef context,<br/>
+  CGGradientRef gradient, CGPoint startPoint, CGPoint endPoint,<br/>
+  CGGradientDrawingOptions options)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_5, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Fill the current clipping region of `context' with a radial gradient<br/>
+   between two circles defined by the center point and radius of each<br/>
+   circle. The location 0 of `gradient' corresponds to a circle centered at<br/>
+   `startCenter' with radius `startRadius'; the location 1 of `gradient'<br/>
+   corresponds to a circle centered at `endCenter' with radius `endRadius';<br/>
+   colors are linearly interpolated between these two circles based on the<br/>
+   values of the gradient's locations. The option flags control whether the<br/>
+   gradient is drawn before the start circle or after the end circle. */</span></div>
+<div><span style="font-family: Menlo;">// 辐射状斜度</span><img src="CoreGraphics%20%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0(2)%20CGContext.resources/2659F929-602E-4FEB-ABFC-C8B0C6E2E8ED.png" height="221" width="263"/> <img src="CoreGraphics%20%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0(2)%20CGContext.resources/46BFD5D8-423E-45A3-AE4F-B3CDCC70DDFE.png" height="128" width="141"/></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextDrawRadialGradient(CGContextRef context,<br/>
+  CGGradientRef gradient, CGPoint startCenter, CGFloat startRadius,</span></div>
+<div><span style="font-family: Menlo;">  CGPoint endCenter, CGFloat endRadius, CGGradientDrawingOptions options)                                    </span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">  CG_AVAILABLE_STARTING(__MAC_10_5, __IPHONE_2_0);<br/>
+<br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Fill the current clipping region of `context' with `shading'. */</span></div>
+<div><span style="font-family: Menlo;">// </span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextDrawShading(CGContextRef context, CGShadingRef shading)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_2, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/** Text functions. **/</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Set the current character spacing in `context' to `spacing'. The<br/>
+   character spacing is added to the displacement between the origin of one<br/>
+   character and the origin of the next. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+// 文本宽度<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetCharacterSpacing(CGContextRef context,<br/>
+  CGFloat spacing) CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Set the user-space point at which text will be drawn in the context `c'</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(0, 143, 0);">   to `(x, y)'. */</span></span></div>
+<div><span style="font-family: Menlo;">文本位置</span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetTextPosition(CGContextRef c, CGFloat x, CGFloat y)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Return the user-space point at which text will be drawn in `context'. */</span></div>
+<div>// 文本位置</div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN CGPoint CGContextGetTextPosition(CGContextRef context)</span></div>
+<div><span style="font-family: Menlo;">  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);</span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Set the text matrix in the context `c' to `t'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+// 设置文本块<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetTextMatrix(CGContextRef c, CGAffineTransform t)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Return the text matrix in the context `c'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGAffineTransform CGContextGetTextMatrix(CGContextRef c)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Set the text drawing mode in the current graphics state of the context</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(0, 143, 0);">   `c' to `mode'. */</span></span></div>
+<div><span style="font-family: Menlo;">// 设置绘制模式</span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetTextDrawingMode(CGContextRef c,<br/>
+  CGTextDrawingMode mode) CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Set the font in the current graphics state of the context `c' to<br/>
+   `font'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+// 设置字体<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetFont(CGContextRef c, CGFontRef font)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Set the font size in the current graphics state of the context `c' to</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(0, 143, 0);">   `size'. */</span></span></div>
+<div><span style="font-family: Menlo;">// 设置字体大小</span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetFontSize(CGContextRef c, CGFloat size)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Draw `glyphs', an array of `count' CGGlyphs, at the points specified by<br/>
+   `positions'. Each element of `positions' specifies the position from the<br/>
+   associated glyph; the positions are specified in user space. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextShowGlyphsAtPositions(CGContextRef context,<br/>
+ </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGGlyph glyphs[],</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPoint positions[], size_t count)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_5, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/** PDF functions. **/</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Draw `page' in the current user space of the context `c'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+// 绘制 PDF<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextDrawPDFPage(CGContextRef c, CGPDFPageRef page)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/** Output page functions. **/</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Begin a new page. */</span></div>
+<div><span style="font-family: Menlo;">// 增加新的页</span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextBeginPage(CGContextRef c,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGRect *mediaBox)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* End the current page. */</span></div>
+<div><span style="font-family: Menlo;">// 结束一页</span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextEndPage(CGContextRef c)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/** Context functions. **/</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Equivalent to `CFRetain(c)'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGContextRef CGContextRetain(CGContextRef c)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Equivalent to `CFRelease(c)'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextRelease(CGContextRef c)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Flush all drawing to the destination. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextFlush(CGContextRef c)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Synchronized drawing. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSynchronize(CGContextRef c)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/** Antialiasing functions. **/</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Turn on antialiasing if `shouldAntialias' is true; turn it off otherwise.<br/>
+   This parameter is part of the graphics state. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetShouldAntialias(CGContextRef context,<br/>
+ </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">shouldAntialias) CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Allow antialiasing in `context' if `allowsAntialiasing' is true; don't<br/>
+   allow it otherwise. This parameter is not part of the graphics state. A<br/>
+   context will perform antialiasing if both `allowsAntialiasing' and the<br/>
+   graphics state parameter `shouldAntialias' are true. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetAllowsAntialiasing(CGContextRef context,<br/>
+ </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">allowsAntialiasing) CG_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/** Font display functions. **/</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Turn on font smoothing if `shouldSmoothFonts' is true; turn it off<br/>
+   otherwise. This parameter is part of the graphics state. Note that this<br/>
+   doesn't guarantee that font smoothing will occur: not all destination<br/>
+   contexts support font smoothing. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetShouldSmoothFonts(CGContextRef context,<br/>
+ </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">shouldSmoothFonts) CG_AVAILABLE_STARTING(__MAC_10_2, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* If `allowsFontSmoothing' is true, then allow font smoothing when<br/>
+   displaying text in `context'; otherwise, don't allow font smoothing. This<br/>
+   parameter is not part of the graphics state. Fonts will be smoothed if<br/>
+   they are antialiased when drawn and if both `allowsFontSmoothing' and the<br/>
+   graphics state parameter `shouldSmoothFonts' are true. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+ <br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetAllowsFontSmoothing(CGContextRef context,<br/>
+ </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">allowsFontSmoothing) CG_AVAILABLE_STARTING(__MAC_10_2, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* If `shouldSubpixelPositionFonts' is true, then glyphs may be placed at<br/>
+   subpixel positions (if allowed) when displaying text in `context';<br/>
+   otherwise, glyphs will be forced to integer pixel boundaries. This<br/>
+   parameter is part of the graphics state. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetShouldSubpixelPositionFonts(CGContextRef context,<br/>
+ </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">shouldSubpixelPositionFonts)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_5, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* If `allowsFontSubpixelPositioning' is true, then allow font subpixel<br/>
+   positioning when displaying text in `context'; otherwise, don't allow<br/>
+   subpixel positioning. This parameter is not part of the graphics state. A<br/>
+   context will place glyphs at subpixel positions if fonts will be<br/>
+   antialiased when drawn and if both `allowsFontSubpixelPositioning' and<br/>
+   the graphics state parameter `shouldSubpixelPositionFonts' are true. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetAllowsFontSubpixelPositioning(CGContextRef context,<br/>
+ </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">allowsFontSubpixelPositioning)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_5, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* If `shouldSubpixelQuantizeFonts' is true, then quantize the subpixel<br/>
+   positions of glyphs when displaying text in `context'; otherwise, don't<br/>
+   quantize the subpixel positions. This parameter is part of the graphics<br/>
+   state. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetShouldSubpixelQuantizeFonts(CGContextRef context,<br/>
+ </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">shouldSubpixelQuantizeFonts)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_5, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* If `allowsFontSubpixelQuantization' is true, then allow font subpixel<br/>
+   quantization when displaying text in `context'; otherwise, don't allow<br/>
+   subpixel quantization. This parameter is not part of the graphics state.<br/>
+   A context quantizes subpixel positions if glyphs will be drawn at<br/>
+   subpixel positions and `allowsFontSubpixelQuantization' and the graphics<br/>
+   state parameter `shouldSubpixelQuantizeFonts' are both true. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSetAllowsFontSubpixelQuantization(CGContextRef context,<br/>
+ </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">allowsFontSubpixelQuantization)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_5, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/** Transparency layer support. **/</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Begin a transparency layer in `context'. All subsequent drawing<br/>
+   operations until a corresponding `CGContextEndTransparencyLayer' are<br/>
+   composited into a fully transparent backdrop (which is treated as a<br/>
+   separate destination buffer from the context). After the transparency<br/>
+   layer is ended, the result is composited into the context using the<br/>
+   global alpha and shadow state of the context. This operation respects the<br/>
+   clipping region of the context. After a call to this function, all of the<br/>
+   parameters in the graphics state remain unchanged with the exception of<br/>
+   the following:<br/>
+     - The global alpha is set to 1.<br/>
+     - The shadow is turned off.<br/>
+     - The blend mode is set to `kCGBlendModeNormal'.<br/>
+   Ending the transparency layer restores these parameters to the values<br/>
+   they had before `CGContextBeginTransparencyLayer' was called.<br/>
+   Transparency layers may be nested. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextBeginTransparencyLayer(CGContextRef context,<br/>
+  CFDictionaryRef auxiliaryInfo)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Begin a transparency layer in `context'. This function is identical to<br/>
+  `CGContextBeginTransparencyLayer' except that the content of the<br/>
+  transparency layer will be bounded by `rect' (specified in user space). */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextBeginTransparencyLayerWithRect(CGContextRef context,<br/>
+  CGRect rect, CFDictionaryRef auxiliaryInfo)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_5, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* End a tranparency layer. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextEndTransparencyLayer(CGContextRef context)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/** User space to device space tranformations. **/</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+UIKit 跟 设备坐标转换<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Return the affine transform mapping the user space (abstract coordinates)<br/>
+   of `context' to device space (pixels). */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGAffineTransform<br/>
+  CGContextGetUserSpaceToDeviceSpaceTransform(CGContextRef context)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Transform `point' from the user space of `context' to device space. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGPoint CGContextConvertPointToDeviceSpace(CGContextRef context,<br/>
+  CGPoint point) CG_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Transform `point' from device space to the user space of `context'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGPoint CGContextConvertPointToUserSpace(CGContextRef context,<br/>
+  CGPoint point) CG_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Transform `size' from the user space of `context' to device space. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGSize CGContextConvertSizeToDeviceSpace(CGContextRef context,<br/>
+  CGSize size) CG_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Transform `size' from device space to the user space of `context'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGSize CGContextConvertSizeToUserSpace(CGContextRef context,<br/>
+  CGSize size) CG_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Transform `rect' from the user space of `context' to device space. Since<br/>
+   affine transforms do not preserve rectangles in general, this function<br/>
+   returns the smallest rectangle which contains the transformed corner<br/>
+   points of `rect'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGRect CGContextConvertRectToDeviceSpace(CGContextRef context,<br/>
+  CGRect rect) CG_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Transform `rect' from device space to the user space of `context'. Since<br/>
+   affine transforms do not preserve rectangles in general, this function<br/>
+   returns the smallest rectangle which contains the transformed corner<br/>
+   points of `rect'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGRect CGContextConvertRectToUserSpace(CGContextRef context,<br/>
+  CGRect rect) CG_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/** Deprecated functions. **/</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* DEPRECATED; use the CoreText API instead. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextSelectFont(CGContextRef c,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">char</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*name,<br/>
+  CGFloat size, CGTextEncoding textEncoding)<br/>
+  CG_AVAILABLE_BUT_DEPRECATED(__MAC_10_0, __MAC_10_9,<br/>
+    __IPHONE_2_0, __IPHONE_7_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* DEPRECATED; use the CoreText API instead. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextShowText(CGContextRef c,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">char</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*string,<br/>
+  size_t length)<br/>
+  CG_AVAILABLE_BUT_DEPRECATED(__MAC_10_0, __MAC_10_9,<br/>
+    __IPHONE_2_0, __IPHONE_7_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* DEPRECATED; use the CoreText API instead. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextShowTextAtPoint(CGContextRef c, CGFloat x, CGFloat y,<br/>
+ </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">char</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*string, size_t length)<br/>
+  CG_AVAILABLE_BUT_DEPRECATED(__MAC_10_0, __MAC_10_9,<br/>
+    __IPHONE_2_0, __IPHONE_7_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* DEPRECATED; use the CoreText API instead. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextShowGlyphs(CGContextRef c,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGGlyph g[],<br/>
+  size_t count)<br/>
+  CG_AVAILABLE_BUT_DEPRECATED(__MAC_10_0, __MAC_10_9,<br/>
+    __IPHONE_2_0, __IPHONE_7_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* DEPRECATED; use the CoreText API instead. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextShowGlyphsAtPoint(CGContextRef context, CGFloat x,<br/>
+  CGFloat y,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGGlyph glyphs[], size_t count)<br/>
+  CG_AVAILABLE_BUT_DEPRECATED(__MAC_10_0, __MAC_10_9,<br/>
+    __IPHONE_2_0, __IPHONE_7_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* DEPRECATED; use the CoreText API instead. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextShowGlyphsWithAdvances(CGContextRef context,<br/>
+ </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGGlyph glyphs[],</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGSize advances[], size_t count)<br/>
+  CG_AVAILABLE_BUT_DEPRECATED(__MAC_10_3, __MAC_10_9,<br/>
+    __IPHONE_2_0, __IPHONE_7_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* DEPRECATED; use the CGPDFPage API instead. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGContextDrawPDFDocument(CGContextRef c, CGRect rect,<br/>
+  CGPDFDocumentRef document,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">int</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">page)<br/>
+  CG_AVAILABLE_BUT_DEPRECATED(__MAC_10_0, __MAC_10_5,<br/>
+    __IPHONE_NA, __IPHONE_NA);<br/>
+<br/>
+CF_IMPLICIT_BRIDGING_DISABLED<br/>
+<br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#endif</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* CGCONTEXT_H_ */</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+</body></html>

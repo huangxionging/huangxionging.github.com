@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="created" content="2015-10-23 06:33:52 +0000"/><meta name="source" content="Clearly"/><meta name="source-url" content="http://www.bubuko.com/infodetail-1110714.html"/><meta name="updated" content="2015-10-23 06:33:52 +0000"/><title>项目适配iOS9遇到的一些问题及解决办法（更新两个小问题）</title></head><body><div>
+ <div>
+  <div>
+   <h1>项目适配iOS9遇到的一些问题及解决办法（更新两个小问题）</h1>
+  </div> 
+  <div>
+    时间：2015-09-23 15:02:40      阅读：      评论：      收藏：      
+   <a shape="rect" target="_blank">[点我收藏+]</a> 
+  </div> 
+  <p>标签：<a shape="rect" href="http://www.bubuko.com/so/1/安卓" title="安卓" target="_blank">安卓</a>   <a shape="rect" href="http://www.bubuko.com/so/1/class" title="class" target="_blank">class</a>   <a shape="rect" href="http://www.bubuko.com/so/1/style" title="style" target="_blank">style</a>   <a shape="rect" href="http://www.bubuko.com/so/1/log" title="log" target="_blank">log</a>   <a shape="rect" href="http://www.bubuko.com/so/1/com" title="com" target="_blank">com</a>   <a shape="rect" href="http://www.bubuko.com/so/1/http" title="http" target="_blank">http</a>   <a shape="rect" href="http://www.bubuko.com/so/1/使用" title="使用" target="_blank">使用</a>   <a shape="rect" href="http://www.bubuko.com/so/1/si" title="si" target="_blank">si</a>   <a shape="rect" href="http://www.bubuko.com/so/1/代码" title="代码" target="_blank">代码</a>   </p>
+  <p>http://www.jianshu.com/p/631bd7f12a38</p> 
+  <br clear="none"/>
+  <br clear="none"/> 
+  <p><strong>1.网络请求报错。</strong><br clear="none"/>升级<code>Xcode 7.0</code>发现网络访问失败。<br clear="none"/>输出错误信息</p> 
+  <blockquote> 
+   <p>The resource could not be loaded because the App Transport Security policy requires the use of a secure connection.</p> 
+  </blockquote> 
+  <p>原因：iOS9引入了新特性<code>App Transport Security (ATS)</code>。<br clear="none"/>详情：App Transport Security (ATS)<br clear="none"/>新特性要求App内访问的网络必须使用<code>HTTPS</code>协议。<br clear="none"/>但是现在公司的项目使用的是<code>HTTP</code>协议，使用私有加密方式保证数据安全。现在也不能马上改成HTTPS协议传输。<br clear="none"/><strong>最终找到以下解决办法：</strong><br clear="none"/>在Info.plist中添加<code>NSAppTransportSecurity</code>类型<code>Dictionary</code>。<br clear="none"/>在<code>NSAppTransportSecurity</code>下添加<code>NSAllowsArbitraryLoads</code>类型<code>Boolean</code>,值设为<code>YES</code></p> 
+  <hr/> 
+  <p><strong>2.Scheme白名单问题(无法判断手机是否安装微信等)</strong></p> 
+  <blockquote> 
+   <p>-canOpenURL: failed for URL: "weixin://app/wxdaae92a9cfe5d54c/" - error: "This app is not allowed to query for scheme weixin"</p> 
+  </blockquote> 
+  <p>搜索后得知</p> 
+  <blockquote> 
+   <p>近期苹果公司iOS 9系统策略更新，限制了http协议的访问，此外应用需要在“Info.plist”中将要使用的URL Schemes列为白名单，才可正常检查其他应用是否安装。</p> 
+  </blockquote> 
+  <p>受此影响，当你的应用在iOS 9中需要使用微信SDK的相关能力（分享、收藏、支付、登录等）时，需要在“Info.plist”里增加如下代码：</p> 
+  <div>
+   <div>
+    <img src="%E9%A1%B9%E7%9B%AE%E9%80%82%E9%85%8DiOS9%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95%EF%BC%88%E6%9B%B4%E6%96%B0%E4%B8%A4%E4%B8%AA%E5%B0%8F%E9%97%AE%E9%A2%98%EF%BC%89.resources/7EF88690-49DA-4966-A64B-77AB309EB13A.png" height="245" width="458"/>
+   </div>
+  </div> 
+  <p>注意：截图来自微信开放平台，里面已经包含第一个问题的解决</p> 
+  <p>完成后需使用Xcode 7编译。</p> 
+  <p>如果你在模拟器上运行可以能还会有以下报错：</p> 
+  <blockquote> 
+   <p>-canOpenURL: failed for URL: "weixin://app/wxdaae92a9cfe5d54c/" - error: "(null)"</p> 
+  </blockquote> 
+  <p>这是因为模拟器上并没有安装微信，如果运行到真机上就不会有报错了。</p> 
+  <p>请注意：未升级到微信客户端6.2.5及以上版本的用户，在iOS 9下使用到微信相关功能时，仍可能无法成功。</p> 
+  <p>下面整理一些常用的白名单</p> 
+  <pre><code>&lt;key&gt;LSApplicationQueriesSchemes&lt;/key&gt;
+&lt;array&gt;
+    &lt;string&gt;mqqOpensdkSSoLogin&lt;/string&gt;
+    &lt;string&gt;mqzone&lt;/string&gt;
+    &lt;string&gt;sinaweibo&lt;/string&gt;
+    &lt;string&gt;alipayauth&lt;/string&gt;
+    &lt;string&gt;alipay&lt;/string&gt;
+    &lt;string&gt;safepay&lt;/string&gt;
+    &lt;string&gt;mqq&lt;/string&gt;
+    &lt;string&gt;mqqapi&lt;/string&gt;
+    &lt;string&gt;mqqopensdkapiV3&lt;/string&gt;
+    &lt;string&gt;mqqopensdkapiV2&lt;/string&gt;
+    &lt;string&gt;mqqapiwallet&lt;/string&gt;
+    &lt;string&gt;mqqwpa&lt;/string&gt;
+    &lt;string&gt;mqqbrowser&lt;/string&gt;
+    &lt;string&gt;wtloginmqq2&lt;/string&gt;
+    &lt;string&gt;weixin&lt;/string&gt;
+    &lt;string&gt;wechat&lt;/string&gt;
+&lt;/array&gt;</code></pre> 
+  <p>qq登录绑定，qq支付，qq分享<br clear="none"/>微信支付，微信登录绑定<br clear="none"/>新浪登录绑定<br clear="none"/>支付宝支付，支付宝登录绑定</p> 
+  <hr/> 
+  <p>3.Bitcode问题（通俗解释：在线版安卓ART模式）<br clear="none"/>报错如下</p> 
+  <blockquote> 
+   <p>ld: warning: directory not found for option ‘-F/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/Developer/Library/Frameworks‘<br clear="none"/>ld: -bundle and -bitcode_bundle (Xcode setting ENABLE_BITCODE=YES) cannot be used together<br clear="none"/>clang: error: linker command failed with exit code 1 (use -v to see invocation)</p> 
+   <div>
+    <img src="%E9%A1%B9%E7%9B%AE%E9%80%82%E9%85%8DiOS9%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95%EF%BC%88%E6%9B%B4%E6%96%B0%E4%B8%A4%E4%B8%AA%E5%B0%8F%E9%97%AE%E9%A2%98%EF%BC%89.resources/E5352ECB-EB15-4F03-B8D8-DB70BDA39AEE.png" height="74" width="1008"/>
+    <div>
+     Bitcode报错
+    </div> 
+   </div> 
+  </blockquote> 
+  <p>原因：Xcode7 及以上版本会默认开启 bitcode 。<br clear="none"/>bitcode具体是什么就不解释了。</p> 
+  <p>解决方法：<br clear="none"/>1.更新library使包含Bitcode，否则会出现以上的警告。<br clear="none"/>2.关闭Bitcode，简单粗暴。</p> 
+  <p>Build Settings”-&gt;”Enable Bitcode”改成"NO"。</p> 
+  <div>
+   <div>
+    <img src="%E9%A1%B9%E7%9B%AE%E9%80%82%E9%85%8DiOS9%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95%EF%BC%88%E6%9B%B4%E6%96%B0%E4%B8%A4%E4%B8%AA%E5%B0%8F%E9%97%AE%E9%A2%98%EF%BC%89.resources/7366A8D7-BC8B-4A8A-9B1E-E5C220895374.png" height="156" width="740"/>
+   </div>
+  </div> 
+  <p><strong>4.项目运行报错如下</strong></p> 
+  <pre><code>&lt;Error&gt;: CGContextSaveGState: invalid context 0x0. If you want to see the backtrace, please set CG_CONTEXT_SHOW_BACKTRACE environmental variable.
+&lt;Error&gt;: CGContextTranslateCTM: invalid context 0x0. If you want to see the backtrace, please set CG_CONTEXT_SHOW_BACKTRACE environmental variable.
+&lt;Error&gt;: CGContextRestoreGState: invalid context 0x0. If you want to see the backtrace, please set CG_CONTEXT_SHOW_BACKTRACE environmental variable.</code></pre> 
+  <p>出错原因：设置app的状态栏样式的使用使用了旧的方式，在info.plist里面设置了View controller-based status bar appearance为NO，默认为YES，一般式iOS6的时候使用这种方式，iOS7，8也兼容，但是到了iOS9就报了警告。</p> 
+  <pre><code>[[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];</code></pre> 
+  <p>以前我们通过上面代码改变状态了颜色，iOS9以后点进去看api发现如下说明</p> 
+  <pre><code>// Setting the statusBarStyle does nothing if your application is using the default UIViewController-based status bar system.
+@property(readwrite, nonatomic) UIStatusBarStyle statusBarStyle NS_DEPRECATED_IOS(2_0, 9_0, "Use -[UIViewController preferredStatusBarStyle]");
+- (void)setStatusBarStyle:(UIStatusBarStyle)statusBarStyle animated:(BOOL)animated NS_DEPRECATED_IOS(2_0, 9_0, "Use -[UIViewController preferredStatusBarStyle]");</code></pre> 
+  <p>解决办法：<br clear="none"/>修改方式将View controller-based status bar appearance设置为YES，然后使用新的方式来实现状态栏的样式。</p> 
+  <pre><code>- (UIStatusBarStyle)preferredStatusBarStyle;
+- (UIViewController *)childViewControllerForStatusBarStyle;
+- (void)setNeedsStatusBarAppearanceUpdate</code></pre> 
+  <p>2015.09.21更新<br clear="none"/><strong>5 directory not found for option问题</strong></p> 
+  <p>警告如下：</p> 
+  <blockquote> 
+   <p>ld: warning: directory not found for option ‘-F/Applications/Xcode 7.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator9.0.sdk/Developer/Library/Frameworks‘</p> 
+  </blockquote> 
+  <p>问题原因：Xcode7将framworks位置改变了。</p> 
+  <p>解决方法：<br clear="none"/>点击项目，选择 Targets-&gt;xxxTests<br clear="none"/>选择build setting ，找到 Frameworks Search Path 或者 Library Search Paths<br clear="none"/>删除$(SDKROOT)/Developer/Library/Frameworks，<br clear="none"/>或者使用$(PLATFORM_DIR)/Developer/Library/Frameworks替换</p> 
+  <div>
+   <div>
+    <img src="%E9%A1%B9%E7%9B%AE%E9%80%82%E9%85%8DiOS9%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95%EF%BC%88%E6%9B%B4%E6%96%B0%E4%B8%A4%E4%B8%AA%E5%B0%8F%E9%97%AE%E9%A2%98%EF%BC%89.resources/43223544-C32E-41B0-820F-907D26A2C1FE.png" height="326" width="800"/>
+   </div>
+   <div>
+    framworks位置改变
+   </div> 
+  </div> 
+  <p>暂时就这些，还有其他问题会继续更新<br clear="none"/>如果你们还有其他问题请参考：<a shape="rect" href="https://github.com/ChenYilong/iOS9AdaptationTips" target="_blank">https://github.com/ChenYilong/iOS9AdaptationTips</a></p> 
+ </div>
+</div></body></html>

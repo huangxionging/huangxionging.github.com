@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="author" content="Redman"/><meta name="created" content="2014-07-10 01:09:17 +0000"/><meta name="updated" content="2014-07-10 02:34:26 +0000"/><title>集合视图</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+UICollectionView，集合视图继承于UIScrollView滚动视图。
+<div><br/></div>
+<div>UICollectionViewCell 是集合视图的单元格类，它的布局是由UICollectionViewLayout类定义的，这个类是个抽象类，UICollectionViewFlowLayout是其子类，复杂的布局，可以自定义该子类。集合视图对应的控制器是UICollectionViewController</div>
+<div><br/></div>
+<div><br/></div>
+<div><font color="#15E672">////////////////////////////////////////////////////////////////////////////</font></div>
+<div><br/></div>
+<div>// 利用NSBundle来获取资源</div>
+<div>
+<div/>
+<div>NSBundle *bundle = [NSBundle mainBundle];</div>
+<div>NSString *plistPath = [bundle pathForResource: @"Olympic" ofType: @"plist"];</div>
+<div>// 获取全部数据</div>
+<div>self.events = [[NSArray alloc] initWithContentsOfFile: plistPath];</div>
+</div>
+<div><br/></div>
+<div><br/></div>
+<div>// 数据源协议UICollectionViewDataSource</div>
+<div>这个协议共有4个方法：</div>
+<div><font color="#FF3854">1）</font>- (NSInteger) numberOfSectionsInCollectionView:(UICollectionView *)collectionView 提供某个节中的列数，表示一节中有几列。</div>
+<div><font color="#FF3854">2）</font>- (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section 表示整个视图共有几个节。</div>
+<div><font color="#FF3854">3）-</font> (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath 表示为一个单元格提供显示数据。</div>
+<div><font color="#FF3854">4）</font>- - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath 表示为补充视图提供显示数据</div>
+<div><br/></div>
+<div>
+<div><font color="#2B41FD">#pragma mark-- 实现UICollectionViewDataSource 一共有四个</font></div>
+<div><br/></div>
+<div>// 提供某个节中的列数目</div>
+<div>- (NSInteger) numberOfSectionsInCollectionView:(UICollectionView *)collectionView</div>
+<div>{</div>
+<div>    return [self.events count] / 2;</div>
+<div>}</div>
+<div><br/></div>
+<div>// 提供视图中节的个数</div>
+<div>- (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section</div>
+<div>{</div>
+<div>    return 2;</div>
+<div>}</div>
+<div><br/></div>
+<div>// 为某个单元提供显示数据</div>
+<div>- (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath</div>
+<div>{</div>
+<div>    NLCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier: @"NLCell" forIndexPath: indexPath];</div>
+<div/>
+<div>    NSDictionary *event = [self.events objectAtIndex: (indexPath.section * 2 + indexPath.row)];</div>
+<div/>
+<div>    cell.label.text = [event objectForKey: @"name"];</div>
+<div>    cell.imageView.image = [UIImage imageNamed: [event objectForKey: @"image"]];</div>
+<div/>
+<div>    return cell;</div>
+<div>}</div>
+<div><br/></div>
+<div><br/></div>
+<div>// 委托代理协议</div>
+<div>#pragma mark 实现delegate协议</div>
+<div>// 这个方法在选择单元格后会触发</div>
+<div>- (void) collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath</div>
+<div>{</div>
+<div>    NSDictionary *event = [self.events objectAtIndex: (indexPath.section * 2 + indexPath.row)];</div>
+<div/>
+<div>    NSLog(@"select event name : %@", [event objectForKey: @"name" ]);</div>
+<div>}</div>
+<div><br/></div>
+<div>@end</div>
+</div>
+</body></html>

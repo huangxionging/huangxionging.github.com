@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="created" content="2015-11-30 09:42:15 +0000"/><meta name="source" content="Clearly"/><meta name="source-url" content="http://blog.csdn.net/lwjok2007/article/details/47058795"/><meta name="updated" content="2015-11-30 09:42:15 +0000"/><title>iOS js oc相互调用（JavaScriptCore）（二） - - 博客频道 - CSDN.NET</title></head><body><div>
+ <div>
+  <div>
+   <h1> <a shape="rect" href="http://blog.csdn.net/lwjok2007/article/details/47058795" target="_blank"> iOS js oc相互调用（JavaScriptCore）（二） </a> </h1>
+  </div> 
+  <div> 
+   <p>版权声明：本文为博主原创文章，未经博主允许不得转载。</p> 
+  </div> 
+  <p>上节地址 http://blog.csdn.net/lwjok2007/article/details/47058101</p> 
+  <p>接着上节我们讲到的iOS调用js</p> 
+  <p>下来我们使用js调用iOS</p> 
+  <p>js调用iOS分两种情况</p> 
+  <p>一，js里面直接调用方法</p> 
+  <p>二，js里面通过对象调用方法</p> 
+  <p>首先我们看第一种，直接调用方法。</p> 
+  <p>其中用到了iOS的block</p> 
+  <div>
+   <ol><li>)webViewDidFinishLoad:(UIWebView *)webView  </li><li>    //网页加载完成调用此方法</li><li>    //iOS调用js</li><li>    //首先创建JSContext 对象（此处通过当前webView的键获取到jscontext）</li><li>    JSContext *context=[webView valueForKeyPath@"documentView.webView.mainFrame.javaScriptContext"</li><li>    //js调用iOS</li><li>    //第一种情况</li><li>    //其中test1就是js的方法名称，赋给是一个block 里面是iOS代码</li><li>    //此方法最终将打印出所有接收到的参数，js参数是不固定的 我们测试一下就知道</li><li>    context[@"test1"] = ^() {  </li><li>        NSArray *args = [JSContext currentArguments</li><li>         obj in args) {  </li><li>            NSLog(@"%@",obj);  </li><li>    //此处我们没有写后台（但是前面我们已经知道iOS是可以调用js的，我们模拟一下）</li><li>    //首先准备一下js代码，来调用js的函数test1 然后执行</li><li>    //一个参数</li><li>    NSString *jsFunctStr=@"test1('参数1')"</li><li>    [context evaluateScript:jsFunctStr];  </li><li>    //二个参数</li><li>    NSString *jsFunctStr@"test1('参数a','参数b')"</li><li>    [context evaluateScript:jsFunctStr</li></ol>
+  </div>
+  <pre>-(void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    //网页加载完成调用此方法
+    
+    //iOS调用js
+    
+    //首先创建JSContext 对象（此处通过当前webView的键获取到jscontext）
+    JSContext *context=[webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
+  
+    //js调用iOS
+    //第一种情况
+    //其中test1就是js的方法名称，赋给是一个block 里面是iOS代码
+    //此方法最终将打印出所有接收到的参数，js参数是不固定的 我们测试一下就知道
+    context[@"test1"] = ^() {
+        NSArray *args = [JSContext currentArguments];
+        for (id obj in args) {
+            NSLog(@"%@",obj);
+        }
+    };
+    //此处我们没有写后台（但是前面我们已经知道iOS是可以调用js的，我们模拟一下）
+    //首先准备一下js代码，来调用js的函数test1 然后执行
+    //一个参数
+    NSString *jsFunctStr=@"test1('参数1')";
+    [context evaluateScript:jsFunctStr];
+    
+    //二个参数
+    NSString *jsFunctStr1=@"test1('参数a','参数b')";
+    [context evaluateScript:jsFunctStr1];
+    
+}</pre>
+  <br clear="none"/> 以上代码中 给test1赋值的block要是执行了那么结果就是对的，js调用了iOS 
+  <p>我们看结果</p> 
+  <blockquote> 
+   <p><img src="iOS%20js%20oc%E7%9B%B8%E4%BA%92%E8%B0%83%E7%94%A8%EF%BC%88JavaScriptCore%EF%BC%89%EF%BC%88%E4%BA%8C%EF%BC%89%20-%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/2697DD53-AF7B-4D5D-B178-5C23C8A641C0.png" height="43" width="201"/></p> 
+  </blockquote> 
+  <p>我们看到参数被打印出来了，而且一个参数和两个参数都可以，也符合js参数个数不限制</p> 
+  <p>下来我们看第二种情况 就是js 中是通过一个对象来调用方法的。</p> 
+  <p>此处稍微复杂一点我们需要使用到</p> 
+  <p> JSExport</p> 
+  <p>凡事添加了JSExport协议的协议，所规定的方法，变量等 就会对js开放，我们可以通过js调用到</p> 
+  <p>此处有点绕。我们直接看代码</p> 
+  <p>首先创建一个类 继承NSObject 并且规定一个协议</p> 
+  <div>
+   <ol><li>#import &lt;Foundation/Foundation.h&gt;</li><li>#import &lt;JavaScriptCore/JavaScriptCore.h&gt;</li><li>//首先创建一个实现了JSExport协议的协议</li><li>@protocol TestJSObjectProtocol &lt;JSExport&gt;  </li><li>//此处我们测试几种参数的情况</li><li>-()TestNOParameter;  </li><li>-()TestOneParameter:(NSString *)message;  </li><li>-()TestTowParameter:(NSString *)message SecondParameterNSString *)message</li><li>//让我们创建的类实现上边的协议</li><li>@interface TestJSObject : NSObject&lt;TestJSObjectProtocol&gt;  </li></ol>
+  </div>
+  <pre>#import &lt;Foundation/Foundation.h&gt;
+#import &lt;JavaScriptCore/JavaScriptCore.h&gt;
+
+//首先创建一个实现了JSExport协议的协议
+@protocol TestJSObjectProtocol &lt;JSExport&gt;
+
+//此处我们测试几种参数的情况
+-(void)TestNOParameter;
+-(void)TestOneParameter:(NSString *)message;
+-(void)TestTowParameter:(NSString *)message1 SecondParameter:(NSString *)message2;
+
+@end
+
+//让我们创建的类实现上边的协议
+@interface TestJSObject : NSObject&lt;TestJSObjectProtocol&gt;
+
+@end
+</pre>
+  <br clear="none"/> 类的实现 
+  <div>
+   <ol><li>#import "TestJSObject.h"</li><li>@implementation TestJSObject  </li><li>//一下方法都是只是打了个log 等会看log 以及参数能对上就说明js调用了此处的iOS 原生方法</li><li>-()TestNOParameter  </li><li>    NSLog(@"this is ios TestNOParameter"</li><li>-()TestOneParameter:(NSString *)message  </li><li>    NSLog(@"this is ios TestOneParameter=%@",message);  </li><li>-()TestTowParameter:(NSString *)message SecondParameterNSString *)message</li><li>   NSLog(@"this is ios TestTowParameter=%@  Second=%@",message,message</li></ol>
+  </div>
+  <pre>#import "TestJSObject.h"
+
+@implementation TestJSObject
+
+//一下方法都是只是打了个log 等会看log 以及参数能对上就说明js调用了此处的iOS 原生方法
+-(void)TestNOParameter
+{
+    NSLog(@"this is ios TestNOParameter");
+}
+-(void)TestOneParameter:(NSString *)message
+{
+    NSLog(@"this is ios TestOneParameter=%@",message);
+}
+-(void)TestTowParameter:(NSString *)message1 SecondParameter:(NSString *)message2
+{
+   NSLog(@"this is ios TestTowParameter=%@  Second=%@",message1,message2);
+}
+@end
+</pre>
+  <p>下面我们在weibview加载完成之后调用测试一下</p> 
+  <p>代码如下：</p> 
+  <div>
+   <ol><li>)webViewDidFinishLoad:(UIWebView *)webView  </li><li>    //网页加载完成调用此方法</li><li>    //首先创建JSContext 对象（此处通过当前webView的键获取到jscontext）</li><li>    JSContext *context=[webView valueForKeyPath@"documentView.webView.mainFrame.javaScriptContext"</li><li>    //第二种情况，js是通过对象调用的，我们假设js里面有一个对象 testobject 在调用方法</li><li>    //首先创建我们新建类的对象，将他赋值给js的对象</li><li>    TestJSObject *testJO=[TestJSObject</li><li>    context[@"testobject"]=testJO;  </li><li>    //同样我们也用刚才的方式模拟一下js调用方法</li><li>    NSString *jsStr@"testobject.TestNOParameter()"</li><li>    [context evaluateScript:jsStr</li><li>    NSString *jsStr@"testobject.TestOneParameter('参数1')"</li><li>    [context evaluateScript:jsStr</li><li>    NSString *jsStr@"testobject.TestTowParameterSecondParameter('参数A','参数B')"</li><li>    [context evaluateScript:jsStr</li></ol>
+  </div>
+  <pre>-(void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    //网页加载完成调用此方法
+    
+    //首先创建JSContext 对象（此处通过当前webView的键获取到jscontext）
+    JSContext *context=[webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
+    
+    //第二种情况，js是通过对象调用的，我们假设js里面有一个对象 testobject 在调用方法
+    //首先创建我们新建类的对象，将他赋值给js的对象
+    
+    TestJSObject *testJO=[TestJSObject new];
+    context[@"testobject"]=testJO;
+    
+    //同样我们也用刚才的方式模拟一下js调用方法
+    NSString *jsStr1=@"testobject.TestNOParameter()";
+    [context evaluateScript:jsStr1];
+    NSString *jsStr2=@"testobject.TestOneParameter('参数1')";
+    [context evaluateScript:jsStr2];
+    NSString *jsStr3=@"testobject.TestTowParameterSecondParameter('参数A','参数B')";
+    [context evaluateScript:jsStr3];
+    
+}</pre>
+  <p>结果如下图</p> 
+  <blockquote> 
+   <p><img src="iOS%20js%20oc%E7%9B%B8%E4%BA%92%E8%B0%83%E7%94%A8%EF%BC%88JavaScriptCore%EF%BC%89%EF%BC%88%E4%BA%8C%EF%BC%89%20-%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/AEFE160D-6906-41C0-9BC8-FA074E07CDBE.png" height="49" width="485"/></p> 
+  </blockquote> 
+  <p>好了 我们看到了结果 三个方法都调用了 </p> 
+  <p>ok两种方式都完成了</p> 
+  <p>源代码我们上传到群空间[TestJSOC.zip]有需要的去下载</p> 
+  <p>苹果开发群 ：414319235  欢迎加入  欢迎讨论问题</p> 
+ </div>
+</div></body></html>

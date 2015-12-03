@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="22.4266414642334"/><meta name="author" content="Redman"/><meta name="created" content="2015-05-08 10:19:34 +0000"/><meta name="latitude" content="22.54692739236481"/><meta name="longitude" content="113.9365671739581"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2015-05-12 02:14:18 +0000"/><title>MVC 中的 Model</title></head><body>
+<div>model 有很多属性, 如果与 json 数据相对应, 则应该提供 +(instancetype) modelWithDictionary: (NSDictionary *)dict 方法以及从把 Model 转换成字典, 用于永久存储. </div>
+<div>类方法增强了封装性, 使得多个地方使用该 Model 时能够节省大量代码, 也便于维护代码, 当 Model 内容发生改变时, 无需修改所有使用该 Model 的代码. 特别是对于分模块写的开发人员. 改动会非常麻烦. 然后拿 tableView 举例如果 tableView 上需要不同的 Cell, 那么我们可以考虑在 Cell 的 Model 上增加一些与 json 数据无关的属性, 如控制 Cell 类型的枚举, Cell 的高度字段, 加上这些, 也能够使得开发人员非常方便的处理 tableView 的数据源和代理.</div>
+<div><br/></div>
+<div>如果使用使用 基于 sqlite 的 FMDB 等等第三方库, 建议使用  <span style="font: 14.0px Menlo; font-variant-ligatures: no-common-ligatures">NSKeyedArchiver 将 Model 打包成 NSData 类型, 这样可以非常方便的存取数据, 使得二进制数据加上主键非常方便存储和解析数据. 不过需要打包和解包得过程, 性能上要差一点. 但是二进制是加密数据, 不容易被解密.如果再使用 RSA2048位加密, 简直屌炸天.</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">使用 CoreData 来存储数据, 则需要将 Model 跟实际需要结合起来, 配置实体. 方便存储和显示数据</span></div>
+</body></html>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="18.80941390991211"/><meta name="author" content="Redman"/><meta name="created" content="2014-07-02 06:20:20 +0000"/><meta name="latitude" content="22.53758279215871"/><meta name="longitude" content="113.9401584096449"/><meta name="updated" content="2014-07-02 11:56:16 +0000"/><title>scrollView控件</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+     当屏幕上内容较多，一个页面不足以放下所有元素时，需要使用滚动条视图控件，使得应用程序可以滚动页面将所有的元素显示出来.
+<div>将控件放到view上之后，要在viewController的viewDidLoad方法中设定其contentSize 属性,contentSize 表示scrollView的内容视(Content View)图的大小.返回的是CGSize结构体类型，该结构体含有width和height两个成员。而scrollView滚动视图的大小是frame。正是因为滚动视图的大小比内容视图的大小小，才有滚动屏幕的必要，否则滚动视图就能够在一屏中显示所有的内容了。</div>
+<div><br/></div>
+<div>     contentOffSet是scrollview当前显示区域顶点相对于frame顶点的偏移量。意思是当前处于frame顶点处位置在内容视图中的位置。譬如说当前处于frame顶点位置的点为(0, 0),但其在内容视图的中的位置是(0, 480),那么偏移量就是480.换句话说就是内容视图向下滚动了480个点。</div>
+<div><br/></div>
+<div>     contentInset 用于在scrollView中内容视图周围添加边框，留出空白来放置工具栏、标签栏、导航栏等。</div>
+<div><br/></div>
+<div><img src="scrollView%E6%8E%A7%E4%BB%B6.resources/4ACD49A8-DCC0-490A-9617-21C1F8467BBE.jpg" height="427" width="421"/></div>
+<div><br/></div>
+<div>在输入控件中，显示键盘会遮挡一些控件，那么如何是界面中的众多控件与键盘很好的协同呢，给用户很好的体验呢？这里的关键是要摆放好ScrollView控件的位置；</div>
+<div>// 首先注册键盘通知</div>
+<div><br/></div>
+<div>
+<div>- (void) viewWillAppear:(BOOL)animated</div>
+<div>{</div>
+<div>    // 注册键盘出现通知</div>
+<div>    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(keyboardDidShow:) name: UIKeyboardDidShowNotification object: nil];</div>
+<div/>
+<div>    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object: nil];</div>
+<div/>
+<div>    [super viewWillAppear:animated];</div>
+<div/>
+<div/>
+<div>}</div>
+<div><br/></div>
+<div>// 利用键盘通知来调用方法处理键盘和控件</div>
+<div>- (void) keyboardDidShow: (NSNotification *)notif</div>
+<div>{</div>
+<div>    // 如果键盘已经出现，要忽略通知</div>
+<div>    if (keyboardVisible)</div>
+<div>    {</div>
+<div>        return;</div>
+<div>    }</div>
+<div/>
+<div>    // 获得键盘尺寸</div>
+<div>    NSDictionary *info = [notif userInfo];</div>
+<div>    NSValue *aValue = [info objectForKey: UIKeyboardFrameEndUserInfoKey];</div>
+<div>    CGSize keyboardSize = [aValue CGRectValue].size;</div>
+<div/>
+<div>    // 重定义scrollView尺寸</div>
+<div>    CGRect viewFrame = self.scrollView.frame;</div>
+<div>    viewFrame.size.height -= keyboardSize.height ;</div>
+<div>    viewFrame.size.height -= 50;</div>
+<div>    self.scrollView.frame = viewFrame;</div>
+<div/>
+<div>    // 滚动文本框</div>
+<div>    CGRect textFieldRect = self.textField.frame;</div>
+<div>    [self.scrollView scrollRectToVisible: textFieldRect animated: YES];</div>
+<div>    keyboardVisible = YES;</div>
+<div>}</div>
+<div><br/></div>
+<div>- (void) keyboardDidHide: (NSNotification *)notif</div>
+<div>{</div>
+<div>    // 获得键盘尺寸</div>
+<div>    NSDictionary *info = [notif userInfo];</div>
+<div>    NSValue *aValue = [info objectForKey: UIKeyboardFrameEndUserInfoKey];</div>
+<div>    CGSize keyboardSize = [aValue CGRectValue].size;</div>
+<div/>
+<div>    // 重定义scrollView尺寸</div>
+<div>    CGRect viewFrame = self.scrollView.frame;</div>
+<div>    viewFrame.size.height += keyboardSize.height;</div>
+<div>    viewFrame.size.height += 50;</div>
+<div>    self.scrollView.frame = viewFrame;</div>
+<div/>
+<div>    if (!keyboardVisible)</div>
+<div>    {</div>
+<div>        return;</div>
+<div>    }</div>
+<div/>
+<div>    keyboardVisible = NO;</div>
+<div>}</div>
+</div>
+</body></html>

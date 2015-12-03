@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="22.65022087097168"/><meta name="author" content="Redman"/><meta name="created" content="2015-08-13 10:32:10 +0000"/><meta name="latitude" content="22.54704980051434"/><meta name="longitude" content="113.9367760590951"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2015-08-26 10:22:20 +0000"/><title>修改默认的 readonly 属性</title></head><body>
+<div>假设一个类有个属性 @property(nomatic, strong, readonly) NSString *title; 如果需要覆盖 title , 可以考虑 </div>
+<div><br/></div>
+<div>- (NSString *)title {</div>
+<div>     return 另外一个 NSString 对象, 该对象可以变化. 这样是可以的.</div>
+<div>}</div>
+</body></html>

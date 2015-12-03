@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="created" content="2015-11-30 06:11:21 +0000"/><meta name="source" content="Clearly"/><meta name="source-url" content="http://www.brighttj.com/ios/ios-wkwebview-new-features-and-use.html"/><meta name="updated" content="2015-11-30 06:11:21 +0000"/><title>WKWebView的新特性与使用 | // TODO:</title></head><body><div>
+ <div>
+  <div>
+   <h1>【iOS】WKWebView的新特性与使用</h1>
+  </div> 
+  <p>在WWDC2014中，苹果推出了最新的iOS8系统，其中也伴随着很多控件的更新与升级。其中全新的WebKit库让人很是兴奋。本文也将讲解到WebKit中更新的WKWebView控件的新特性与使用方法，它很好的解决了UIWebView存在的内存、加载速度等诸多问题。</p> 
+  <p>环境信息：</p> 
+  <p>Mac OS X 10.10.1</p> 
+  <p>Xcode 6.1.1</p> 
+  <p>iOS 8.1</p> 
+  <h3>一、WKWebView新特性</h3> 
+  <ul><li>在性能、稳定性、功能方面有很大提升（最直观的体现就是加载网页是占用的内存，模拟器加载百度与开源中国网站时，WKWebView占用23M，而UIWebView占用85M）；</li><li>JavaScript的Nitro库加载并使用（UIWebView中限制）；</li><li>支持了更多的HTML5特性；</li><li>高达60fps的滚动刷新率以及内置手势；</li><li>将UIWebViewDelegate与UIWebView重构成了14类与3个协议（<a shape="rect" href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/WebKit/ObjC_classic/index.html" title="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/WebKit/ObjC_classic/index.html" target="_blank">查看苹果官方文档</a>）；</li></ul> 
+  <h3>二、初始化</h3> 
+  <h4>1. 首先需要引入WebKit库</h4> 
+  <pre><code>
+#import &lt;WebKit/WebKit.h&gt;
+
+</code></pre> 
+  <h4>2. 初始化方法分为以下两种</h4> 
+  <pre><code>
+// 默认初始化
+- (instancetype)initWithFrame:(CGRect)frame;
+
+// 根据对webview的相关配置，进行初始化
+- (instancetype)initWithFrame:(CGRect)frame configuration:(WKWebViewConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
+
+</code></pre> 
+  <h4>3. 加载网页与HTML代码的方式与UIWebView相同，代码如下：</h4> 
+  <pre><code>
+WKWebView *webView = [[WKWebView alloc] initWithFrame:.view.bounds];
+[webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.baidu.com"]]];
+[.view addSubview:webView];
+
+</code></pre> 
+  <h3>三、 WKWebView的代理方法</h3> 
+  <h4>1. WKNavigationDelegate</h4> 
+  <p>该代理提供的方法，可以用来追踪加载过程（页面开始加载、加载完成、加载失败）、决定是否执行跳转。</p> 
+  <pre><code>
+// 页面开始加载时调用
+- ()webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation;
+// 当内容开始返回时调用
+- ()webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation;
+// 页面加载完成之后调用
+- ()webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation;
+// 页面加载失败时调用
+- ()webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation;
+
+</code></pre> 
+  <p>页面跳转的代理方法有三种，分为（收到跳转与决定是否跳转两种）</p> 
+  <pre><code>
+// 接收到服务器跳转请求之后调用
+- ()webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation;
+// 在收到响应后，决定是否跳转
+- ()webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:( (^)(WKNavigationResponsePolicy))decisionHandler;
+// 在发送请求之前，决定是否跳转
+- ()webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:( (^)(WKNavigationActionPolicy))decisionHandler;
+
+</code></pre> 
+  <h4>2. WKUIDelegate</h4> 
+  <pre><code>
+// 创建一个新的WebView
+- (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures;
+
+</code></pre> 
+  <p>剩下三个代理方法全都是与界面弹出提示框相关的，针对于web界面的三种提示框（警告框、确认框、输入框）分别对应三种代理方法。下面只举了警告框的例子。</p> 
+  <pre><code>
+/**
+ *  web界面中有弹出警告框时调用
+ *
+ *  @param webView           实现该代理的webview
+ *  @param message           警告框中的内容
+ *  @param frame             主窗口
+ *  @param completionHandler 警告框消失调用
+ */
+- ()webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:( (^)())completionHandler;
+
+</code></pre> 
+  <h4>3. WKScriptMessageHandler</h4> 
+  <p>这个协议中包含一个必须实现的方法，这个方法是提高App与web端交互的关键，它可以直接将接收到的JS脚本转为OC或Swift对象。（当然，在UIWebView也可以通过“曲线救国”的方式与web进行交互，著名的Cordova框架就是这种机制）</p> 
+  <pre><code>
+// 从web界面中接收到一个脚本时调用
+- ()userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message;
+
+</code></pre> 
+  <h3>四、WKWebView加载JS</h3> 
+  <pre><code>
+// 图片缩放的js代码
+NSString *js = @"var count = document.images.length;for (var i = 0; i &lt; count; i++) {var image = document.images[i];image.style.width=320;};window.alert('找到' + count + '张图');";
+// 根据JS字符串初始化WKUserScript对象
+WKUserScript *script = [[WKUserScript alloc] initWithSource:js injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:];
+// 根据生成的WKUserScript对象，初始化WKWebViewConfiguration
+WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
+[config.userContentController addUserScript:script];
+_webView = [[WKWebView alloc] initWithFrame:.view.bounds configuration:config];
+[_webView loadHTMLString:@"&lt;head&gt;&lt;/head&gt;&lt;img src='http://www.nsu.edu.cn/v/2014v3/img/background/3.jpg' /&gt;"baseURL:];
+[.view addSubview:_webView];
+
+</code></pre> 
+  <h3>五、本文Demo下载</h3> 
+  <blockquote>
+   <p><a shape="rect" href="https://github.com/saitjr/WKWebViewSimpleDemo.git" title="https://github.com/saitjr/WKWebViewSimpleDemo.git" target="_blank"> https://github.com/saitjr/WKWebViewSimpleDemo.git</a></p>
+  </blockquote> 
+  <h3>六、关于JS的加载或WebView的其他使用技巧，可查看一下文章：</h3> 
+  <blockquote>
+   <p><a shape="rect" href="http://www.brighttj.com/ios/ios-user-safari-debug-webview.html" title="使用Safari对WebView进行调试" target="_blank">使用Safari对WebView进行调试</a></p> 
+   <p><a shape="rect" href="http://www.brighttj.com/ios/ios-webview-load-html-image-adaptive.html" title="WebView加载HTML图片大小自适应与文章自动换行" target="_blank">WebView加载HTML图片大小自适应与文章自动换行</a></p>
+  </blockquote> 
+  <p>参考资料：</p> 
+  <blockquote>
+   <p><a shape="rect" href="http://nshipster.cn/wkwebkit/" title="http://nshipster.cn/wkwebkit/" target="_blank">http://nshipster.cn/wkwebkit/</a></p> 
+   <p><a shape="rect" href="http://www.cocoachina.com/webapp/20141121/10277.html" title="http://www.cocoachina.com/webapp/20141121/10277.html" target="_blank">http://www.cocoachina.com/webapp/20141121/10277.html</a></p> 
+   <p><a shape="rect" href="http://blog.csdn.net/cyforce/article/details/37657009" title="http://blog.csdn.net/cyforce/article/details/37657009" target="_blank">http://blog.csdn.net/cyforce/article/details/37657009</a></p>
+  </blockquote> 
+ </div>
+</div></body></html>

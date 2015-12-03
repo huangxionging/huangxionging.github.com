@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="author" content="Redman"/><meta name="created" content="2014-07-18 01:07:47 +0000"/><meta name="updated" content="2014-07-18 01:13:27 +0000"/><title>分屏导航</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+使用UIPageControl
+<div><br/></div>
+<div>
+<div>   self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width * 3, self.scrollView.frame.size.height);</div>
+<div/>
+<div>    self.scrollView.frame = self.view.frame;</div>
+<div/>
+<div>    UIStoryboard *board = [UIStoryboard storyboardWithName: @"Main" bundle: nil];</div>
+<div/>
+<div>    UIViewController *page1Controller = [board instantiateViewControllerWithIdentifier: @"page1"];</div>
+<div/>
+<div>    self.page1 = page1Controller.view;</div>
+<div>    self.page1.frame = CGRectMake(0.0f, 0.0f, 320.0f, 420.0f);</div>
+<div/>
+<div>    UIViewController *page2Controller = [board instantiateViewControllerWithIdentifier: @"page2"];</div>
+<div/>
+<div>    self.page2 = page2Controller.view;</div>
+<div>    self.page2.frame = CGRectMake(320.0f, 0.0f, 320.0f, 420.0f);</div>
+<div/>
+<div/>
+<div>    UIViewController *page3Controller = [board instantiateViewControllerWithIdentifier: @"page3"];</div>
+<div/>
+<div>    self.page3 = page3Controller.view;</div>
+<div>    self.page3.frame = CGRectMake(2 * 320.0f, 0.0f, 320.0f, 420.0f);</div>
+<div/>
+<div>    self.scrollView.delegate = self;</div>
+<div/>
+<div>   [self.scrollView addSubview: self.page1];</div>
+<div>    [self.scrollView addSubview: self.page2];</div>
+<div>    [self.scrollView addSubview: self.page3];</div>
+<div><br/></div>
+<div><br/></div>
+<div>
+<div>- (IBAction)changePage:(id)sender</div>
+<div>{</div>
+<div>    [UIView animateWithDuration: 0.5f animations:</div>
+<div>     ^{</div>
+<div>         NSInteger whichPage = self.pageControl.currentPage;</div>
+<div>         self.scrollView.contentOffset = CGPointMake(320.0f * whichPage, 0.0f);</div>
+<div>     }];</div>
+<div>}</div>
+<div><br/></div>
+<div>- (void) scrollViewDidScroll:(UIScrollView *)scrollView</div>
+<div>{</div>
+<div>    CGPoint  offSet = scrollView.contentOffset;</div>
+<div/>
+<div>    self.pageControl.currentPage = offSet.x / 320.0f;</div>
+<div>}</div>
+</div>
+</div>
+</body></html>

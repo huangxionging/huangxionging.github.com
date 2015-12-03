@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="21.96884727478027"/><meta name="author" content="Redman"/><meta name="created" content="2015-04-15 09:36:21 +0000"/><meta name="latitude" content="22.546988183999"/><meta name="longitude" content="113.936559683563"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2015-04-15 09:39:06 +0000"/><meta name="application-data:corenote-localUUID" content="F15FA93D-ECFE-4D5B-9861-B832A4FFE4C7"/><meta name="application-data:corenote-hostUUID" content="6E90AC44-32ED-430B-B8DD-4A5112184527"/><title>如何分析一个开源 App 代码的执行过程</title></head><body>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#define HXAssert(state) NSAssert(state, @</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">"APP Crash!"</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">);</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(4, 51, 255);"><br/></span></span></div>
+<div><span style="color: rgb(4, 51, 255);"><span style="font-family: Menlo;">在以上每个方法里面调用. state = 0, 应用必崩, state = 1,应用才会通过. 这样可以用来分析代码的执行过程</span></span></div>
+</body></html>

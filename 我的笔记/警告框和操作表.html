@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="author" content="Redman"/><meta name="created" content="2014-07-03 11:39:16 +0000"/><meta name="updated" content="2014-07-03 12:09:32 +0000"/><title>警告框和操作表</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+警告框是由UIAlertView创建的，用于给用户警告或者提示，最多有两个按钮，超过两个就应该使用操作表。由于在iOS中，警告框是模态的，意思是不关闭它就不能做别的事情，一般情况下，警告框使用的场景有如下几个。
+<div>1）应用不能继续运行，例如，无法获得网络数据功能不能完成的时候，给用户一个警告，这种警告框只需要一个按钮。</div>
+<div>2）询问另外的解决方案。好多应用在不能继续运行时，会给出另外的解决方案，让用户去选择。例如网络无法连接时，询问是否可以使用3G网络</div>
+<div>3）询问对操作的授权。当应用访问用户的一些隐私信息时，需要用户授权。</div>
+<div><br/></div>
+<div>如果想给用户多种选择，比如想把应用发给Facebook或者新浪微博或者微信等平台，就应该使用操作表。</div>
+<div><br/></div>
+<div>
+<div>- (IBAction)testAlertView:(id)sender</div>
+<div>{</div>
+<div>    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Alert" message: @"Alert text goes here" delegate: self cancelButtonTitle:@"No" otherButtonTitles: @"Yes", nil];</div>
+<div/>
+<div>    [alertView show];</div>
+<div>}</div>
+<div><br/></div>
+<div>#pragma mark-- 实现UIAlertViewDelegate</div>
+<div>- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex</div>
+<div>{</div>
+<div>    if (buttonIndex == 0)</div>
+<div>    {</div>
+<div>        [self testAlertView: self];</div>
+<div>    }</div>
+<div>    NSLog(@"buttonIndex = %d", buttonIndex);</div>
+<div>}</div>
+<div><br/></div>
+<div>- (IBAction)testActionSheet:(id)sender</div>
+<div>{</div>
+<div>    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"分享给：" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle: nil otherButtonTitles:@"Facebook", @"新浪微博", @"微信", nil];</div>
+<div/>
+<div>    actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;</div>
+<div>    [actionSheet showInView: self.view];</div>
+<div>}</div>
+<div><br/></div>
+<div>#pragma mark-- 实现UIActionSheetDelegate</div>
+<div>- (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex</div>
+<div>{</div>
+<div>    if (buttonIndex == 1)</div>
+<div>    {</div>
+<div>        [self testActionSheet: self];</div>
+<div>    }</div>
+<div>}</div>
+</div>
+</body></html>

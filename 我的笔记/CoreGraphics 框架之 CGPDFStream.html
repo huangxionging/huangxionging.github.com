@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="22.03327560424805"/><meta name="author" content="Redman"/><meta name="created" content="2015-07-11 06:56:47 +0000"/><meta name="latitude" content="22.54691234139301"/><meta name="longitude" content="113.9366186868214"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2015-07-11 06:57:02 +0000"/><meta name="application-data:corenote-localUUID" content="3DBD9E10-F41E-4452-8B72-1B9CDDF8F8E5"/><meta name="application-data:corenote-hostUUID" content="6E90AC44-32ED-430B-B8DD-4A5112184527"/><title>CoreGraphics 框架之 CGPDFStream</title></head><body>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* CoreGraphics - CGPDFStream.h<br/>
+ * Copyright (c) 2002-2008 Apple Inc.<br/>
+ * All rights reserved. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#ifndef CGPDFSTREAM_H_<br/>
+#define CGPDFSTREAM_H_<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">typedef</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">struct</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFStream *CGPDFStreamRef;<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">enum</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFDataFormat {<br/>
+    CGPDFDataFormatRaw, CGPDFDataFormatJPEGEncoded, CGPDFDataFormatJPEG2000<br/>
+};<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">typedef</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">enum</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFDataFormat CGPDFDataFormat;<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGPDFDictionary.h&gt;</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/>
+#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGPDFStream.h&gt;</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/>
+#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreFoundation/CFData.h&gt;</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Return the dictionary of `stream'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGPDFDictionaryRef CGPDFStreamGetDictionary(CGPDFStreamRef stream)<br/>
+    CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Return the data of `stream'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CFDataRef CGPDFStreamCopyData(CGPDFStreamRef stream,<br/>
+    CGPDFDataFormat *format)<br/>
+    CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0);<br/>
+<br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#endif</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* CGPDFSTREAM_H_ */</span></div>
+</body></html>

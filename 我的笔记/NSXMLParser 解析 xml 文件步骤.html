@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="author" content="Redman"/><meta name="created" content="2014-08-09 06:28:18 +0000"/><meta name="updated" content="2014-08-09 13:06:24 +0000"/><title>NSXMLParser 解析 xml 文件步骤</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+<br/>
+<div>1、第一步：- (void)parserDidStartDocument:(NSXMLParser *)parser;</div>
+<div>这个是开始解析标志。在这个代理方法里面应当初始化存储数据的数组；</div>
+<div><br/></div>
+<div><br/></div>
+<div>2、第二步：- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict;</div>
+<div>发现标签。这里应当首先读取element，如果element是一个子元素的开始的标签，应当创建一个字典，以存储子元素的各个项目，并将字典添加到可变数组中。</div>
+<div><br/></div>
+<div>3、第三步：// 发现字符集</div>
+<div>- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string;</div>
+<div>在这一步对数据进行处理，将他们读取到字典中，过滤掉不必要的空格。</div>
+<div><br/></div>
+<div>4、第四步：// 结束标签</div>
+<div>- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName;</div>
+<div>在这一步进行一些清理工作，以至于不影响下一次解析。</div>
+<div><br/></div>
+<div>5、第五步：结束处理，通知表视图更新数据</div>
+</body></html>

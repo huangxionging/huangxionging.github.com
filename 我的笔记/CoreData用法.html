@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="author" content="Redman"/><meta name="created" content="2014-09-25 03:42:21 +0000"/><meta name="updated" content="2014-09-25 07:38:54 +0000"/><title>CoreData用法</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+若项目开始创建时勾选了CoreData选项，则默认在AppDelegate里面生成三个属性分别是NSManagedObjectContext对象和NSManagedObjectModel对象和NSPersistentStoreCoordinator对象，属性市只读的
+<div><br/></div>
+<div>
+<div>// 被管理对象设备环境</div>
+<div>@property (readonly, nonatomic, strong) NSManagedObjectContext *managedObjectContext;</div>
+<div><br/></div>
+<div>// 被管理对象模型</div>
+<div>@property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;</div>
+<div><br/></div>
+<div>// 持久保存</div>
+<div>@property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;</div>
+</div>
+<div><br/></div>
+<div>然后声明两个方法</div>
+<div><br/></div>
+<div>
+<div>// 保存设备环境</div>
+<div>- (void)saveContext;</div>
+<div><br/></div>
+<div>// 获取应用文件目录，指在沙盒中的目录</div>
+<div>- (NSURL *)applicationDocumentsDirectory;</div>
+<div><br/></div>
+<div><br/></div>
+<div>另外需要合成getter方法</div>
+<div>
+<div>@synthesize managedObjectContext =  _managedObjectContext;</div>
+<div>@synthesize managedObjectModel = _managedObjectModel;</div>
+<div>@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;</div>
+<div><br/></div>
+<div><br/></div>
+<div>重写get方法</div>
+<div>
+<div><font color="#008F00">#pragma mark---重写Get方法</font></div>
+<div><font color="#2B41FD">- (NSManagedObjectContext *)managedObjectContext</font></div>
+<div><font color="#2B41FD">{</font></div>
+<div><font color="#2B41FD">    // 如果设备环境已存在</font></div>
+<div><font color="#2B41FD">    if (_managedObjectContext)</font></div>
+<div><font color="#2B41FD">    {</font></div>
+<div><font color="#2B41FD">        return _managedObjectContext;</font></div>
+<div><font color="#2B41FD">    }</font></div>
+<div/>
+<div><font color="#2B41FD">    NSPersistentStoreCoordinator *coordinator = self.persistentStoreCoordinator;</font></div>
+<div/>
+<div><font color="#2B41FD">    if (coordinator != nil)</font></div>
+<div><font color="#2B41FD">    {</font></div>
+<div><font color="#2B41FD">        // 初始化</font></div>
+<div><font color="#2B41FD">        _managedObjectContext = [[NSManagedObjectContext alloc] init];</font></div>
+<div><font color="#2B41FD">        // 设置数据持久化存储助理</font></div>
+<div><font color="#2B41FD">        [_managedObjectContext setPersistentStoreCoordinator: coordinator];</font></div>
+<div><font color="#2B41FD">    }</font></div>
+<div/>
+<div><font color="#2B41FD">    return _managedObjectContext;</font></div>
+<div><font color="#2B41FD">}</font></div>
+<div><br/></div>
+<div><font color="#FF3854">// 与模型相关</font></div>
+<div><font color="#FF3854">- (NSManagedObjectModel *)managedObjectModel</font></div>
+<div><font color="#FF3854">{</font></div>
+<div><font color="#FF3854">    // 如果不为空则直接返回</font></div>
+<div><font color="#FF3854">    if (_managedObjectModel)</font></div>
+<div><font color="#FF3854">    {</font></div>
+<div><font color="#FF3854">        return _managedObjectModel;</font></div>
+<div><font color="#FF3854">    }</font></div>
+<div/>
+<div><font color="#FF3854">    // 否则通过路径得到URL，名字和新建的xcdatamodel一样，扩展则写momd，因为文件编译后变成*.momd文件</font></div>
+<div><font color="#FF3854">    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"User" withExtension:@"momd"];</font></div>
+<div><font color="#FF3854">    _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];</font></div>
+<div><font color="#FF3854">    return _managedObjectModel;</font></div>
+<div><font color="#FF3854">}</font></div>
+<div><br/></div>
+<div><font color="#2B41FD">// 与数据库存储相关</font></div>
+<div><font color="#2B41FD">- (NSPersistentStoreCoordinator *)persistentStoreCoordinator</font></div>
+<div><font color="#2B41FD">{</font></div>
+<div><font color="#2B41FD">    if (_persistentStoreCoordinator)</font></div>
+<div><font color="#2B41FD">    {</font></div>
+<div><font color="#2B41FD">        return _persistentStoreCoordinator;</font></div>
+<div><font color="#2B41FD">    }</font></div>
+<div><font color="#2B41FD">    // 得到数据库的地址</font></div>
+<div/>
+<div><font color="#2B41FD">    NSURL *url = [self.applicationDocumentsDirectory URLByAppendingPathComponent: @"User.sqlite"];</font></div>
+<div/>
+<div><font color="#2B41FD">    NSError *error = nil;</font></div>
+<div><font color="#2B41FD">    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];</font></div>
+<div><font color="#2B41FD">    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration: nil URL: url options: nil error: &amp;error])</font></div>
+<div><font color="#2B41FD">    {</font></div>
+<div><font color="#2B41FD">        NSLog(@"%@", error);</font></div>
+<div><font color="#2B41FD">        abort();</font></div>
+<div><font color="#2B41FD">    }</font></div>
+<div/>
+<div><font color="#2B41FD">    return _persistentStoreCoordinator;</font></div>
+<div/>
+<div><font color="#2B41FD">}</font></div>
+<div><font color="#2B41FD"><br/></font></div>
+<div><font color="#2B41FD">save方法和获取沙箱中Document文件夹路径方法</font></div>
+<div>
+<div>#pragma mark - Application's Documents directory</div>
+<div><br/></div>
+<div>// Returns the URL to the application's Documents directory.</div>
+<div>- (NSURL *)applicationDocumentsDirectory</div>
+<div>{</div>
+<div>    return [[[NSFileManager defaultManager] URLsForDirectory: NSDocumentDirectory inDomains: NSUserDomainMask] lastObject];</div>
+<div>}</div>
+<div><br/></div>
+<div>
+<div>#pragma mark - saveContext</div>
+</div>
+<div>
+<div>- (void) saveContext</div>
+<div>{</div>
+<div>    NSError *error = nil;</div>
+<div>    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;</div>
+<div/>
+<div>    if (managedObjectContext != nil)</div>
+<div>    {</div>
+<div>        if ([managedObjectContext hasChanges] &amp;&amp; ![managedObjectContext save: &amp;error])</div>
+<div>        {</div>
+<div>            NSLog(@"%@ ==== %@", error, [error userInfo]);</div>
+<div>            abort();</div>
+<div>        }</div>
+<div>    }</div>
+<div>}</div>
+<div><br/></div>
+<div>在DataModel中创建Entity为Entity修改名字，创建属性并创建依赖关系</div>
+<div>并利用NSManagedObject类创建相应模型的实体类，利用前面Entity的的属性</div>
+<div><br/></div>
+<div>利用KVC中的 setValue: forKey:, valueForKey: 两个方法来写读取模型。</div>
+<div><br/></div>
+<div>在ViewController里面</div>
+<div>
+<div>- (void) insertUserModel: (UserModel *)userModel</div>
+<div>{</div>
+<div>    [_appDelegate saveContext];</div>
+<div>}</div>
+<div><br/></div>
+<div>- (IBAction)save:(UIButton *)sender</div>
+<div>{</div>
+<div>    UserModel *user = [NSEntityDescription insertNewObjectForEntityForName: @"UserModel" inManagedObjectContext: _appDelegate.managedObjectContext];</div>
+<div/>
+<div>    [user setValue: _name.text  forKey: @"name"];</div>
+<div>    [user setValue: [NSNumber  numberWithInteger: [_age.text integerValue]]  forKey: @"age"];</div>
+<div>    [user setValue: _nation.text  forKey: @"nation"];</div>
+<div>    [user setValue: _sex.text  forKey: @"sex"];</div>
+<div>    [user setValue: _tribe.text  forKey: @"tribe"];</div>
+<div/>
+<div>    [self insertUserModel: user];</div>
+<div>}</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="22.99762725830078"/><meta name="author" content="Redman"/><meta name="created" content="2015-07-16 09:01:02 +0000"/><meta name="latitude" content="22.54686545953338"/><meta name="longitude" content="113.9365730041475"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2015-07-20 03:27:05 +0000"/><title>UIKit Dynamics</title></head><body>
+<div>在 iOS7 中, 苹果公司增加了某些逼真效果, 例如重力, 碰撞,弹簧,和吸附(snap), 使用 UIDynamicItem 协议</div>
+<div><br/></div>
+<div>UIDynamicAnimator 是力学动画生成器, 需要定制各种属性, 如重力, 碰撞检测, 密度, 摩擦力等</div>
+<div>有 6个可以定制的力学动画的类, UIAttachmentBehavior, UICollisionBehavior, UIDynamicItemBehavior, UIGravityBehavior</div>
+<div>UIPushBehavior 和 UISnapBehavior</div>
+<div><br/></div>
+<div>UIDynamicAnimator 最好设置成全局变量, 或者对其 retain, 否则, 视图就会傻傻地站在那里不动,</div>
+<div><br/></div>
+<div>UIGravityBehavior 有成员 angle, 表示旋转角度, </div>
+</body></html>

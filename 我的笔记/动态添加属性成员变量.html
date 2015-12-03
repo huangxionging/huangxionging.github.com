@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="21.09344100952148"/><meta name="author" content="Redman"/><meta name="created" content="2015-10-13 06:28:32 +0000"/><meta name="latitude" content="22.54697954822661"/><meta name="longitude" content="113.9366583570759"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2015-10-13 06:36:22 +0000"/><title>动态添加属性成员变量</title></head><body>
+<div>其实 category 和扩展就是利用这种机制添加属性的, 成员方法也可以</div>
+<div><br/></div>
+<div><br/></div>
+<div>// 这部分是关联策略</div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Associative References */</span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/**<br/>
+ * Policies related to associative references.<br/>
+ * These are options to objc_setAssociatedObject()<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">typedef</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">OBJC_ENUM</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(uintptr_t, objc_AssociationPolicy) {<br/>
+    OBJC_ASSOCIATION_ASSIGN = 0,          </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/**&lt; Specifies a weak reference to the associated object. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+    OBJC_ASSOCIATION_RETAIN_NONATOMIC = 1,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/**&lt; Specifies a strong reference to the associated object.<br/>
+                                            *   The association is not made atomically. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+    OBJC_ASSOCIATION_COPY_NONATOMIC = 3,  </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/**&lt; Specifies that the associated object is copied.<br/>
+                                            *   The association is not made atomically. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+    OBJC_ASSOCIATION_RETAIN = 01401,      </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/**&lt; Specifies a strong reference to the associated object.<br/>
+                                            *   The association is made atomically. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+    OBJC_ASSOCIATION_COPY = 01403         </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/**&lt; Specifies that the associated object is copied.<br/>
+                                            *   The association is made atomically. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+};<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/**<br/>
+ * Sets an associated value for a given object using a given key and association policy.<br/>
+ *<br/>
+ * @param object The source object for the association.<br/>
+ * @param key The key for the association.<br/>
+ * @param value The value to associate with the key key for object. Pass nil to clear an existing association.<br/>
+ * @param policy The policy for the association. For possible values, see “Associative Object Behaviors.”<br/>
+ *<br/>
+ * @see objc_setAssociatedObject<br/>
+ * @see objc_removeAssociatedObjects</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(0, 143, 0);"> */</span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(0, 143, 0);">// 关联属性, 也即动态添加属性, object 是要添加属性的对象, key 是要读取的 key 值, value 是与</span></span><span style="font-family: Menlo;"><span style="color: rgb(0, 143, 0);">object 关联的对象</span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(0, 143, 0);">// value 可以是 NSMutableArray 对象, 这样既是为 object 添加了一个 NSMutableArray 的属性成员, 通过  </span></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">objc_getAssociatedObject 方法读取 关联值</span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">OBJC_EXPORT</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">objc_setAssociatedObject(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">id</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">object,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*key,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">id</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">value,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">objc_AssociationPolicy</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">policy)</span></div>
+<div><span style="font-family: Menlo;">    <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span>(__MAC_10_6, __IPHONE_3_1);</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/**<br/>
+ * Returns the value associated with a given object for a given key.<br/>
+ *<br/>
+ * @param object The source object for the association.<br/>
+ * @param key The key for the association.<br/>
+ *<br/>
+ * @return The value associated with the key \e key for \e object.<br/>
+ *<br/>
+ * @see objc_setAssociatedObject<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">OBJC_EXPORT</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">id</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">objc_getAssociatedObject(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">id</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">object,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*key)<br/>
+   </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_10_6, __IPHONE_3_1);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/**<br/>
+ * Removes all associations for a given object.<br/>
+ *<br/>
+ * @param object An object that maintains associated objects.<br/>
+ *<br/>
+ * @note The main purpose of this function is to make it easy to return an object<br/>
+ *  to a "pristine state”. You should not use this function for general removal of<br/>
+ *  associations from objects, since it also removes associations that other clients<br/>
+ *  may have added to the object. Typically you should use \c objc_setAssociatedObject<br/>
+ *  with a nil value to clear an association.<br/>
+ *<br/>
+ * @see objc_setAssociatedObject<br/>
+ * @see objc_getAssociatedObject<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">OBJC_EXPORT</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">objc_removeAssociatedObjects(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">id</span> <span style="font-style: normal; font-variant: normal; font-weight: normal; line-height: normal;"><span style="font-family: Menlo;">object)</span></span></div>
+<div><span style="font-family: Menlo;">    <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_10_6, __IPHONE_3_1);</span></span></div>
+</body></html>

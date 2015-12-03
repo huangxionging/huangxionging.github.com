@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="27"/><meta name="author" content="Redman"/><meta name="created" content="2015-04-07 08:10:59 +0000"/><meta name="latitude" content="22.54689348133687"/><meta name="longitude" content="113.9366115295036"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2015-04-10 03:37:52 +0000"/><title>动态下载字体</title></head><body>
+<div>官方文档 <a href="http://support.apple.com/kb/HT5484?viewlocale=zh_CN">http://support.apple.com/kb/HT5484?viewlocale=zh_CN</a></div>
+<div><br/></div>
+<div>官方 Demo <a href="http://developer.apple.com/library/ios/#samplecode/DownloadFont/Listings/DownloadFont_ViewController_m.html">http://developer.apple.com/library/ios/#samplecode/DownloadFont/Listings/DownloadFont_ViewController_m.html</a></div>
+<div><br/></div>
+<div><br/></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">kCTFontNameAttribute 和  <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">kCTFontAttribute<span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">Name 容易混淆</span></span></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(52, 149, 175);"><br/></span></span></div>
+<div><span style="font-family: Menlo;">- (void) asynSetFontWithPostScriptName: (NSString *) postScriptFontName {</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">UIFont *font = [UIFont fontWithName: postScriptFontName size: 12.0];</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">// 首先判断字体是否已下载</span></div>
+<div><span style="font-family: Menlo;">if (font &amp;&amp; ([font.fontName compare:postScriptFontName] == NSOrderedSame || [font.familyName compare: postScriptFontName] == NSOrderedSame)) {</span></div>
+<div><span style="font-family: Menlo;">// NSUInteger sampleIndex = [_fontNames indexOfObject: postScriptFontName];</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">NSLog(@"dddd");</span></div>
+<div><span style="font-family: Menlo;">_textFont = [UIFont fontWithName: postScriptFontName size: 17.0];</span></div>
+<div><span style="font-family: Menlo;">[_textTableView reloadData];</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">return;</span></div>
+<div><span style="font-family: Menlo;">}</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">// 通过 PostScript 名字来设置属性</span></div>
+<div><span style="font-family: Menlo;">NSMutableDictionary *atts = [NSMutableDictionary dictionaryWithObjectsAndKeys: postScriptFontName, kCTFontNameAttribute, nil];</span></div>
+<div><span style="font-family: Menlo;"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">// kCTFontNameAttribute 和  <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">kCTFontAttribute<span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af"><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">Name 容易混淆</span></span></span></span><br/></span></div>
+<div><span style="font-family: Menlo;">// 创建新的字体描述器</span></div>
+<div><span style="font-family: Menlo;">CTFontDescriptorRef desc = CTFontDescriptorCreateWithAttributes((__bridge CFDictionaryRef) atts);</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">NSMutableArray *descs = [NSMutableArray arrayWithCapacity: 0];</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">[descs addObject: (__bridge id)desc];</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">CFRelease(desc);</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">__block BOOL errorDuringDownload = NO;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(52, 149, 175);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(52, 149, 175);"><br/></span></span></div>
+<div><span style="font-family: Menlo;">// 开始处理描述器</span></div>
+<div><span style="font-family: Menlo;">NSLog(@"%@", descs);</span></div>
+<div><span style="font-family: Menlo;">CTFontDescriptorMatchFontDescriptorsWithProgressHandler((__bridge CFArrayRef) descs, NULL, ^(CTFontDescriptorMatchingState state, CFDictionaryRef progressParameter) {</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">NSLog( @"state %d - %@ === %@", state, progressParameter, postScriptFontName);</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">// 进度</span></div>
+<div><span style="font-family: Menlo;">double progressValue = [[(__bridge NSDictionary *) progressParameter objectForKey:(id)kCTFontDescriptorMatchingPercentage] doubleValue];</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">if (state == kCTFontDescriptorMatchingDidBegin) {</span></div>
+<div><span style="font-family: Menlo;">dispatch_async(dispatch_get_main_queue(), ^{</span></div>
+<div><span style="font-family: Menlo;">// _indicatorView.hidden = NO;</span></div>
+<div><span style="font-family: Menlo;">[_indicatorView startAnimating];</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">NSLog(@"Begin Match");</span></div>
+<div><span style="font-family: Menlo;">});</span></div>
+<div><span style="font-family: Menlo;">}</span></div>
+<div><span style="font-family: Menlo;">else if (state == kCTFontDescriptorMatchingDidFinish) {</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">dispatch_async(dispatch_get_main_queue(), ^{</span></div>
+<div><span style="font-family: Menlo;">// _indicatorView.hidden = YES;</span></div>
+<div><span style="font-family: Menlo;">[_indicatorView stopAnimating];</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">_textFont = [UIFont fontWithName: postScriptFontName size: 17.0];</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">// 记录 URL</span></div>
+<div><span style="font-family: Menlo;">CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)postScriptFontName, 0, NULL);</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">CFURLRef fontUrl = CTFontCopyAttribute(fontRef, kCTFontURLAttribute);</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">NSLog(@"%@", (__bridge NSURL*)(fontUrl));</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">CFRelease(fontRef);</span></div>
+<div><span style="font-family: Menlo;">CFRelease(fontUrl);</span></div>
+<div><span style="font-family: Menlo;">[_textTableView reloadData];</span></div>
+<div><span style="font-family: Menlo;">if (!errorDuringDownload) {</span></div>
+<div><span style="font-family: Menlo;">NSLog(@"%@ downloaded", postScriptFontName);</span></div>
+<div><span style="font-family: Menlo;">}</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">});</span></div>
+<div><span style="font-family: Menlo;">}</span></div>
+<div><span style="font-family: Menlo;">else if (state == kCTFontDescriptorMatchingWillBeginDownloading) {</span></div>
+<div><span style="font-family: Menlo;">dispatch_async(dispatch_get_main_queue(), ^{</span></div>
+<div><span style="font-family: Menlo;">// 进度条</span></div>
+<div><span style="font-family: Menlo;">_progressView.progress = 0.0;</span></div>
+<div><span style="font-family: Menlo;">_progressView.hidden = NO;</span></div>
+<div><span style="font-family: Menlo;">NSLog(@"Begin Downloading");</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">});</span></div>
+<div><span style="font-family: Menlo;">}</span></div>
+<div><span style="font-family: Menlo;">else if (state == kCTFontDescriptorMatchingDidFinishDownloading) {</span></div>
+<div><span style="font-family: Menlo;">dispatch_async(dispatch_get_main_queue(), ^{</span></div>
+<div><span style="font-family: Menlo;">// 隐藏进度条</span></div>
+<div><span style="font-family: Menlo;">_progressView.hidden = YES;</span></div>
+<div><span style="font-family: Menlo;">NSLog(@"Finish download");</span></div>
+<div><span style="font-family: Menlo;">});</span></div>
+<div><span style="font-family: Menlo;">}</span></div>
+<div><span style="font-family: Menlo;">else if (state == kCTFontDescriptorMatchingDownloading) {</span></div>
+<div><span style="font-family: Menlo;">dispatch_async(dispatch_get_main_queue(), ^{</span></div>
+<div><span style="font-family: Menlo;">// 下载进度</span></div>
+<div><span style="font-family: Menlo;">[_progressView setProgress: progressValue / 100.0 animated: YES];</span></div>
+<div><span style="font-family: Menlo;">NSLog(@"Downloading %.0f%% complete", progressValue);</span></div>
+<div><span style="font-family: Menlo;">});</span></div>
+<div><span style="font-family: Menlo;">}</span></div>
+<div><span style="font-family: Menlo;">else if (state == kCTFontDescriptorMatchingDidFailWithError) {</span></div>
+<div><span style="font-family: Menlo;">// 错误</span></div>
+<div><span style="font-family: Menlo;">NSError *error = [(__bridge NSDictionary *)progressParameter objectForKey:(id)kCTFontDescriptorMatchingError];</span></div>
+<div><span style="font-family: Menlo;">NSString * _errorMessage = nil;</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">if (error != nil) {</span></div>
+<div><span style="font-family: Menlo;">_errorMessage = [error description];</span></div>
+<div><span style="font-family: Menlo;">} else {</span></div>
+<div><span style="font-family: Menlo;">_errorMessage = @"ERROR MESSAGE IS NOT AVAILABLE!";</span></div>
+<div><span style="font-family: Menlo;">}</span></div>
+<div><span style="font-family: Menlo;">// Set our flag</span></div>
+<div><span style="font-family: Menlo;">errorDuringDownload = YES;</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">dispatch_async( dispatch_get_main_queue(), ^ {</span></div>
+<div><span style="font-family: Menlo;">_progressView.hidden = YES;</span></div>
+<div><span style="font-family: Menlo;">NSLog(@"Download error: %@", _errorMessage);</span></div>
+<div><span style="font-family: Menlo;">});</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">}</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font-family: Menlo;">return (bool)YES;</span></div>
+<div><span style="font-family: Menlo;">});</span></div>
+<div><span style="font-family: Menlo;">}</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(4, 51, 255);"><br/></span></span></div>
+<div><span style="color: rgb(255, 147, 0);"><span style="font-family: Menlo;"><br/></span></span></div>
+<div>所有的字体在字体册中看的到</div>
+<div><img src="%E5%8A%A8%E6%80%81%E4%B8%8B%E8%BD%BD%E5%AD%97%E4%BD%93.resources/68430E23-DE58-4635-9F03-B017FA6DD7A3.png" height="482" width="604"/>     <img src="%E5%8A%A8%E6%80%81%E4%B8%8B%E8%BD%BD%E5%AD%97%E4%BD%93.resources/E9176848-57C4-4C09-B82C-C819B69238CA.png" height="299" width="332"/></div>
+<div><br/></div>
+<div>选中字体, 查看信息, 右边则会出现该字体的信息. PostScript 才是我们需要的字体名字, 这个名字才可以被下载和使用.</div>
+<div><img src="%E5%8A%A8%E6%80%81%E4%B8%8B%E8%BD%BD%E5%AD%97%E4%BD%93.resources/9D070E68-CD05-4A99-8386-3241E6CE3B40.png" height="633" width="1139"/></div>
+<div><br/></div>
+</body></html>

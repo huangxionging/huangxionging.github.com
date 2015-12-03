@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="created" content="2015-04-21 09:30:32 +0000"/><meta name="source" content="Clearly"/><meta name="source-url" content="http://www.open-open.com/lib/view/open1374292431912.html"/><meta name="updated" content="2015-04-21 09:30:32 +0000"/><title>IOS 时间格式 时间转换 大总结 - OPEN 开发经验库</title></head><body><div>
+ <div>
+  <div>
+   <h1>IOS 时间格式 时间转换 大总结</h1>
+  </div> 
+  <p>//实例化一个NSDateFormatter</p> 
+  <p>NSDateFormatter *dateFormatter = [[NSDateFormatteralloc</p> 
+  <p>设定时间格式这里可以设置成自己需要的格式</p> 
+  <p>[dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];</p> 
+  <p>//[NSDate date]可以获取系统当前时间</p> 
+  <p>NSString *currentDateStr = [dateFormatter stringFromDate:[NSDate ]];</p> 
+  <p>//输出格式为：2010-10-27 10:22:13</p> 
+  <p>NSLog(@"%@",currentDateStr);</p> 
+  <p>//alloc后对不使用的对象别忘了release</p> 
+  <p>[dateFormatter release];</p> 
+  <p>根据时间字符串获得当前星期几</p> 
+  <p>)GetTime</p> 
+  <p>根据字符串转换成一种时间格式供下面解析</p> 
+  <p>       NSString* string = @"2013-07-16 13:21";</p> 
+  <p>       NSDateFormatter *inputFormatter = [[[NSDateFormatter alloc] ]autorelease];</p> 
+  <p>        [inputFormattersetDateFormat:@"yyyy-MM-dd HH:mm"];</p> 
+  <p>       NSDate* inputDate = [inputFormatter dateFromString:string];</p> 
+  <p>NSCalendar *calendar = [[[NSCalendarallocinitWithCalendarIdentifierNSGregorianCalendarautorelease</p> 
+  <p>NSDateComponents *comps = [[[NSDateComponentsallocautorelease</p> 
+  <p>       NSInteger unitFlags = NSYearCalendarUnit |</p> 
+  <p>NSMonthCalendarUnit</p> 
+  <p>NSDayCalendarUnit</p> 
+  <p>NSWeekdayCalendarUnit</p> 
+  <p>NSHourCalendarUnit</p> 
+  <p>NSMinuteCalendarUnit</p> 
+  <p>NSSecondCalendarUnit</p> 
+  <p>        comps = [calendarcomponents:unitFlags fromDate:inputDate];</p> 
+  <p>        week = [comps weekday];</p> 
+  <p>       NSString *strWeek = [ getweek:week];</p> 
+  <p>       .textfield. = strWeek;</p> 
+  <p>       NSLog(@"week is:%@",strWeek);</p> 
+  <p>    -(NSString*)getweek:(NSInteger)week</p> 
+  <p>       NSString*weekStr=;</p> 
+  <p>       (week==)</p> 
+  <p>            weekStr=;</p> 
+  <p>        } (week==){</p> 
+  <p>            weekStr=;</p> 
+  <p>        } (week==){</p> 
+  <p>            weekStr=;</p> 
+  <p>        } (week==){</p> 
+  <p>            weekStr=;</p> 
+  <p>        } (week==){</p> 
+  <p>            weekStr=;</p> 
+  <p>        } (week==){</p> 
+  <p>            weekStr=;</p> 
+  <p>        } (week==){</p> 
+  <p>            weekStr=;</p> 
+  <p>       return weekStr;</p> 
+  <p>时间分隔符。在某些区域设置中，可以使用其他字符表示时间分隔符。时间分隔符在格式化时间值时分隔小时、分钟和秒。格式化输出中用作时间分隔符的实际字符由您的应用程序的当前区域性值确定。</p> 
+  <p>日期分隔符。在某些区域设置中，可以使用其他字符表示日期分隔符。日期分隔符在格式化日期值时分隔日、月和年。格式化输出中用作日期分隔符的实际字符由您的应用程序的当前区域性确定。</p> 
+  <p>用于表明不论尾随什么字母，随后字符都应该以单字母格式读取。也用于表明单字母格式应以用户定义格式读取。有关更多详细信息，请参见下面的内容。</p> 
+  <p>将日显示为不带前导零的数字（如）。如果这是用户定义的数字格式中的唯一字符，请使用。</p> 
+  <p>将日显示为带前导零的数字（如）。</p> 
+  <p>将日显示为缩写形式（例如）。</p> 
+  <p>        将日显示为全名（例如 Sunday</p> 
+  <p>将月份显示为不带前导零的数字（如一月表示为）。如果这是用户定义的数字格式中的唯一字符，请使用。</p> 
+  <p>        将月份显示为带前导零的数字（例如 //</p> 
+  <p>将月份显示为缩写形式（例如）。</p> 
+  <p>        将月份显示为完整月份名（例如 January</p> 
+  <p>        /纪元字符串（例如 A.D.</p> 
+  <p>使用小时制将小时显示为不带前导零的数字（例如）。如果这是用户定义的数字格式中的唯一字符，请使用。</p> 
+  <p>         小时制将小时显示为带前导零的数字（例如 :: PM</p> 
+  <p>使用小时制将小时显示为不带前导零的数字（例如）。如果这是用户定义的数字格式中的唯一字符，请使用。</p> 
+  <p>使用小时制将小时显示为带前导零的数字（例如）。</p> 
+  <p>将分钟显示为不带前导零的数字（例如）。如果这是用户定义的数字格式中的唯一字符，请使用。</p> 
+  <p>        将分钟显示为带前导零的数字（例如 ::</p> 
+  <p>将秒显示为不带前导零的数字（例如）。如果这是用户定义的数字格式中的唯一字符，请使用。</p> 
+  <p>        将秒显示为带前导零的数字（例如 ::</p> 
+  <p>显示秒的小数部分。例如，将精确显示到百分之一秒，而将精确显示到万分之一秒。用户定义格式中最多可使用七个符号。如果这是用户定义的数字格式中的唯一字符，请使用。</p> 
+  <p>使用小时制，并对中午之前的任一小时显示大写的，对中午到之间的任一小时显示大写的。如果这是用户定义的数字格式中的唯一字符，请使用。</p> 
+  <p>对于使用小时制的区域设置，对中午之前任一小时显示大写的，对中午到之间的任一小时显示大写的。</p> 
+  <p>对于使用小时制的区域设置，不显示任何字符。</p> 
+  <p>将年份显示为不带前导零的数字。如果这是用户定义的数字格式中的唯一字符，请使用。</p> 
+  <p>以带前导零的两位数字格式显示年份（如果适用）。</p> 
+  <p>以四位数字格式显示年份。</p> 
+  <p>以四位数字格式显示年份。</p> 
+  <p>显示不带前导零的时区偏移量（如）。如果这是用户定义的数字格式中的唯一字符，请使用。</p> 
+  <p>显示带前导零的时区偏移量（例如）</p> 
+  <p>        显示完整的时区偏移量（例如 -:</p> 
+  <p>         M/d/yy</p> 
+  <p>         d-MMM</p> 
+  <p>         d-MMMM-yy</p> 
+  <p>        -December-</p> 
+  <p>         d MMMM</p> 
+  <p>         December</p> 
+  <p>         MMMM yy</p> 
+  <p>         December</p> 
+  <p>         hh:mm tt</p> 
+  <p>         h:mm:ss t</p> 
+  <p>         H:mm:ss</p> 
+  <p>         M/d/yyyy H:mm</p> 
+ </div>
+</div></body></html>

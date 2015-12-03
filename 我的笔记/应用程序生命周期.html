@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="17.81979942321777"/><meta name="author" content="Redman"/><meta name="created" content="2014-06-26 02:14:35 +0000"/><meta name="latitude" content="22.53791985715769"/><meta name="longitude" content="113.9403801329926"/><meta name="updated" content="2014-06-28 02:04:01 +0000"/><title>应用程序生命周期</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+     作为应用程序的委托对象，AppDelegate类在应用生命周期的不同阶段会回调不同的方法。
+<div>iOS应用不同的状态以及彼此的关系：</div>
+<div><br/></div>
+<div>iOS应用一共有5种状态。</div>
+<div>1）Not Running 表示非运行状态。意思是应用没有运行或者被系统终止。</div>
+<div><br/></div>
+<div>2）Inactive 表示应用正在进入前台状态，但是还不能接受事件处理。</div>
+<div><br/></div>
+<div>3）Active 表示前台活动状态，能够接受事件处理。</div>
+<div><br/></div>
+<div>4）Background 表示后台状态，在后台，应用依然能够执行代码。如果有可执行的代码，就会执行；如果没有可执行代码或者将可执行代码执行完毕，应用会进入挂起状态。</div>
+<div><br/></div>
+<div>5）Suspended 表示挂起状态，处于挂起状态的应用进入一种“冷冻”状态，不能够执行代码。如果系统内存不够，应用将会终止。</div>
+</body></html>

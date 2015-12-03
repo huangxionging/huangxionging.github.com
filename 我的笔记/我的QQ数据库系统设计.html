@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="author" content="Redman"/><meta name="created" content="2014-08-15 08:50:31 +0000"/><meta name="updated" content="2014-08-15 12:29:56 +0000"/><title>我的QQ数据库系统设计</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+设计一个主数据库用以存放每一个注册用户的 账号、邮箱、手机号, 2进制用户信息;
+<div>Main.db </div>
+<div>只存放一张表  User(account text primary key, email text unique, tel text unique, userInfoModel blob)</div>
+<div>每行用于记录注册用户的账号信息</div>
+<div><br/></div>
+<div><font color="#FF546A">注</font>： <font color="#FF3854">服务器端不能这么设计，因为没有服务器，所以数据都只能在本地模拟</font></div>
+<div>然后为每一个用户建立建立一个文件夹，再创建一个以账号命名的数据库文件</div>
+<div><br/></div>
+<div>创建一个好友分组列表 Group(ID primary key, groupName, text)，以存储好友分组；</div>
+<div>然后为每一个好友分组创建一个分组列表 就由groupName(friend account text, friendName)两个字段；基本上查看好友信息则通过账号去Main.db 去查询用户信息模型userinfoModel. 在添加好友的时候需要为好友创建一张表用来投送用户的消息，消息还需要投送给好友，应当加上自己的账号以及时间戳，开辟一个新进程专门用来处理数据传送传送数据应当设计一个数据库取名为messageQueue.db</div>
+<div>messageQueue.db 里面放一张表 meassageQueue(from text, to text, info blob);</div>
+<div><br/></div>
+<div><br/></div>
+</body></html>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="21.99960708618164"/><meta name="author" content="Redman"/><meta name="created" content="2014-07-15 01:04:07 +0000"/><meta name="latitude" content="22.53776116380131"/><meta name="longitude" content="113.9402186838925"/><meta name="updated" content="2014-07-15 01:30:48 +0000"/><title>UIViewController控制编辑的方法</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+<div>
+<div>- (void)setEditing:(BOOL)editing animated:(BOOL)animated; </div>
+<div><font color="#3D5FEB">// Updates the appearance of the Edit|Done button item as necessary. Clients who override it must call super first. 中文翻译：如果编辑或完成按钮项目有这个需要，系统将会更新视图。客户重载这个方法，必须首先调用父类的这个方法</font></div>
+<div><br/></div>
+</div>
+<div>- (void) setEditing:(BOOL)editing animated:(BOOL)animated</div>
+<div>{</div>
+<div>    [super setEditing:editing animated:animated];</div>
+<div>    [self.tabView setEditing: editing animated: animated];</div>
+<div/>
+<div>    if (editing)</div>
+<div>    {</div>
+<div>        self.textField.hidden = NO;</div>
+<div>    }</div>
+<div>    else</div>
+<div>    {</div>
+<div>        self.textField.hidden = YES;</div>
+<div>    }</div>
+<div/>
+<div>}</div>
+</body></html>

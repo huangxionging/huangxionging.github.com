@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="author" content="Redman"/><meta name="created" content="2014-08-04 01:00:38 +0000"/><meta name="updated" content="2014-08-04 03:01:36 +0000"/><title>QQ设计之我见</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+     最近模仿qq设计的应用程序，也许是我这辈子写过的最庞大的应用程序，所有工作都必须一个人完成，这是一次综合考验。以前习惯上，是想到哪里写到哪里，这种风格，在软件不够庞大的时候，还行，反正就那么点内容，随便怎么改，也没关系，但是一旦软件开始庞大起来，这种风格会带来严重的灾难，当你发现你写错了的时候，改动将会非常困难。
+<div>     这时，软件工程就起作用了，软件工程这四个字很好的诠释了，软件工业中的生产方式，首先它是一个工程，一个工程，就必须有施工图，必须有实现施工图的工人。而在软件工业中，设计施工图才是核心，也就是设计整个软件的架构方案，记住我们要做设计，要做架构，不能还停留在仅仅实现别人的方案上。</div>
+<div><br/></div>
+<div>     下面我来设计仿qq界面的架构，整个方案是基于MVC设计模式来实现的，关于MVC设计模式就不再论述了。</div>
+<div><img src="QQ%E8%AE%BE%E8%AE%A1%E4%B9%8B%E6%88%91%E8%A7%81.resources/484CFC5E-4E64-45EE-A6DB-0156F11E4E43.jpg" height="298" width="470"/></div>
+<div><br/></div>
+<div>程序启动之后由根控制器来管理 左边标签导航控制器 和 右边的登陆导航控制器。通过注册 登陆通知和退出账号通知以及退出程序通知，来响应不同的操作。第一次启动时，会进如登陆界面，当登陆完成后，发送登陆通知，告诉根控制器将要登陆，根控制器捕获通知后执行进入标签导航控制器的主界面。当用户退出账号时，发送退出账号通知，根控制器捕获通知后，进入登陆界面。用户点击退出应用按钮时，由标签导航控制器发送退出应用通知，根控制器捕获通知后，会执行退出应用方法。</div>
+<div><br/></div>
+<div><br/></div>
+<div>登陆控制器</div>
+<div>
+<div>
+<div><img src="QQ%E8%AE%BE%E8%AE%A1%E4%B9%8B%E6%88%91%E8%A7%81.resources/9A62B290-273C-4B8B-92A3-53ABFD4D61FE.jpg" height="418" width="549"/></div>
+</div>
+</div>
+</body></html>

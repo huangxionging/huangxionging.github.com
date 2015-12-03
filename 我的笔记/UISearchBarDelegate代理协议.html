@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="25.15075302124023"/><meta name="author" content="Redman"/><meta name="created" content="2014-07-10 12:57:38 +0000"/><meta name="latitude" content="22.53786445934972"/><meta name="longitude" content="113.9400409091725"/><meta name="updated" content="2014-07-10 12:59:11 +0000"/><title>UISearchBarDelegate代理协议</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+<div>@protocol UISearchBarDelegate &lt;UIBarPositioningDelegate
+<![CDATA[>]]>
+</div>
+<div><br/></div>
+<div>// 都是可选的，不是必须实现的，根据功能进行定制</div>
+<div>@optional</div>
+<div><br/></div>
+<div><font color="#2B41FD">- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar;                      // return NO to not become first responder</font></div>
+<div><font color="#2B41FD">- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar;                     // called when text starts editing</font></div>
+<div><font color="#2B41FD">- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar;                        // return NO to not resign first responder</font></div>
+<div><font color="#2B41FD">- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar;                       // called when text ends editing</font></div>
+<div><font color="#2B41FD">- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText;   // called when text changes (including clear)</font></div>
+<div><font color="#2B41FD">- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text NS_AVAILABLE_IOS(3_0); // called before text changes</font></div>
+<div><font color="#2B41FD"><br/></font></div>
+<div><font color="#2B41FD">- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar;                     // called when keyboard search button pressed</font></div>
+<div><font color="#2B41FD">- (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar;                   // called when bookmark button pressed</font></div>
+<div><font color="#2B41FD">- (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar;                    // called when cancel button pressed</font></div>
+<div><font color="#2B41FD">- (void)searchBarResultsListButtonClicked:(UISearchBar *)searchBar NS_AVAILABLE_IOS(3_2); // called when search results button pressed</font></div>
+<div><br/></div>
+<div><font color="#FF3854">- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope NS_AVAILABLE_IOS(3_0);</font></div>
+<div><br/></div>
+<div>@end</div>
+</body></html>

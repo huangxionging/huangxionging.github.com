@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="author" content="Redman"/><meta name="created" content="2014-07-10 02:35:54 +0000"/><meta name="updated" content="2014-07-13 05:26:55 +0000"/><title>表视图</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+UITableView
+<div><br/></div>
+<div>
+<div>#pragma mark 实现UITableViewDataSource协议</div>
+<div><br/></div>
+<div>// 告诉tableView每节有多少行</div>
+<div>- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section</div>
+<div>{</div>
+<div>    return [self.listTeams count];</div>
+<div>}</div>
+<div><br/></div>
+<div>- (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath</div>
+<div>{</div>
+<div>    static NSString *CellIdentifier = @"CellIdentifier";</div>
+<div/>
+<div>    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: CellIdentifier];</div>
+<div/>
+<div>    if (cell == Nil)</div>
+<div>    {</div>
+<div>        cell = [[UITableViewCell alloc] initWithStyle: UITableViewCellStyleDefault reuseIdentifier: CellIdentifier];</div>
+<div>    }</div>
+<div/>
+<div>    NSUInteger row = [indexPath row];</div>
+<div>    NSDictionary *rowDict = [self.listTeams objectAtIndex: row];</div>
+<div>    cell.textLabel.text = [rowDict objectForKey: @"name"];</div>
+<div>    NSString *imagePath = [rowDict objectForKey: @"image"];</div>
+<div>    imagePath = [imagePath stringByAppendingString: @".png"];</div>
+<div>    cell.imageView.image = [UIImage imageNamed: imagePath];</div>
+<div/>
+<div>    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;</div>
+<div/>
+<div>    return cell;</div>
+<div>}</div>
+</div>
+</body></html>

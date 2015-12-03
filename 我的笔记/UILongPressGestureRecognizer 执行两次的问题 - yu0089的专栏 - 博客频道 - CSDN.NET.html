@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="created" content="2015-01-13 06:44:19 +0000"/><meta name="source" content="Clearly"/><meta name="source-url" content="http://blog.csdn.net/yu0089/article/details/8244851"/><meta name="updated" content="2015-01-13 06:44:19 +0000"/><title>UILongPressGestureRecognizer 执行两次的问题 - yu0089的专栏 - 博客频道 - CSDN.NET</title></head><body><div>
+ <div>
+  <div>
+   <h1> <a shape="rect" href="http://blog.csdn.net/yu0089/article/details/8244851" target="_blank"> UILongPressGestureRecognizer 执行两次的问题 </a> </h1>
+  </div> 
+  <div>
+    分类： 
+   <a shape="rect" href="http://blog.csdn.net/yu0089/article/category/1181034" target="_blank">ios</a> 2012-11-30 19:44 2444人阅读 
+   <a shape="rect" href="#comments" target="_blank">评论</a>(1) 
+   <a shape="rect" href="#" title="收藏" target="_blank">收藏</a> 
+   <a shape="rect" href="#report" title="举报" target="_blank">举报</a> 
+  </div> 
+  <div> 
+   <table><tr><td colspan="1" rowspan="1"> 
+       <div> 
+        <a shape="rect" title="This question shows research effort; it is useful and clear (click again to undo)" target="_blank">up vote</a>
+        <a shape="rect" title="This question does not show any research effort; it is unclear or not useful (click again to undo)" target="_blank">down vote</a>
+        <a shape="rect" href="http://stackoverflow.com/questions/3319591/uilongpressgesturerecognizer-gets-called-twice-when-pressing-down#" title="This is a favorite question (click again to undo)" target="_blank">favorite</a> 
+       </div> </td><td colspan="1" rowspan="1"> 
+       <div> 
+        <div> 
+         <p> I am detecting if the user has pressed down for 2 seconds:</p> 
+         <pre><code>UILongPressGestureRecognizerlongPress UILongPressGestureRecognizer alloc
+                                             initWithTargetself 
+                                             action@selectorhandleLongPress
+        longPressminimumPressDuration self addGestureRecognizerlongPresslongPress release</code></pre> 
+         <p> This is how I handle the long press:</p> 
+         <pre><code>handleLongPressUILongPressGestureRecognizerrecognizerNSLog"double oo"</code></pre> 
+         <p> The text "double oo" gets printed twice when I press down for longer than 2 seconds. Why is this? How can I fix?</p> 
+        </div> 
+        <table><tr><td colspan="1" rowspan="1" /><td colspan="1" rowspan="1"> 
+            <div> 
+             <div>
+               asked Jul 23 '10 at 15:21
+             </div> 
+             <div> 
+              <div> 
+               <img src="http://www.gravatar.com/avatar/dcb55baf9cd5a05c70569122b7184766?s=32&amp;d=identicon&amp;r=PG" height="32" width="32"/>
+              </div> 
+             </div> 
+            </div> 
+            <div>
+              92% accept rate
+            </div> </td></tr></table> 
+       </div> </td></tr><tr><td colspan="1" rowspan="1">  </td><td colspan="1" rowspan="1"> 
+       <div>
+         feedback
+       </div> </td></tr></table> 
+  </div> 
+  <div> 
+   <div> 
+    <table><tr><td colspan="1" rowspan="1"> 
+        <div> 
+         <a shape="rect" title="This answer is useful (click again to undo)" target="_blank">up vote</a>
+         <a shape="rect" title="This answer is not useful (click again to undo)" target="_blank">down vote</a>accepted
+        </div> </td><td colspan="1" rowspan="1"> 
+        <div> 
+         <p> UILongPressGestureRecognizer is a continuous event recognizer. You have to look at the state to see if this is the start, middle or end of the event and act accordingly. i.e. you can through away all events after the start, or only look at movement as you need. From the <a shape="rect" href="http://developer.apple.com/iphone/library/documentation/uikit/reference/UILongPressGestureRecognizer_Class/Reference/Reference.html" target="_blank">Class Reference</a>:</p> 
+         <blockquote> 
+          <p> Long-press gestures are continuous. The gesture begins (UIGestureRecognizerStateBegan) when the number of allowable fingers (numberOfTouchesRequired) have been pressed for the specified period (minimumPressDuration) and the touches do not move beyond the allowable range of movement (allowableMovement). The gesture recognizer transitions to the Change state whenever a finger moves, and it ends (UIGestureRecognizerStateEnded) when any of the fingers are lifted.</p> 
+         </blockquote> 
+        </div> </td></tr><tr><td colspan="1" rowspan="1">  </td><td colspan="1" rowspan="1"> 
+        <div> 
+         <table><tr><td colspan="1" rowspan="1" /><td colspan="1" rowspan="1"> 
+             <div>
+               The next answer down shows how to do it, but I gave this answer the +1 because of its detailed explaination and link to documentation. – 
+              <a shape="rect" href="http://stackoverflow.com/users/365932/matt-connolly" title="2175 reputation" target="_blank">Matt Connolly</a> 
+              <a shape="rect" href="http://stackoverflow.com/questions/3319591/uilongpressgesturerecognizer-gets-called-twice-when-pressing-down#comment6107723_3320351" target="_blank">Mar 23 '11 at 1:13</a>
+             </div> </td></tr><tr><td colspan="1" rowspan="1" /><td colspan="1" rowspan="1"> 
+             <div>
+               Could be more helpful with a code example, rather than linking just to the documentation. I have posted my code snippet below. check the UIGestureRecognizerStateBegan state. – 
+              <a shape="rect" href="http://stackoverflow.com/users/276626/paul-solt" title="1233 reputation" target="_blank">Paul Solt</a> 
+              <a shape="rect" href="http://stackoverflow.com/questions/3319591/uilongpressgesturerecognizer-gets-called-twice-when-pressing-down#comment8522941_3320351" target="_blank">Aug 18 '11 at 20:58</a>
+             </div> </td></tr></table> 
+        </div> 
+        <div>
+          feedback
+        </div> </td></tr></table> 
+   </div> 
+   <div> 
+    <table><tr><td colspan="1" rowspan="1"> 
+        <div> 
+         <a shape="rect" title="This answer is useful (click again to undo)" target="_blank">up vote</a>
+         <a shape="rect" title="This answer is not useful (click again to undo)" target="_blank">down vote</a>
+        </div> </td><td colspan="1" rowspan="1"> 
+        <div> 
+         <p> To check the state of the UILongPressGestureRecognizer just add an if statement on the selector method:</p> 
+         <pre><code>handleLongPressUILongPressGestureRecognizersender senderstate UIGestureRecognizerStateEndedNSLog"Long press Ended"NSLog"Long press detected."</code></pre> 
+        </div> </td></tr><tr><td colspan="1" rowspan="1">  </td><td colspan="1" rowspan="1"> 
+        <div> 
+         <table><tr><td colspan="1" rowspan="1" /><td colspan="1" rowspan="1"> 
+             <div>
+               You don't want that if/else block, since there are more states than Ended. "Long press detected" will print multiple times when the state changes. Check the UIGestureRecognizerStateBegan state instead. – 
+              <a shape="rect" href="http://stackoverflow.com/users/276626/paul-solt" title="1233 reputation" target="_blank">Paul Solt</a> 
+              <a shape="rect" href="http://stackoverflow.com/questions/3319591/uilongpressgesturerecognizer-gets-called-twice-when-pressing-down#comment8522961_4156189" target="_blank">Aug 18 '11 at 20:59</a>
+             </div> </td></tr><tr><td colspan="1" rowspan="1">  </td><td colspan="1" rowspan="1"> 
+             <div>
+               Exactly. Just got bitten by the same if/else code. – 
+              <a shape="rect" href="http://stackoverflow.com/users/133875/stephen-eilert" title="575 reputation" target="_blank">Stephen Eilert</a> 
+              <a shape="rect" href="http://stackoverflow.com/questions/3319591/uilongpressgesturerecognizer-gets-called-twice-when-pressing-down#comment12319722_4156189" target="_blank">Mar 14 at 0:48</a>
+             </div> </td></tr><tr><td colspan="1" rowspan="1">  </td><td colspan="1" rowspan="1"> 
+             <div>
+               Someone should really edit that answer to fit with what the top comment says. As it stands the code provided does not work. – 
+              <a shape="rect" href="http://stackoverflow.com/users/957245/deco" title="159 reputation" target="_blank">Deco</a> 
+              <a shape="rect" href="http://stackoverflow.com/questions/3319591/uilongpressgesturerecognizer-gets-called-twice-when-pressing-down#comment16628927_4156189" target="_blank">Sep 11 at 22:40</a>
+             </div> </td></tr></table> 
+        </div> 
+        <div>
+          feedback
+        </div> </td></tr></table> 
+   </div> 
+   <div> 
+    <table><tr><td colspan="1" rowspan="1"> 
+        <div> 
+         <a shape="rect" title="This answer is useful (click again to undo)" target="_blank">up vote</a>
+         <a shape="rect" title="This answer is not useful (click again to undo)" target="_blank">down vote</a>
+        </div> </td><td colspan="1" rowspan="1"> 
+        <div> 
+         <p> You need to check the correct state, since there are different behaviors for each state. Most likely you're going to need the UIGestureRecognizerStateBegan state with the UILongPressGestureRecognizer.</p> 
+         <pre><code>UILongPressGestureRecognizerlongPress UILongPressGestureRecognizer alloc
+                                             initWithTargetself 
+                                             action@selectorhandleLongPress
+        longPressminimumPressDuration myView addGestureRecognizerlongPresslongPress release</code></pre> 
+         <pre><code>handleLongPressUILongPressGestureRecognizergesture UIGestureRecognizerStateBegan gesturestate// Called on start of gesture, do work hereUIGestureRecognizerStateChanged gesturestate// Do repeated work here (repeats continuously) while finger is downUIGestureRecognizerStateEnded gesturestate// Do end work here when finger is lifted</code></pre> 
+        </div> </td></tr><tr><td colspan="1" rowspan="1">  </td><td colspan="1" rowspan="1"> 
+        <div> 
+         <table><tr><td colspan="1" rowspan="1" /><td colspan="1" rowspan="1"> 
+             <div>
+               Seems like you have to move your fingers to get the state to change; is that correct? – 
+              <a shape="rect" href="http://stackoverflow.com/users/478296/magic-c0d3r" title="555 reputation" target="_blank">magic-c0d3r</a> 
+              <a shape="rect" href="http://stackoverflow.com/questions/3319591/uilongpressgesturerecognizer-gets-called-twice-when-pressing-down#comment11138065_7114034" target="_blank">Jan 18 at 4:46</a>
+             </div> </td></tr><tr><td colspan="1" rowspan="1">  </td><td colspan="1" rowspan="1"> 
+             <div>
+               It might trigger StateChanged when moving fingers around, that sounds similar to what I was doing in my test code. – 
+              <a shape="rect" href="http://stackoverflow.com/users/276626/paul-solt" title="1233 reputation" target="_blank">Paul Solt</a> 
+              <a shape="rect" href="http://stackoverflow.com/questions/3319591/uilongpressgesturerecognizer-gets-called-twice-when-pressing-down#comment11184570_7114034" target="_blank">Jan 20 at 4:12</a>
+             </div> </td></tr><tr><td colspan="1" rowspan="1">  </td><td colspan="1" rowspan="1"> 
+             <div>
+               UIGestureRecognizerStateBegan seems to only be called once which is perfect for my situation trying to show a dialog on detecting a long press on a button. The other states get called multiple times. Thanks! – 
+              <a shape="rect" href="http://stackoverflow.com/users/227228/damian" title="2952 reputation" target="_blank">Damian</a>
+              <a shape="rect" href="http://stackoverflow.com/questions/3319591/uilongpressgesturerecognizer-gets-called-twice-when-pressing-down#comment12229572_7114034" target="_blank">Mar 9 at 13:29</a>
+             </div> </td></tr></table> 
+        </div> 
+        <div>
+          feedback
+        </div> </td></tr></table> 
+   </div> 
+   <div> 
+    <table><tr><td colspan="1" rowspan="1"> 
+        <div> 
+         <a shape="rect" title="This answer is useful (click again to undo)" target="_blank">up vote</a>
+         <a shape="rect" title="This answer is not useful (click again to undo)" target="_blank">down vote</a>
+        </div> </td><td colspan="1" rowspan="1"> 
+        <div> 
+         <pre><code>IBActionlongPressHandlesenderaccessedLongPressHandlerCount 
+        accessedLongPressHandlerCount //do somethingaccessedLongPressHandlerCount 
+        accessedLongPressHandlerCount //this is whats called after the second time it gets to this methodNSLog"Accessed Long Pressed some how made it here %@ times" accessedLongPressHandlerCount</code></pre> 
+         <p> Is what worked for me.</p> 
+        </div> </td></tr></table> 
+   </div> 
+  </div> 
+ </div>
+</div></body></html>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="author" content="Redman"/><meta name="created" content="2014-08-30 02:50:42 +0000"/><meta name="updated" content="2014-09-15 12:42:04 +0000"/><title>HXYinYueTai接口</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">deviceinfo=%7B%22aid%22%3A%2210201024%22%2C%22os%22%3A%22Android%22%2C%22ov%22%3A%224.1.1%22%2C%22rn%22%3A%22640*960%22%2C%22dn%22%3A%22Apple%20Iphone-4s%22%2C%22cr%22%3A%2246001%22%2C%22as%22%3A%22WIFI%22%2C%22uid%22%3A%22083df690358ed0c7ca179654e8010c33%22%2C%22clid%22%3A110033000%7D</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">在网络地址中上述 设备信息应该使用这个方法将%去掉还原为真实的信息(注：需使用指定编码 NSUTF8StringEncoding stringByReplacingPercentEscapesUsingEncoding:</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">// 在iOS中 是不能直接使用 % " 等符号，因为这两个符号被oc语言使用，使用%需写两个%，使用 " 需使用\转义，而要使用\则需要在\之前再加上一个\。</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">deviceinfo=@{\"aid\":\"10201024\",\"os\":\"Android\",\"ov\":\"7.0\",\"rn\":\"640*960\",\"dn\":\"Apple Iphone-4s\",\"cr\":\"46001\",\"as\":\"WIFI\",\"uid\":\"083df690358ed0c7ca179654e8010c33\",\"clid\":110033000}</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">其中将D-A=0填充为上面的设备信息即可</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">1. 获取每次访问的唯一KEY</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/product/getUnikey.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息 和 s=4416a82d8048d9824b3ed7b54917f3d2</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">2. 获取时间</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/common/time.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">3. 获取手机号</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/product/getMobile.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息 和 unikey (unikey依赖于接口1的结果)</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">4. 获取热门关键词</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/search/top_keyword.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">5. 开始页:</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口http://mapi.yinyuetai.com/mv/get_start.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">6. 打广告的地址</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/mv/get_search.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息 和 amp</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">7. 操作结果</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/statistics/pulse_on.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: D-A=0 和 设备信息</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">8. 绑定结果</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/apns/bind.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息 和 device_token=gt-7b1bee6ac03b72f716cb74d248555c16</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">9. 获取资源</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/common/resources.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">10. 获取首页上头视图的数据</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/suggestions/front_page.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息 和 rn=640*540</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">11. 获取视频详细列表</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/video/list.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息 和 promoTitle=true 以及 area=DAYVIEW_ALL 和 supportBanner=true 和offset=0 和 size = 10</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数含义: size是个数, area是类型,    DAYVIEW_ALL是今日热播</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">                                       POP_ALL 是正在流行栏目</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">                                       ALL是MV首播栏目接口</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">12. 猜你喜欢栏目</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/video/guess.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息 和 offset=0 和 size=20(表示)</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">13. 获取区域参数</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/video/get_mv_areas.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息 和 type=dv表示今日热播, type=fs表示是首播的区域, type=pop表示正在流行</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">14. 获取相关视频</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/video/show.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息  和 relatedVideos=true 和 id，其中id是上一个界面传过去的id号 依赖于接口11或12的结果</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">15. 获取某个区域的详细列表</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/video/list.json?</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 与接口11的参数相同</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">16. 获取频道列表</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/recommend/video/aggregation.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">17. 获取详细频道列表</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/channel/videos.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息 和 detail=true 和 offset=0 和 channelId=25 和 size=20</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数含义: channelId是频道的编号 size是请求20条数据 detail, 第一次请求为true, 之后为false, offset才是偏移量，每加载更多，自动加20条</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">18. 产品订购服务 包月</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/product/subscribe_view</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: D-A=0 和 设备信息 和 productId=1  和 localphone=&amp;netPhone=1</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">19. 游戏中心:</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     网页接口: http://m.yinyuetai.com/apps/game</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">20. 口袋 ✪ Fan</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     网页接口: http://mapi.yinyuetai.com/yyt/star?D-A=0 和 设备信息</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">21. 炫酷月铃</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     网页接口: http://mapi.yinyuetai.com/ring</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数为设备信息</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">22. 获取地区列表</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/vchart/get_vchart_areas.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">23. 获取某一地区准确动态接口</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/vchart/trend.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息 和 area=ML 和 offset=0 size=20</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">24. 获取往期打榜动态</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/vchart/show.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息 和area 和 datecode=0</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">25. 悦单列表</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/playlist/list.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息 和 category 和offset 和 size</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     含义: category是分类 有CHOICE 和 HOT 和 NEW 三种</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">26. 关键字搜索</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/search/suggest.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息 和 type 和 keyword</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     含义: type 有三种 search_type_mv、 playlist、search_type_artist; keyword</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">27. 艺人搜索结果</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/search/artist.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息 offset=0 和 size=20 和 keyword</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">28. MV搜索结果</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/search/video.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 同接口 27</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">29. 悦单搜索结果</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/search/playlist.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 同 27</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">30. 播放视频相关</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/video/show.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息  和 relatedVideos=true 和 id=2121924</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">31. 获取评论</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/video/comment/list.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息 和 offset=10&amp;videoId=2121924&amp;size=10</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">32. 悦单列表</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/playlist/show.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息 和 id=2718703</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">33. 频道列表</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/channel/videos.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息 detail=true&amp;offset=0&amp;channelId=13&amp;size=20</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">34. 艺人详情</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/artist/show.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息 &amp;offset=0&amp;artistId=154&amp;size=20</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">35. 注册</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/account/register.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息 和 email= 、password 、nickname</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">36. 短信注册</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/account/check_phone.json?</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: 设备信息 和 productId=0&amp;phone=18565600130&amp;type=register</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;"><br/></div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">37. 登录</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     接口: http://mapi.yinyuetai.com/account/login.json</div>
+<div style="font-family: &quot;Courier&quot;; font-size: 18px; font-style: normal; font-weight: normal;">     参数: username=huangxionging%40163.com&amp;password=</div>
+</body></html>

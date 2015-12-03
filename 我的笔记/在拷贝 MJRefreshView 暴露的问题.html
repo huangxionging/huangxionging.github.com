@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="22.45607757568359"/><meta name="author" content="Redman"/><meta name="created" content="2015-04-21 02:53:32 +0000"/><meta name="latitude" content="22.54700294489525"/><meta name="longitude" content="113.936569628659"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2015-04-21 03:06:37 +0000"/><title>在拷贝 MJRefreshView 暴露的问题</title></head><body>
+<div><img src="%E5%9C%A8%E6%8B%B7%E8%B4%9D%20MJRefreshView%20%E6%9A%B4%E9%9C%B2%E7%9A%84%E9%97%AE%E9%A2%98.resources/580919C4-58ED-4C5F-8C2F-B5C330240F82.png" height="430" width="730"/>在拷贝第三方库或者文件夹, 选用该图的这种方式, 得到的结果如下</div>
+<div><img src="%E5%9C%A8%E6%8B%B7%E8%B4%9D%20MJRefreshView%20%E6%9A%B4%E9%9C%B2%E7%9A%84%E9%97%AE%E9%A2%98.resources/58CB9773-D064-4572-8E64-253B4E74944B.png" height="360" width="253"/></div>
+<div><br/></div>
+<div>而采用 Create folder reference 的这种方式, 得到的结果</div>
+<div><br/></div>
+<div><img src="%E5%9C%A8%E6%8B%B7%E8%B4%9D%20MJRefreshView%20%E6%9A%B4%E9%9C%B2%E7%9A%84%E9%97%AE%E9%A2%98.resources/AA07DC13-2F85-495C-BD3D-5B1F9524A7E7.png" height="336" width="254"/>可以看到这种方式得到的文件夹是有点带蓝色而不是黄色的. 第一种是相对式分组, 内部依赖关系可以改, 第二种是绝对的, 不可以修改.但不是指物理文件夹中.第一种方式删除的时候, 会连同文件夹一起删除, 而第二种只删除文件夹里面的内容, 文件夹本身不会被删除.第一种方式中, 引入头文件无需加文件夹做前缀, 而第二种需要加文件夹做前缀. 第二种的麻烦在于需要调整项目的头文件的依赖关系. 所以我们编译时, 就没有把文件夹里面的内容一起编译完成, 导致错误的发生. 最好使用第一种方式, 由 Xcode 本身来处理依赖关系.无需加文件夹做前缀, 无需手动调整文件依赖关系, 编译就通过了.</div>
+</body></html>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="created" content="2015-11-30 09:42:42 +0000"/><meta name="source" content="Clearly"/><meta name="source-url" content="http://blog.csdn.net/j_akill/article/details/44463301"/><meta name="updated" content="2015-11-30 09:42:42 +0000"/><title>ios开发，javascript直接调用oc代码而非通过改变url回调方式 - j_akill的专栏 - 博客频道 - CSDN.NET</title></head><body><div>
+ <div>
+  <div>
+   <h1> <a shape="rect" href="http://blog.csdn.net/j_akill/article/details/44463301" target="_blank"> ios开发，javascript直接调用oc代码而非通过改变url回调方式 </a> </h1>
+  </div> 
+  <div> 
+   <p>版权声明：本文为博主原创文章，未经博主允许不得转载。</p> 
+  </div> 
+  <p>之前一个ios项目中，需要通过UIWebview来打开一个静态页面，并在静态页面中</p> 
+  <p>调用相关object-c代码。</p> 
+  <h4>一、以前使用js调用object-c的方法</h4> 
+  <p>关于如何使用javascript调用object-c中的函数和方法，我搜索了好久</p> 
+  <p>网上所有的方法，基本都指明了一个方向，那就是在UIWebview中载入的js代码中</p> 
+  <p>通过改变document.locations=“”,然后回调UIWebview的</p> 
+  <p>-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType</p> 
+  <p>函数，在上面这个函数中，通过截取NSURLRequest解析js中传递过来的参数，再根据参数</p> 
+  <p>来选择早已定义好的方法。</p> 
+  <p>有没有别的方法呢？ 我找了几个月，没找到！但是有一个转机。</p> 
+  <p>我偶然知道了  javascriptCore.framework 这个库</p> 
+  <p>于是事情有了转机。</p> 
+  <p><strong>二、在js中直接调用oc的方法</strong></p> 
+  <p><strong>废话不多说，现在看看如何在UIWebView的javascript中调用oc的方法</strong></p> 
+  <p>首先在建立一个UIWebView，代码如下：</p> 
+  <div>
+   <ol><li>//  webview.m</li><li>//  login</li><li>//  Created by wangdan on 15-3-19.</li><li>//  Copyright (c) 2015年 wangdan. All rights reserved.</li><li>#import "webview.h"</li><li>#import &lt;JavaScriptCore/JavaScriptCore.h&gt;</li><li>@implementation webview  </li><li>-()initWithFrame:(CGRect)frame  </li><li>    super initWithFrame:frame];  </li><li>        .webview=[[UIWebView alloc]initWithFrame:CGRectMake(.bounds.size.width</li><li>        .webview.backgroundColor=[UIColor lightGrayColor</li><li>        NSString *htmlPath=[[NSBundle mainBundle resourcePath</li><li>        htmlPath=[htmlPath stringByAppendingPathComponent@"html/index.html"</li><li>        NSURL *localURL=[[NSURL alloc]initFileURLWithPath:htmlPath];  </li><li>        [.webview loadRequest:[NSURLRequest requestWithURL:localURL]];  </li><li>        [ addSubview.webview</li><li>         JSContext *context = [.webview valueForKeyPath@"documentView.webView.mainFrame.javaScriptContext"</li><li>         context[@"log"] = ^() {  </li><li>            NSLog(@"+++++++Begin Log+++++++"</li><li>            NSArray *args = [JSContext currentArguments</li><li>            JSValue *jsVal in args) {  </li><li>                NSLog(@"%@", jsVal);  </li><li>            JSValue *this = [JSContext currentThis</li><li>            NSLog(@"this: %@",this);  </li><li>            NSLog(@"-------End Log-------"</li><li>//        [context evaluateScript:@"log('ider', [7, 21], { hello:'world', js:100 });"];</li><li>    return</li></ol>
+  </div>
+  <pre>//
+//  webview.m
+//  login
+//
+//  Created by wangdan on 15-3-19.
+//  Copyright (c) 2015年 wangdan. All rights reserved.
+//
+
+#import "webview.h"
+#import &lt;JavaScriptCore/JavaScriptCore.h&gt;
+
+@implementation webview
+
+
+-(id)initWithFrame:(CGRect)frame
+{
+    self=[super initWithFrame:frame];
+    
+    if( self ){
+        self.webview=[[UIWebView alloc]initWithFrame:CGRectMake(0, 310, self.bounds.size.width, 300)];
+        self.webview.backgroundColor=[UIColor lightGrayColor];
+        NSString *htmlPath=[[NSBundle mainBundle] resourcePath];
+        htmlPath=[htmlPath stringByAppendingPathComponent:@"html/index.html"];
+        NSURL *localURL=[[NSURL alloc]initFileURLWithPath:htmlPath];
+        [self.webview loadRequest:[NSURLRequest requestWithURL:localURL]];
+        [self addSubview:self.webview];
+
+         JSContext *context = [self.webview valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
+         context[@"log"] = ^() {
+
+            NSLog(@"+++++++Begin Log+++++++");
+            NSArray *args = [JSContext currentArguments];
+
+            for (JSValue *jsVal in args) {
+                NSLog(@"%@", jsVal);
+            }
+
+            JSValue *this = [JSContext currentThis];
+            NSLog(@"this: %@",this);
+            NSLog(@"-------End Log-------");
+
+        };
+        
+
+//        [context evaluateScript:@"log('ider', [7, 21], { hello:'world', js:100 });"];
+
+        
+    }
+    return self;
+}
+
+
+@end</pre> 
+  <p>(1)在上述代码中，使用javascriptCore.framework，首先使用UIWebview加载一个静态网页，并</p> 
+  <p>JSContext *context = [self.webview valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];</p> 
+  <p>获取该UIWebview的javascript执行环境。</p> 
+  <p>(2)在该javascript执行环境中，定义一个js函数，注意关键点来了</p> 
+  <p>这个函数的执行体完全是 objective-c代码写的，也就是下面：</p> 
+  <div>
+   <ol><li>context[@"jakilllog"] = ^() {  </li><li>        NSLog(@"Begin Log"</li><li>        NSArray *args = [JSContext currentArguments</li><li>        JSValue *jsVal in args) {  </li><li>            NSLog(@"%@", jsVal);  </li><li>        JSValue *this = [JSContext currentThis</li><li>        NSLog(@"-------End Log-------"</li></ol>
+  </div>
+  <pre>    context[@"jakilllog"] = ^() {
+
+            NSLog(@"Begin Log");
+            NSArray *args = [JSContext currentArguments];
+
+            for (JSValue *jsVal in args) {
+                NSLog(@"%@", jsVal);
+            }
+
+            JSValue *this = [JSContext currentThis];
+            NSLog(@"-------End Log-------");
+
+        };
+</pre> 
+  <p>（3）试想一下，在定义的webview中，如果使用js执行log这个函数，那么会不会调用上面oc中block段代码呢，答案是肯定的！</p> 
+  <p><strong>下面看看UIWebView 中所加载的 html及其js代码是如何写的</strong></p> 
+  <p>（4）index.html代码</p> 
+  <div>
+   <ol><li>&lt;!--//  Created by wangdan on 15-3-19.--&gt;</li><li>&lt;!--//  Copyright (c) 2014年 wangdan. All rights reserved.--&gt;</li><li>&lt;!DOCTYPE html</li><li>         charset"utf-8"</li><li>          http-equiv"X-UA-Compatible"content"IE=edge,chrome=1"</li><li>            http-equiv"Content-Type"content"text/html; charset=utf-8"/&gt;</li><li>            "description"content</li><li>            "viewport"content"width=device-width; initial-scale=1.0"</li><li>             script"text/javascript""index.js"&lt;/script</li><li>      &lt;/</li><li>    button"hallo"onclick"buttonClick()" 点击button&lt;/button</li><li>    &lt;/</li><li>&lt;/</li></ol>
+  </div>
+  <pre>&lt;!--//  Created by wangdan on 15-3-19.--&gt;
+&lt;!--//  Copyright (c) 2014年 wangdan. All rights reserved.--&gt;
+
+&lt;!DOCTYPE html&gt;
+
+&lt;html lang="en"&gt;
+    
+    &lt;head&gt;
+        
+         &lt;meta charset="utf-8"&gt;
+            
+          &lt;meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"&gt;
+            &lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /&gt;    
+                
+            &lt;meta name="description" content=""&gt;
+                    
+            &lt;meta name="viewport" content="width=device-width; initial-scale=1.0"&gt;
+             &lt;script type="text/javascript" src="index.js"&gt;&lt;/script&gt;           
+      
+                        
+      &lt;/head&gt;
+    
+	&lt;button id="hallo" onclick="buttonClick()"&gt; 点击button&lt;/button&gt;
+
+    &lt;/body&gt;
+    
+&lt;/html&gt;
+</pre>
+  <div>
+   <ol><li>上面html定义了一个button，然后引用index.js，点击button的响应函数为buttonClick()  </li></ol>
+  </div>
+  <pre>上面html定义了一个button，然后引用index.js，点击button的响应函数为buttonClick()</pre>
+  <div>
+   <ol><li>该函数在index.js中定义，如下  </li></ol>
+  </div>
+  <pre>该函数在index.js中定义，如下</pre>
+  <div>
+   <ol><li>function buttonClick()  </li><li>    jakilllog("hello world");  </li></ol>
+  </div>
+  <pre>function buttonClick()
+{
+	jakilllog("hello world");
+}
+</pre>
+  <p>意思是点击这个button，就调用jakilllog()函数，jakilllog()函数显然是我们在oc中实现的一个block段，</p> 
+  <p>就是上述绿色部分的block段。</p> 
+  <p>点击button会执行么？答案是肯定的。</p> 
+  <p>下面上图</p>
+  <div>
+   <img src="ios%E5%BC%80%E5%8F%91%EF%BC%8Cjavascript%E7%9B%B4%E6%8E%A5%E8%B0%83%E7%94%A8oc%E4%BB%A3%E7%A0%81%E8%80%8C%E9%9D%9E%E9%80%9A%E8%BF%87%E6%94%B9%E5%8F%98url%E5%9B%9E%E8%B0%83%E6%96%B9%E5%BC%8F%20-%20j_akill%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/D4BF7EC4-6471-46A9-A60E-9397895C8B42.png" height="709" width="477"/>
+  </div>
+  <p/> 
+  <p>下图是执行的结果</p> 
+  <p />
+  <div>
+   <img src="ios%E5%BC%80%E5%8F%91%EF%BC%8Cjavascript%E7%9B%B4%E6%8E%A5%E8%B0%83%E7%94%A8oc%E4%BB%A3%E7%A0%81%E8%80%8C%E9%9D%9E%E9%80%9A%E8%BF%87%E6%94%B9%E5%8F%98url%E5%9B%9E%E8%B0%83%E6%96%B9%E5%BC%8F%20-%20j_akill%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/F657299C-AAFE-4A19-B3BC-225A26FBD3A8.png" height="285" width="759"/>
+  </div>
+  <p/> 
+  <p> 点击html中的button，能够执行oc中的代码</p> 
+  <p>说明直接从js调用oc的意图达到。</p> 
+  <p>最近有很多朋友问我索要demo那么我把demo的地址上传到csdn</p> 
+  <p>大家下载下来就很方便了。</p> 
+  <p><a shape="rect" href="http://download.csdn.net/detail/j_akill/9278221" target="_blank">demo地址</a></p> 
+ </div>
+</div></body></html>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="created" content="2015-05-26 10:05:13 +0000"/><meta name="source" content="Clearly"/><meta name="source-url" content="http://blog.sina.com.cn/s/blog_6084f5880100u4q4.html"/><meta name="updated" content="2015-05-27 01:56:07 +0000"/><title>非零绕组规则和奇偶规则</title></head><body>
+<div>
+<div>
+<h1>Non-Zero Winding Number Rule非零绕组规则</h1>
+</div>
+</div>
+<div>该方法常用与判断点是否在多边形或曲线上。<br clear="none"/>
+<br clear="none"/>
+给定一条曲线C和一个点P，构造一条从P点出发射向无穷远的射线。找出所有该射线和曲线的交点，并按如下规则统计绕组数量(winding number)：<br clear="none"/>
+<br clear="none"/>
+每一个顺时针方向（曲线从左向右通过射线）上的交点减1，每一个逆时针方向（曲线从右向左通过射线）上的交点加1。如果绕组总数为0，表示该点在曲线外；否则，该点在曲线内。
+<div><img src="%E9%9D%9E%E9%9B%B6%E7%BB%95%E7%BB%84%E8%A7%84%E5%88%99%E5%92%8C%E5%A5%87%E5%81%B6%E8%A7%84%E5%88%99.resources/11D1049A-B41F-4EAE-B6D2-A9F11F486065.gif" height="203" width="258"/></div>
+该规则和奇偶规则的区别如下：<br clear="none"/>
+<hr/>
+<br clear="none"/>
+<img src="%E9%9D%9E%E9%9B%B6%E7%BB%95%E7%BB%84%E8%A7%84%E5%88%99%E5%92%8C%E5%A5%87%E5%81%B6%E8%A7%84%E5%88%99.resources/F769230E-3A8F-4B18-8650-62A118A48BCC.png" height="210" width="220"/><br clear="none"/>
+<br clear="none"/>
+上图中左下角是按照奇偶规则填充效果，右下图是按照非零绕组规则填充的效果：<br clear="none"/>
+从P点射出一条指向无穷远的射线，对于奇偶规则，曲线和射线有两个交点（或交点个数为偶数）。因此，按照奇偶规则，点P在曲线之外；对于非零规则，曲线在顺时针方向上被射线分割两次，绕组值为-2，非零。因此P点是在曲线上的点。<br clear="none"/>
+<br clear="none"/>
+下面这个来自Developer-apple的图也很能说明问题：
+<div/>
+<hr/>
+<br clear="none"/>
+CGContextFillPath，CGContextClip 使用的是非零绕组规则</div>
+<div>CGContextEOClip 使用的是奇偶规则</div>
+</body></html>

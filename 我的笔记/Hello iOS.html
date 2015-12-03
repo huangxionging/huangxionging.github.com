@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="17.88334274291992"/><meta name="author" content="Redman"/><meta name="created" content="2014-06-26 02:37:35 +0000"/><meta name="latitude" content="22.53765346240634"/><meta name="longitude" content="113.9402053154574"/><meta name="updated" content="2014-06-30 02:48:10 +0000"/><title>Hello iOS</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+<div><a href="Hello%20iOS.resources/Hello%20iOS.zip">Hello iOS.zip</a></div>
+<div>在这个应用中</div>
+<div><img src="Hello%20iOS.resources/QQ20140624-2.png" height="800" width="495"/></div>
+<div><br/></div>
+<div>在hello iOS中共有两个类AppDelegate和ViewController这两个类。以及一组supporting files。</div>
+<div>AppDelegate是应用程序委托对象.</div>
+<div><br/></div>
+<div><font color="#FF2600">通过 AppDelegate.h 这个头文件，我们可以看到AppDelegate类的继承关系</font></div>
+<div>///////////////////////////////////////////////////////////////////////////////////////////////////////////</div>
+<div>
+<div>//</div>
+<div>//  AppDelegate.h</div>
+<div>//  Hello iOS</div>
+<div>//</div>
+<div>//  Created by huangxiong on 14-6-23.</div>
+<div>//  Copyright (c) 2014年 New-Life. All rights reserved.</div>
+<div>//</div>
+<div><br/></div>
+<div><font color="#2B41FD">#import</font> <font color="#FF3854">&lt;UIKit/UIKit.h&gt;</font></div>
+<div><br/></div>
+<div><font color="#2B41FD">@interface</font> AppDelegate : <font color="#2B41FD">UIResponder &lt;UIApplicationDelegate 
+<![CDATA[>]]>
+</font></div>
+<div><br/></div>
+<div><font color="#2B41FD">@property</font> (<font color="#2B41FD">strong, nonatomic</font>) <font color="#2B41FD">UIWindow</font> *window;</div>
+<div><br/></div>
+<div><font color="#2B41FD">@end</font></div>
+<div><br/></div>
+<div><br/></div>
+<div>很明显，<font color="#2B41FD">AppDelegate</font> 类继承了 <font color="#2B41FD">UIResponder</font> <font color="#00021D">这个类，并且遵守</font><font color="#2B41FD"> UIApplicationDelegate</font><font color="#00021D"> 这个协议，</font><font color="#2B41FD">UIApplicationDelegate</font> <font color="#00021D">协议是一个委托代理协议，在</font> <font color="#2B41FD">AppDelegate</font> <font color="#00021D">类中实现了协议。继承自 </font><font color="#2B41FD">UIResponder</font> 类，使得 <font color="#2B41FD">AppDelegate</font> 类具有事件处理的能力，而遵守代理协议可以使得这个类可以相应应用程序的生命周期。相应的，<font color="#2B41FD">AppDelegate</font> 的子类也能实现这两大功能，即<font color="#EE4787">事件处理</font>和<font color="#EE4787">响应应用程序的生命周期。</font></div>
+<div><font color="#EE4787"><br/></font></div>
+<div><font color="#EE4787"><br/></font></div>
+<div><font color="#EE4787"><br/></font></div>
+<div><font color="#EE4787">———————————————————————————————————————————————————————————————————————————————————————————————————————————————</font></div>
+<div><font color="#00021D">第二个类是 </font><font color="#2B41FD">ViewController</font> 类，从头文件可以看出，继承自 <font color="#2B41FD">UIViewController</font>，即是视图控制类，在工程中扮演着根视图和用户事件控制类的角色。</div>
+<div>
+<div><font color="#16E669">///////////////////////////////////////////////////////////</font><font color="#B5FA4C">///////////////////</font><font color="#16E669">/////////////////////////////</font></div>
+</div>
+<div>
+<div><font color="#16E669">//</font></div>
+<div><font color="#16E669">//  ViewController.h</font></div>
+<div><font color="#16E669">//  Hello iOS</font></div>
+<div><font color="#16E669">//</font></div>
+<div><font color="#16E669">//  Created by huangxiong on 14-6-23.</font></div>
+<div><font color="#16E669">//  Copyright (c) 2014年 New-Life. All rights reserved.</font></div>
+<div><font color="#9FFA41">//</font></div>
+<div><br/></div>
+<div><font color="#2B41FD">#import</font> <font color="#FF3854">&lt;UIKit/UIKit.h&gt;</font></div>
+<div><br/></div>
+<div><font color="#2B41FD">@interface</font> ViewController : <font color="#2B41FD">UIViewController</font></div>
+<div><br/></div>
+<div><font color="#2B41FD">@end</font></div>
+<div><font color="#2B41FD"><br/></font></div>
+<div>
+<div><font color="#EE4787">———————————————————————————————————————————————————————————————————————————————————————————————————————————————</font></div>
+<div><font color="#EE4787"><br/></font></div>
+<div><font color="#EE4787"><br/></font></div>
+<div><font color="#EE4787">iOS应用程序的启动过程：</font></div>
+<div><font color="#32E651">//</font></div>
+<div><font color="#32E651">//  main.m</font></div>
+<div><font color="#32E651">//  Hello iOS</font></div>
+<div><font color="#32E651">//</font></div>
+<div><font color="#32E651">//  Created by huangxiong on 14-6-23.</font></div>
+<div><font color="#32E651">//  Copyright (c) 2014年 New-Life. All rights reserved.</font></div>
+<div><font color="#32E651">//</font></div>
+<div><br/></div>
+<div>#import &lt;UIKit/UIKit.h&gt;</div>
+<div><br/></div>
+<div>#import "AppDelegate.h"</div>
+<div><br/></div>
+<div>int main(int argc, char * argv[])</div>
+<div>{</div>
+<div>    @autoreleasepool {</div>
+<div>        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));</div>
+<div>    }</div>
+<div>    return 0;</div>
+<div>}</div>
+<div><br/></div>
+<div>从所有程序 main函数开始，但iOS应用的入口是UIApplicationMain 函数，所以在main函数中调用UIApplicationMain进入iOS图形应用。利用实参 NSStringFromClass([AppDelegate class])对应用进行初始化，这个参数也是一个函数，会调用 AppDelegate 代理对象。</div>
+<div><br/></div>
+<div>
+<div><font color="#15E672">//</font></div>
+<div><font color="#15E672">//  AppDelegate.m</font></div>
+<div><font color="#15E672">//  Hello iOS</font></div>
+<div><font color="#15E672">//</font></div>
+<div><font color="#15E672">//  Created by huangxiong on 14-6-23.</font></div>
+<div><font color="#15E672">//  Copyright (c) 2014年 New-Life. All rights reserved.</font></div>
+<div><font color="#15E672">//</font></div>
+<div><br/></div>
+<div>#import "AppDelegate.h"</div>
+<div><br/></div>
+<div>@implementation AppDelegate</div>
+<div><br/></div>
+<div>- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</div>
+<div>{</div>
+<div>    // Override point for customization after application launch.</div>
+<div>    NSLog(@"%@", @"Redman 启动了应用程序！");</div>
+<div>    return YES;</div>
+<div>}</div>
+<div/>
+<div>- (void)applicationWillResignActive:(UIApplication *)application</div>
+<div>{</div>
+<div>    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.</div>
+<div>    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.</div>
+<div>    NSLog(@"%@", @"应用程序从活动状态转到非活动状态");</div>
+<div>}</div>
+<div><br/></div>
+<div>- (void)applicationDidEnterBackground:(UIApplication *)application</div>
+<div>{</div>
+<div>    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.</div>
+<div>    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.</div>
+<div>    NSLog(@"%@", @"应用程序进入后台");</div>
+<div>}</div>
+<div><br/></div>
+<div>- (void)applicationWillEnterForeground:(UIApplication *)application</div>
+<div>{</div>
+<div>    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.</div>
+<div>    NSLog(@"%@", @"应用程序进入前台");</div>
+<div>}</div>
+<div><br/></div>
+<div>- (void)applicationDidBecomeActive:(UIApplication *)application</div>
+<div>{</div>
+<div>    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.</div>
+<div>    NSLog(@"%@", @"应用程序进入前台并处于活动状态");</div>
+<div>}</div>
+<div><br/></div>
+<div>- (void)applicationWillTerminate:(UIApplication *)application</div>
+<div>{</div>
+<div>    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.</div>
+<div>    NSLog(@"%@", @"应用程序终止");</div>
+<div>}</div>
+<div><br/></div>
+<div>// Save application state</div>
+<div>-(BOOL) application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder</div>
+<div>{</div>
+<div>    return YES;</div>
+<div>}</div>
+<div><br/></div>
+<div>// Restore application state</div>
+<div>-(BOOL) application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder</div>
+<div>{</div>
+<div>    return  YES;</div>
+<div>}</div>
+<div><br/></div>
+<div>// Encoding restorable state</div>
+<div>-(void) application:(UIApplication *)application willEncodeRestorableStateWithCoder:(NSCoder *)coder</div>
+<div>{</div>
+<div>    [coder encodeFloat: 2.0 forKey: @"Version"];</div>
+<div>}</div>
+<div><br/></div>
+<div>// Decoding restorable state</div>
+<div>-(void) application:(UIApplication *)application didDecodeRestorableStateWithCoder:(NSCoder *)coder</div>
+<div>{</div>
+<div>    float lastVer = [coder decodeFloatForKey: @"Version"];</div>
+<div>    NSLog(@"lastVer = %f", lastVer);</div>
+<div>}</div>
+<div><br/></div>
+<div>@end</div>
+<div><br/></div>
+<div><br/></div>
+<div>AppDelegate 实现了UIApplicationDelegate协议，所以能够响应应用程序的生命周期，在整个生命周期中会根据生命周期的不同状态调用相应的方法，来响应状态的变化。以上代码可以用来测试AppDelegate对象对状态的响应。</div>
+<div><br/></div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

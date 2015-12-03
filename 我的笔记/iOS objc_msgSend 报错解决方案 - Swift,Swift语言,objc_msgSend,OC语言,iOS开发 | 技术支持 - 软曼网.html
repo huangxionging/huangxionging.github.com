@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="created" content="2015-09-07 07:44:32 +0000"/><meta name="source" content="Clearly"/><meta name="source-url" content="http://www.ruanman.net/swift/learn/10443.html"/><meta name="updated" content="2015-09-07 07:44:32 +0000"/><title>iOS objc_msgSend 报错解决方案 - Swift,Swift语言,objc_msgSend,OC语言,iOS开发 | 技术支持 - 软曼网</title></head><body><div>
+ <div>
+  <div>
+   <h1>iOS objc_msgSend 报错解决方案</h1>
+  </div> 
+  <p> 2014/9/12 10:58:12 分类：技术支持 编辑：右手边 来源： <a shape="rect" href="http://www.ruanman.net" target="_blank">软曼网</a> </p> 
+  <div> 
+   <p> 最近几天一直在给 <a shape="rect" href="http://www.ruanman.net/" target="_blank">软曼网</a>做iOS端的开发工作，也是用了一些第三方开发的类库，在<a shape="rect" href="http://www.ruanman.net/" target="_blank">Swift语言</a>和OC 语言下也碰到了各种问题，这不昨天又报错了 </p> 
+   <p> 总体是我objc_msgSend 这个方法出现错误 </p> 
+   <p> 错误代码： </p> 
+   <pre>objc_msgSend(self.beginRefreshingTaget, self.beginRefreshingAction, self);</pre> 
+   <p> Too many arguments to function call, expected 0, have 3 </p> 
+   <p> 经过几番周折，终于叨叨解决方案了 </p> 
+   <p> 选中项目 - Project - Build Settings - ENABLE_STRICT_OBJC_MSGSEND  将其设置为 NO 即可</p> 
+   <p> 直接上图说明 </p> 
+   <p />
+   <div>
+    <img src="iOS%20objc_msgSend%20%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%20-%20Swift,Swift%E8%AF%AD%E8%A8%80,objc_msgSend,OC%E8%AF%AD%E8%A8%80,iOS%E5%BC%80%E5%8F%91%20%7C%20%E6%8A%80%E6%9C%AF%E6%94%AF%E6%8C%81%20-%20%E8%BD%AF%E6%9B%BC%E7%BD%91.resources/6FBDC95E-3E30-440B-8195-D635FDBF1813.jpg" height="365" width="608"/>
+   </div> 
+   <p/> 
+   <div>
+     分享给小伙伴们： 
+    <div> 
+     <a shape="rect" title="累计分享5次" target="_blank">5</a> 
+    </div> 
+    <div>
+      上一篇：
+     <a shape="rect" href="http://www.ruanman.net/swift/learn/9510.html" target="_blank">Xcode 6 Swift apple mach-o linker error错误解决</a> 下一篇：没有啦！ 
+    </div> 
+    <div> 
+     <ul/><div>
+       同类下暂无推荐的资讯...
+      </div> 
+      
+     <div>
+      <div>
+       <div>
+        <div>
+         <a shape="rect" target="_blank">最新</a>
+         <a shape="rect" target="_blank">最早</a>
+         <a shape="rect" target="_blank">最热</a>
+        </div>
+        <ul><li><a shape="rect" href="#" target="_blank">条评论</a></li></ul>
+        <ul><li>
+          <div>
+           <div>
+            <div>
+             w99wen
+            </div>
+            <p>shit一样的答案。<br clear="none"/>具体出错原因可以用xcode 的debug模式，再控制台打p/x $eax。具体是$eax还是别的，要看文档：http://www.sealiesoftware.com/blog/archive/2008/09/22/objc_explain_So_you_crashed_in_objc_msgSend.html<br clear="none"/>i386的receiver是$eax，ram64的是x0或者x1.<br clear="none"/>从这些变量里面能知道是哪个receiver运行的哪个SEL出的错。<br clear="none"/>我当时的错误原因是开了arc的工程，property的nsstring的用的retian，应该用copy。结果就是常亮值自动retain，可能导致retaincount变成-1.结果就是悲剧 .</p>
+           </div>
+          </div></li></ul> 
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div></body></html>

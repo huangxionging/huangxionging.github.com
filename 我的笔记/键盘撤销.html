@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="17.81875419616699"/><meta name="author" content="Redman"/><meta name="created" content="2014-06-30 08:29:53 +0000"/><meta name="latitude" content="22.53788231556992"/><meta name="longitude" content="113.9402047444964"/><meta name="updated" content="2014-07-05 08:07:39 +0000"/><title>键盘撤销</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+     在使用TextField控件和TextView控件时，在编辑状态时，系统会自动弹出键盘，但是取消键盘就困难了。原因是在编辑状态时，这些控件将处于第一响应状态，如果其中一个响应者控件没有对事件进行处理，那么该事件将会重新向下传递。<br/>
+<div>     </div>
+<div>     第一响应者 就是响应者链（可以看做一个响应链表）中的第一个，不同的控件成为第一响应者之后，表现不太一样。TextField控件和TextView这种输入控件会出现键盘，而我们只有让这些控件放弃第一响应者身份，键盘才会关闭。</div>
+<div>     要放弃第一响应者，需要利用UIResponder类中的resignFirstResponder方法。</div>
+<div><br/></div>
+<div>// 这两个控件通过委托协议定义的方法来实现</div>
+<div><br/></div>
+<div>
+<div>// 通过委托来放弃"第一响应"</div>
+<div><font color="#2B41FD">#pragma mark - UITextField Delegate Method</font></div>
+<div>// 该方法在点击控件时会被调用</div>
+<div>-(BOOL) <font color="#EE4787">textFieldShouldReturn:</font>(UITextField *)textField</div>
+<div>{</div>
+<div>    <font color="#15E672">// 这句话表示控件放弃第一响应者</font></div>
+<div>    [textField resignFirstResponder];</div>
+<div>    return YES;</div>
+<div>}</div>
+<div><br/></div>
+<div>// 通过委托来放弃"第一响应"</div>
+<div><font color="#2B41FD">#pragma mark - UITextView Delegate Method</font></div>
+<div>
+<div>// 该方法在点击控件时会被调用</div>
+</div>
+<div>-(BOOL) <font color="#FF3854">textView:</font>(UITextView *)textView <font color="#FF3854">shouldChangeTextInRange:</font>(NSRange)range <font color="#EE4787">replacementText:</font>(NSString *)text</div>
+<div>{</div>
+<div>    if ([text isEqualToString: @"\n"])</div>
+<div>    {</div>
+<div>        <font color="#15E672">// 这句话表示控件放弃第一响应者</font></div>
+<div>        [textView resignFirstResponder];</div>
+<div>        return NO;</div>
+<div>    }</div>
+<div>    return YES;</div>
+<div>}</div>
+</div>
+<div><br/></div>
+<div><font color="#15E672">//////////////////////////////////////////</font></div>
+<div>
+<div><font color="#EE4787">// 键盘通知</font></div>
+<div>-(void) viewWillAppear:(BOOL)animated</div>
+<div>{</div>
+<div>    // 注册键盘出现通知</div>
+<div>    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object: nil];</div>
+<div/>
+<div>    // 注册键盘隐藏通知</div>
+<div>    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(keyboardDidHide:) name: UIKeyboardDidHideNotification object: nil];</div>
+<div/>
+<div>    [super viewWillAppear:animated];</div>
+<div>}</div>
+<div><br/></div>
+<div>// 视图解除键盘通知</div>
+<div>-(void)viewWillDisappear:(BOOL)animated</div>
+<div>{</div>
+<div>    // 解除键盘出现通知</div>
+<div>    [[NSNotificationCenter defaultCenter] removeObserver: self name:UIKeyboardDidShowNotification object: nil];</div>
+<div/>
+<div>    // 解除键盘隐藏通知</div>
+<div>    [[NSNotificationCenter defaultCenter] removeObserver: self name: UIKeyboardDidHideNotification object: nil];</div>
+<div/>
+<div>    [super viewWillDisappear: animated];</div>
+<div>}</div>
+<div><br/></div>
+<div>-(void) keyboardDidShow: (NSNotification *) notif</div>
+<div>{</div>
+<div>    NSLog(@"键盘打开");</div>
+<div>}</div>
+<div><br/></div>
+<div>-(void) keyboardDidHide: (NSNotification *) notif</div>
+<div>{</div>
+<div>    NSLog(@"键盘关闭");</div>
+<div>}</div>
+</div>
+</body></html>

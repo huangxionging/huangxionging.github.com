@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="created" content="2015-01-20 07:03:31 +0000"/><meta name="source" content="Clearly"/><meta name="source-url" content="http://blog.csdn.net/huifeidexin_1/article/details/7792371"/><meta name="updated" content="2015-01-20 07:03:31 +0000"/><title>UIApplication sharedApplication详细解释-IOS - huifeidexin_1的专栏 - 博客频道 - CSDN.NET</title></head><body><div>
+ <div>
+  <div>
+   <h1> <a shape="rect" href="http://blog.csdn.net/huifeidexin_1/article/details/7792371" target="_blank"> UIApplication sharedApplication详细解释-IOS </a> </h1>
+  </div> 
+  <div>
+    分类： 
+   <a shape="rect" href="http://blog.csdn.net/huifeidexin_1/article/category/1125016" target="_blank">iOS开发</a> 2012-07-27 10:25 21778人阅读 
+   <a shape="rect" href="#comments" target="_blank">评论</a>(3) 
+   <a shape="rect" href="#" title="收藏" target="_blank">收藏</a> 
+   <a shape="rect" href="#report" title="举报" target="_blank">举报</a> 
+  </div> 
+  <div> 
+   <p>iPhone应用<a shape="rect" target="_blank"><u><strong>程序</strong></u></a>是由主函数main启动，它负责调用UIApplicationMain函数，该<a shape="rect" target="_blank"><u><strong>函数</strong></u></a>的形式如下所示： <br clear="none"/> int UIApplicationMain ( <br clear="none"/> int argc, <br clear="none"/> char *argv[], <br clear="none"/> NSString *principalClassName, <br clear="none"/> NSString *delegateClassName <br clear="none"/> ); <br clear="none"/> 那么UIApplicationMain函数到底做了哪些事情呢？这个函数主要负责三件 事情： </p> 
+   <p> 1）从给定的类名初始化<a shape="rect" target="_blank"><u><strong>应用</strong></u></a>程序对象，也就是初始化UIApplication或者子类对象的一个实例，如果你在这里给定的是nil，那么 <a shape="rect" target="_blank"><u><strong>系统</strong></u></a>会默认UIApplication类，也就主要是这个类来控制以及协调应用程序的运行。在后续的工作中，你可以用静态方法sharedApplication 来获取应用程序的句柄。 </p> 
+   <p> 2）从给定的应用程序委托类，初始化一个应用程序委托。并把该委托设置为应用程序的委托，这里就有如果传入参数为nil，会调用函数访问 Info.plist文件来寻找主nib文件，获取应用程序委托。 </p> 
+   <p> 3）启动主事件循环，并开始接收事件。 </p> 
+   <p> 上面是UIApplicationMain函数的工作，接下来一个问题是应用程序视图的显示、消息的控制怎么办？下面就是UIApplication（或 者子类）对象的职责，这个对象主要做下面几件事： </p> 
+   <p> 1）负责处理到来的<a shape="rect" target="_blank"><u><strong>用户</strong></u></a>事件，并分发事件消息到应该处理该消息的目标对象（sender,  action)。 <br clear="none"/> 2）管理以及控制视图，包括呈现、控制行为、当前显示视图等。 <br clear="none"/> 3）该对象有一个应用程序委托对象，当一些生命周期内重要事件（可以包括系统事件或者生命周期控制事件）发生时，应用程序通知该对象。例如，应用程序启 动、内存不够了或者应用程序结束等，让这些事件发生时，应用程序委托去响应。 </p> 
+   <p>通 过上面的分析，可以知道UIApplication对开发者来说，是一个黑箱，它也可以是。因为所有的操作，都可以由它的委托来帮我们完成，它只需要在 后面维护一些不可更改的东西，如事件消息分发和传递、给委托发送事件处理请求等等，如，应用程序加载处理完毕，它会发送消息给委托，然后委托可以在 applicationDidFinishLanching委托函数中去实现开发者想要的动作。利用XCODE在创建应用程序时，会默认实现一个应用程序 委托类。而对于加载的视图，则有视图相关的委托类来处理视图加载过程的生命事件。下面说明委托主要可以办哪些事情： <br clear="none"/> 控制应用程序的行为 </p> 
+   <p> - (void)applicationDidFinishLaunching:(UIApplication *)application <br clear="none"/>           应用程序启动完毕。 <br clear="none"/> - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions<br clear="none"/>         当由于其它方法打开应用程序（如URL指定或者连接），通知委托启动完毕 <br clear="none"/> - (void)applicationWillTerminate:(UIApplication *)application <br clear="none"/>          通知委托，应用程序将在关闭 退出，请做一些清理工作。 <br clear="none"/> - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application <br clear="none"/>         通知委托，应用程序收到了为来自系统的内存不足警告。-(void)applicationSignificantTimeChange:(UIApplication *)application <br clear="none"/>       通知委托系统时间发生改变（主要是指时间属性，而不是具体的时间值） <br clear="none"/> 打开URL <br clear="none"/> - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url <br clear="none"/>            打开指定的URL <br clear="none"/> 控制状态栏方位变化 <br clear="none"/> – application:willChangeStatusBarOrientation:duration: <br clear="none"/>         设备方向将要发生改变 <br clear="none"/> – application:didChangeStatusBarOrientation: <br clear="none"/> 活动状态改变 <br clear="none"/> - (void)applicationWillResignActive:(UIApplication *)application <br clear="none"/>    通知委托应用程序将进入非活动状态，在此期间，应用程序不接收消息或事件。-(void)applicationDidBecomeActive:(UIApplication *)application <br clear="none"/>       通知委托应用程序进入活动状态，请恢复数据 </p> 
+   <p>1.设置icon上的数字图标</p> 
+   <p>    //设置主界面icon上的数字图标，在2.0中引进， 缺省为0<br clear="none"/>     [UIApplicationsharedApplication].applicationIconBadgeNumber = 4;</p> 
+   <p>2.设置摇动手势的时候，是否支持redo,undo操作</p> 
+   <p>   //摇动手势，是否支持redo undo操作。<br clear="none"/>    //3.0以后引进，缺省YES<br clear="none"/>     [UIApplicationsharedApplication].applicationSupportsShakeToEdit =YES;</p> 
+   <p>3.判断程序运行状态</p> 
+   <p>    //判断程序运行状态，在2.0以后引入<br clear="none"/><br clear="none"/>if([UIApplicationsharedApplication].applicationState ==UIApplicationStateInactive){<br clear="none"/>         NSLog(@"程序在运行状态");<br clear="none"/>     }</p> 
+   <p>4.阻止屏幕变暗进入休眠状态</p> 
+   <p>   //阻止屏幕变暗，慎重使用,缺省为no 2.0<br clear="none"/>     [UIApplicationsharedApplication].idleTimerDisabled =YES;</p> 
+   <p>慎重使用本功能，因为非常耗电。</p> 
+   <p>5.显示联网状态</p> 
+   <p>    //显示联网标记 2.0<br clear="none"/>     [UIApplicationsharedApplication].networkActivityIndicatorVisible =YES;</p> 
+   <p>6.在map上显示一个地址</p> 
+   <p>   NSString* addressText <a shape="rect" href="mailto:=@'1" target="_blank">=@"1</a> Infinite Loop, Cupertino, CA 95014";<br clear="none"/>    // URL encode the spaces<br clear="none"/>     addressText =  [addressTextstringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];<br clear="none"/>    NSString* urlText = [NSStringstringWithFormat:@"<a shape="rect" href="http://maps.google.com/maps?q=%" target="_blank">http://maps.google.com/maps?q=%</a>@", addressText];<br clear="none"/><br clear="none"/>[[UIApplicationsharedApplication]openURL:[NSURLURLWithString:urlText]];</p> 
+   <p>7.发送电子邮件</p> 
+   <p>   NSString *recipients <a shape="rect" href="mailto:=@'mailto:first@example.com?cc=second@example.com,third@example.com&amp;subject=Hello" target="_blank"> =@"mailto:first@example.com?cc=second@example.com,third@example.com&amp;subject=Hello</a> from California!";<br clear="none"/>    NSString *body <a shape="rect" href="mailto:=@'&amp;body=It" target="_blank">=@"&amp;body=It</a> is raining in sunny California!";<br clear="none"/><br clear="none"/>NSString *email = [NSStringstringWithFormat:@"<a shape="rect" href="mailto:%@%" target="_blank">%@%</a>@", recipients, body];<br clear="none"/>     email = [emailstringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];<br clear="none"/><br clear="none"/>[[UIApplicationsharedApplication]openURL:[NSURLURLWithString:email]];</p> 
+   <p>8.打电话到一个号码</p> 
+   <p>   // Call Google 411<br clear="none"/>     [[UIApplicationsharedApplication]openURL:[NSURLURLWithString:@"tel://8004664411"]];</p> 
+   <p>9.发送短信 <br clear="none"/>     // Text to Google SMS<br clear="none"/>     [[UIApplicationsharedApplication]openURL:[NSURLURLWithString:@"sms://466453"]];</p> 
+   <p>10.打开一个网址</p> 
+   <p>   // Lanuch any iPhone developers fav site<br clear="none"/>     [[UIApplicationsharedApplication]openURL:[NSURLURLWithString:@"<a shape="rect" href="http://itunesconnect.apple.com" target="_blank">http://itunesconnect.apple.com</a>"]];</p> 
+   <p> 可以看到UIApplication的头<a shape="rect" target="_blank"><u><strong>文件</strong></u></a>实现 <br clear="none"/> @interface UIApplication :UIResponder &lt;UIActionSheetDelegate&gt;{ <br clear="none"/> @package <br clear="none"/> id&lt;UIApplicationDelegate&gt; _delegate ;  //这就是应用程序委托。 <br clear="none"/> NSTimer ....... <br clear="none"/> } <br clear="none"/> 因此，在UIApplication中处理的系统事件时，只需转到_delegate这个类去处理， 这个类对象就是应用程序委托对象。我们可以从应用程序的单例类对象中得到应用程序委托的对象 <br clear="none"/> UIApplicationDelegate* myDelegate = [[UIApplication sharedApplication] delegate]; <br clear="none"/><br clear="none"/>UIApplication 接收到所有的系统事件和生命周期事件时，都会把事件传递给UIApplicationDelegate进行处理，对于用户输入 事件，则传递给相应的目标对象去处理。比如我们在应用程序被来电等消息后，可以调用应用程序委托类的 applicationWillResignActive（）方法，这个方法在用户锁住屏幕时，也会调用，与之相适应的是应用程序重新被用户打开时的委托 方法。另外常用的就是内存不足的系统警告，此时会调用应用程序委托类的applicationDidReceiveMemoryWarning()方法， 然后我们就可以试着释放一些内存了。 <br clear="none"/><br clear="none"/>上面就是应用程序生命周期（启动，中止，恢复，退出等过程）的应用程序处理UIApplication sharedApplication</p> 
+  </div> 
+  <div>
+   本文由zhudameng213贡献
+   <br clear="none"/> ppt文档可能在WAP端浏览体验不佳。建议您优先选择TXT，或下载源文件到本机查看。
+   <br clear="none"/> 20120221
+   <br clear="none"/> IOS应用程序生命周期
+   <br clear="none"/> UIViewController的生命周期
+   <br clear="none"/> 程序的生命周期
+   <br clear="none"/> 程序的生命周期是指应用程序启动到应用程序结束整个 阶段的全过程 每一个IOS应用程序都包含一个UIApplication对象， IOS系统通过该UIApplication对象监控应用程序生命周 期全过程 每一个IOS应用程序都要为其UIApplication对象指定一 个代理对象，并由该代理对象处理UIApplication对象监 测到的应用程序生命周期事件。
+   <br clear="none"/> IOS应用程序5种状态
+   <br clear="none"/> Not running:应用还没有启动，或者应用正在运行但是途中被系
+   <br clear="none"/> 统停止
+   <br clear="none"/> Inactive:当前应用正在前台运行，但是并不接收事件（当前 或许
+   <br clear="none"/> 正在执行其它代码）。一般每当应用要从一个状态切换到另一个不 同的状态时，中途过渡会短暂停留在此状态。唯一在此状态停留时 间比较长的情况是：当用户 锁屏时，或者系统提示用户去响应某 些（诸如电话来电、有未读短信等）事件的时候。
+   <br clear="none"/> Active:当前应用正在前台运行，并且接收事件。这是应用正在前
+   <br clear="none"/> 台运行时所处的正常状态。
+   <br clear="none"/> Background:应用处在后台，并且还在执行代码。大多数将 要进
+   <br clear="none"/> 入Suspended状态的应用，会先短暂进入此状态。然而，对于请求 需要额外的执行时间的应用，会在此状态保持更长一段时间。另外， 如果一个应用要 求启动时直接进入后台运行，这样的应用会直接 从Not running状态进入Background状态，中途不会经过Inactive状 态。比如没有界面的应用。注此处并不特指没有界面的应用，其实 也可以是 有界面的应用，只是如果要直接进入background状态的 话，该应用界面不会被显示。
+   <br clear="none"/> Suspended:应用处在后台，并且已停止执行代码。系统自动 的
+   <br clear="none"/> 将应用移入此状态，且在此举之前不会对应用做任何通知。当处在 此状态时，应用依然驻留内存但不执行任何程序代码。当系统发生 低内存告警时，系统将会将处 于Suspended状态的应用清除出内 存以为正在前台运行的应用提供足够的内存。
+   <br clear="none"/> 创建UIApplication对象并指定其代理
+   <br clear="none"/> 通过UIApplicationMain函数创建UIApplication对象并 指定其代理对象AppDelegate;第三个参数为指定 UIApplication的子类来生成UIApplication对象，为nil时由 UIApplication类初始化默认对象；第四个参数为指定代理 对象。
+   <br clear="none"/> UIApplication的代理对象
+   <br clear="none"/> 作为UIApplication的代理类，必须要先实现 UIApplicationDelegate协议，协议里明确了作为代理应 该做或可以做哪些事情。 UIApplication对象负责监听应用程序的生命周期事件， 并将生命周期事件交由UIApplication代理对象处理。
+   <br clear="none"/> UIApplication代理对象生命周期函数详解
+   <br clear="none"/> - (void)applicationWillResignActive:(UIApplication *)application
+   <br clear="none"/> 说明：当应用程序将要入非活动状态执行，在此期间，应用 程 
+   <div>
+    序不接收消息或事件，比如来电话了
+    <br clear="none"/> - (void)applicationDidBecomeActive:(UIApplication *)application
+    <br clear="none"/> 说明：当应用程序入活动状态执行，这个刚好跟上面那个方 法相反
+    <br clear="none"/> - (void)applicationDidEnterBackground:(UIApplication *)application
+    <br clear="none"/> 说明：当程序被推送到后台的时候调用。所以要设置后台继 续运行，则在这个函数里面设置即可
+    <br clear="none"/> UIApplication代理对象生命周期函数详解
+    <br clear="none"/> - (void)applicationWillEnterForeground:(UIApplication *)application
+    <br clear="none"/> 说明：当程序从后台将要重新回到前台时候调用，这个刚好 跟上面的那个方法相反。
+    <br clear="none"/> - (void)applicationWillTerminate:(UIApplication *)application
+    <br clear="none"/> 说明：当程序将要退出是被调用，通常是用来保存数据和一 些退出前的清理工作。这个需要要设置 UIApplicationExitsOnSuspend的键值
+    <br clear="none"/> (void)applicationDidReceiveMemoryWarning:(UIApplic ation *)application
+    <br clear="none"/> 说明：ios设备只有有限的内存，如果为应用程序分配了太多 内存操作系统会终止应用程序的运行，在终止前会执行这个 方法，通常可以在这里进行内存清理工作防止程序被终止
+    <br clear="none"/> UIApplication代理对象生命周期函数详解
+    <br clear="none"/> (void)applicationDidFinishLaunching:(UIApplication*)a pplication
+    <br clear="none"/> 说明：当程序载入后执行。
+    <br clear="none"/> - (BOOL)application:(UIApplication*)application handleOpenURL:(NSURL*)url
+    <br clear="none"/> 说明：当打开URL时执行。
+    <br clear="none"/> UIViewController
+    <br clear="none"/> UIViewController是IOS顶层视图的载体及控制器，用户 与程序界面的交互都是由UIViewController来控制的。 UIViewController管理UIView的生命周期及资源的加载 与释放。
+    <br clear="none"/> UIView UIView与UIWindow共同展示了应用用户界面。
+    <br clear="none"/> UIViewController生命周期事件
+    <br clear="none"/> -(void)loadView
+    <br clear="none"/> 加载视图资源并初始化视图
+    <br clear="none"/> - (void)viewDidLoad - (void)viewDidUnload
+    <br clear="none"/> 释放视图资源
+    <br clear="none"/> - (void)viewWillAppear:(BOOL)animated
+    <br clear="none"/> 将要加载出视图
+    <br clear="none"/> - (void)viewDidAppear:(BOOL)animated
+    <br clear="none"/> 视图出现
+    <br clear="none"/> - (void)viewWillDisappear:(BOOL)animated
+    <br clear="none"/> 视图即将消失
+    <br clear="none"/> (void)viewDidDisappear:(BOOL)animated
+    <br clear="none"/> 视图已经消失 
+   </div> 
+  </div> 
+ </div>
+</div></body></html>

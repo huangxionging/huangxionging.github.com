@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="21.61831283569336"/><meta name="author" content="Redman"/><meta name="created" content="2015-07-09 01:45:31 +0000"/><meta name="latitude" content="22.54693623921225"/><meta name="longitude" content="113.9366332740717"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2015-07-09 07:17:36 +0000"/><title>CoreGraphics 框架之 CGError</title></head><body>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* CoreGraphics - CGError.h<br/>
+   Copyright (c) 2000-2011 Apple Inc.<br/>
+   All rights reserved. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#ifndef CGERROR_H_<br/>
+#define CGERROR_H_<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGBase.h&gt;</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/>
+#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;stdint.h&gt;</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Types used for errors and error handlers. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+// 错误类型<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">enum</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">_CGError {<br/>
+  kCGErrorSuccess = 0,<br/>
+  kCGErrorFailure = 1000,<br/>
+  kCGErrorIllegalArgument = 1001,<br/>
+  kCGErrorInvalidConnection = 1002,<br/>
+  kCGErrorInvalidContext = 1003,<br/>
+  kCGErrorCannotComplete = 1004,<br/>
+  kCGErrorNotImplemented = 1006,<br/>
+  kCGErrorRangeCheck = 1007,<br/>
+  kCGErrorTypeCheck = 1008,<br/>
+  kCGErrorInvalidOperation = 1010,<br/>
+  kCGErrorNoneAvailable = 1011,<br/>
+};<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">typedef</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">int32_t</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGError;<br/>
+<br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#endif</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* CGERROR_H_ */</span></div>
+</body></html>

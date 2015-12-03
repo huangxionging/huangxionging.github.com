@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="28"/><meta name="author" content="Redman"/><meta name="created" content="2015-02-06 06:47:50 +0000"/><meta name="latitude" content="22.54690345257772"/><meta name="longitude" content="113.9366905213188"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2015-02-08 02:22:48 +0000"/><title>修改了CoreData报错</title></head><body>
+
+	
+	<div><span style="font: 11.0px Menlo; font-variant-ligatures: no-common-ligatures"><b>INFO: fetch-response is unable to open the file /private/var/mobile/Containers/Data/Application/91D33C8B-00B5-4C0B-B76D-E994CE665263/Library/Caches/com.meetrend.HXYinYueTai/fsCachedData/0E48B617-6E20-4F33-A94B-E1C7FED6A1AF. Errno: 1</b></span></div>
+
+	
+	<div><b><span style="font-size: 11px;"><span style="font-family: Menlo;"><br/></span></span></b></div>
+
+	
+	<div><b><span style="font-size: 11px;"><span style="font-family: Menlo;">这个错误是修改了CoreData之后没有重新将CoreData的实体和模型抽象类关联起来，如图：</span></span></b></div>
+
+	
+	<div><br/></div>
+
+	
+	<div>图中的number原本是整数，我们现在改用字符串存储了相应的实体模型立马的NSNumber也换成了NSString, 此时就应该升级版本了，升级版本需要抹掉原来的数据才可以，否则会受以前留下的数据的影响</div>
+
+	
+	<div><br/></div>
+
+	
+	<div><b><br/></b></div>
+
+
+
+
+</body></html>

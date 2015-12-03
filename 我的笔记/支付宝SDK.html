@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="author" content="Redman"/><meta name="created" content="2014-10-15 03:19:14 +0000"/><meta name="updated" content="2014-10-16 02:42:48 +0000"/><title>支付宝SDK</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+<div>使用场景</div>
+<div><img src="%E6%94%AF%E4%BB%98%E5%AE%9DSDK.resources/B7F3B0BE-031C-4128-82BA-73DF11A56079.jpg" height="891" width="695"/></div>
+<div>步骤：</div>
+<div>     第一步: 用户使用使用支付宝付款, 打开商户的App客户端，调用支付接口（调用支付接口:此消息就是本接口所描述的SDK支付接口Alipay.pay,商 户App通过此API接口唤起SDK,具体参见“5 请求参数说明”。）通过调用支付接口唤起支付宝SDK</div>
+<div>     即移动快捷SDK客户端，首先向移动快捷SDK服务端发起请求，以查询查询支付工具</div>
+<div>     第二步: 移动快捷服务端返回支付工具给客户端，</div>
+<div>     第三步: 客户端调用支付工具，支付工具服务端（移动快捷，进行网页支付），支付完成。</div>
+<div>     第四步: 若支付完成，则将交易结果信息返回给移动快捷SDK客户端，同时发出异步通知商户的服务端。商户服务端收到通知后又将信息传送给支付工具。</div>
+<div>     第五步。移动快捷SDK客户端收到交易结果后，显示交易结果给用户，也将结果信息返回给商户客户端。商户客户端还有继续逻辑。</div>
+<div><br/></div>
+<div><img src="%E6%94%AF%E4%BB%98%E5%AE%9DSDK.resources/945D2A96-A5DA-4730-896B-8EF4BCCBDA7B.jpg" height="954" width="672"/></div>
+<div><img src="%E6%94%AF%E4%BB%98%E5%AE%9DSDK.resources/FDC9EC9B-61BD-4EE1-870A-3DE0DC8B4A59.jpg" height="595" width="688"/></div>
+<div>订单信息包含的字符串:</div>
+<div><font color="#FD4067">partner</font> 是合作商户身份id，string类型，签约的支付宝账号对应的支付宝唯一用户名，以2088开头的16位纯数字。不可空。</div>
+<div><font color="#FD4067">seller_id</font> 是卖家支付宝账号，string类型，卖家支付宝账号(邮箱或手机 号码格式)或其对应的支付宝 唯一用户号(以 2088 开头的 纯 16 位数字)不可空。</div>
+<div><font color="#FD4067">out_trade_no</font> 是商户网站唯一订单号，string类型，支付宝合作商户唯一订单号。不可空。</div>
+<div><font color="#FD4067">subject</font> 是商品名称，string类型，商品的标题、交易标题、订单标题、订单关键字等，最大为128个汉字。不可空</div>
+<div><font color="#FD4067">body</font> 是商品详情，string类型，对一笔交易的具体描述信息，如果是多种商品，则将商品描述字符串累加传给body，不可空。</div>
+<div><font color="#FD4067">total_fee</font> 是总金额，number类型，为该笔订单总额，单位为RMB-yuan，取值范围为[0.01, 100,000,000.00]，精确度小数点后两位，不可空</div>
+<div><font color="#FD4067">notify_url</font> 是服务器异步通知页面路径，string类型，支付宝服务器主动通知商户网站里指定的页面HTTP路径。需要URL encode。 可空</div>
+<div><font color="#FD4067">service</font> 是接口名称，string类型，是固定值，不可空，必须是mobile.securitypay.pay</div>
+<div><font color="#FD4067">payment_type</font> 是支付类型，string类型，默认是1即商品购买，不可空.</div>
+<div><font color="#FD4067">_input_charset</font> 是参数编码字符集，string类型，商户网站使用的编码格式，固定为utf-8，不可空</div>
+<div><font color="#FD4067">it_b_pay</font> 是未付款交易超时时间，string类型，设置未付款交易的超时时间，一旦超时，该交易会自动关闭，取值范围: 1m-15d, 可空，不接受小数点，如1.5h可以转换为90m.</div>
+<div><font color="#FD4067">show_url</font> 是商品展示地址，string类型，商品展示的超链接，预留参数，可空。</div>
+<div><font color="#FD4067">sign</font> 是签名，string类型，其产生见签名机制，不可空，</div>
+<div><font color="#FD4067">sign_type</font> 是签名类型，string类型，目前仅支持RSA</div>
+<div><font color="#FD4067">app_id</font> 是客户端号，string类型，标识客户端，可空</div>
+<div><font color="#FD4067">appenv</font> 是客户端来源，string类型，标识客户端来源，参数内容约定如下appenv=“system=客户端平台名^version=业务系统版本” 如appenv=“system=iphone^version=4.0.1.1”</div>
+<div><font color="#FD4067">exterm_token</font> 是授权令牌，string类型，开放平台返回的包含账户信息的token</div>
+<div><br/></div>
+<div>样例</div>
+<div>partner="2088101568358171"&amp;seller_id="alipay-test09@alipay.com</div>
+<div> "&amp;out_trade_no="J05BBGU3JI7NWIX"&amp;subject="韩版雪纺"&amp;body="饰品批发价 韩版雪纺纱圆点布花朵 山茶玫瑰花 发圈胸针两用 6002"&amp;total_fee="0.01"&amp;notify_url="http%3A%2F%2Fwwww.xxx.com"&amp;service="mobile.securitypay.pay"&amp;_input_charset="utf-8"&amp;payment_type="1"&amp;return_url="www.xxx.com"&amp;it_b_pay="1d"&amp;show_url="www.xxx.com"&amp;sign="(null)"&amp;sign_type=“RSA”</div>
+<div><br/></div>
+<div><span style="font-size: 24px;">回调接口</span></div>
+<div>在支付过程结束之后，根据支付工具的不同选择，会有两种方式同步返回支付结果。</div>
+<div>. 应用内wap支付返回结果：通过对象target的selector方法返回</div>
+<div>. 应用外快捷支付返回结果：通过商户传入的scheme回调商户的应用，(BOOL)application: (UIApplication) application openURL: (NSURL *)url sourceApplication : (NSString)sourceApplication annotation: (id)annotaion</div>
+<div><br/></div>
+<div><br/></div>
+<div><font size="6">同步通知参数说明</font></div>
+<div>含义 支付宝对商户的请求数据处理完成后，会将处理的结果数据直接通知给商户。这些处理结果就是同步通知的参数、</div>
+<div><font color="#FD4067">resultStatus</font> 是状态代码， string类型，是本次处理结果的状态返回值，见客户端错误码，不可空。</div>
+<div><font color="#FD4067">result</font> 是本次操作返回的结果数据， string类型，本次操作的结果数据，不可空，&amp;success="true"&amp;sign_typ e="RSA"&amp;sign="xxx"之前 的部分为商户的原始数据。success 用来标识本次支付 结果。sign="xxx"为支付宝对本次 支付结果的签名,商户可以 使用签约时支付宝提供的 公钥进行验证。</div>
+<div>memo 是提示信息， string类型，保留参数，一般无内容， 可空。</div>
+<div>参数获取，见4.1.2回调接口</div>
+<div><br/></div>
+<div><br/></div>
+<div><span style="font-size: xx-large;">服务器异步通知参数说明</span><br/></div>
+<div>含义 支付宝对商户的请求数据处理完成后，会将处理结果数据通过服务器主动通知的方式通知商户网站。这些处理结果数据就是服务器异步通知参数。</div>
+<div>参数：</div>
+<div><font color="#FD4067">notify_time</font> 是通知时间，date类型，是通知的发送时间格式为yyyy-MM-dd-HH:mm:ss，非空</div>
+<div><font color="#FD4067">notify_type</font> 是通知类型，string类型，是通知的类型，非空</div>
+<div><font color="#FD4067">notify_id</font> 是通知校验id，string类型，是通知校验id，非空</div>
+<div><font color="#FD4067">sign_type</font> 是签名方式，string类型，固定值为RSA</div>
+<div><font color="#FD4067">sign</font> 是签名，string类型，见签名机制</div>
+<div><br/></div>
+<div>业务参数</div>
+<div><font color="#FD4067">out_trade_no</font> 是商户网站唯一订单号，string类型，支付宝合作商户唯一订单号。可空。<br/></div>
+<div><font color="#FD4067">subject</font> 是商品名称，string类型，商品的标题、交易标题、订单标题、订单关键字等，它在支付宝的交易明细中排在第一列，对于财务对账尤为重要，是请求时对应的参数，原样返回回来。可空。<br/></div>
+<div><font color="#FD4067">trade_no</font> 是支付宝交易账号，string类型，该交易在支付宝系统交易的流水号，最长64位。</div>
+<div><font color="#FD4067">trade_status</font> 是交易状态，string类型，交易状态。可空。</div>
+<div><font color="#FD4067">seller_id</font> 是卖家支付宝用户号，string类型，其对应的卖家支付宝唯一用户号(以 2088 开头的 纯 16 位数字)可空。<br/></div>
+<div><font color="#FD4067">seller_email</font>, 是卖家支付宝账号，string类型，卖家支付宝账号，可以是邮箱，也可以是手机号，可空。</div>
+<div><font color="#FD4067">buyer_id</font> 是买家支付宝用户号，string类型，以2088开头的16位数字。</div>
+<div><font color="#FD4067">buyer_email</font> 是买家支付宝账号，string类型，买家支付宝账号，可以是邮箱或手机号，可空。</div>
+<div><font color="#FD4067">total_fee</font> 是交易金额 number类型，该笔订单的总金额，请求时对应的参数，原样通知回来，可空。</div>
+<div><font color="#FD4067">quantity</font> 是购买数量 number类型，固定值取为1，请求时使用的时total_fee，可空</div>
+<div><font color="#FD4067">price</font> 是商品单价 number 等于total_fee可空</div>
+<div><font color="#FD4067">body</font> 是商品描述，string类型，对一笔交易的具体描述信息，如果是多种商品，则将商品描述字符串累加传给body，可空。</div>
+<div>gmt_create 是交易创建时间，date类型，该笔交易创建时间，格式为yyyy-MM-dd-HH:mm:ss ，可空</div>
+<div>gmt_payment 是交易付款时间，date类型，该笔交易付款时间，格式为yyyy-MM-dd-HH:mm:ss ，可空</div>
+<div>is_total_fee_adjust 是否调整总价，string类型，表示该交易是否调整过价格可空。</div>
+<div>use_coupon 是否使用红包买家，string类型，表示买家是否在交易过程中使用了红包，可空。</div>
+<div>discount 折扣，string类型支付宝系统会把discount的值加到金额上，如果有折扣，本参数为负，可空。</div>
+<div><br/></div>
+<div>通知触发条件</div>
+<div>TRADE_FINISHED， 交易成功， true触发通知</div>
+<div>TRADE_SUCCESS，支付成功，true触发通知</div>
+<div>WAIT_BUYER_PAY，交易创建，false不触发通知</div>
+<div>TRADE_CLOSED，交易关闭，false不触发通知</div>
+<div><br/></div>
+<div>服务器异步通知参数获取</div>
+<div>
+<div>(1) 必须保证服务器异步通知页面(notify_url)上无任何字符,如空格、HTML 标签、开发系统自带抛出的异常提示信息等;</div>
+<div>(2) 支付宝是用 POST 方式发送通知信息,因此该页面中获取参数的方式,如: request.Form("out_trade_no")、$_POST['out_trade_no'];</div>
+<div>(3) 支付宝主动发起通知,该方式才会被启用;</div>
+<div>(4) 服务器间的交互,不像页面跳转同步通知可以在页面上显示出来,这种交互</div>
+<div>方式是不可见的;</div>
+<div>(5) 程序执行完后必须打印输出“success”(不包含引号)。如果商户反馈给支</div>
+<div>付宝的字符不是 success 这 7 个字符,支付宝服务器会不断重发通知,直到 超过24小时22分钟。</div>
+<div>一般情况下,25 小时以内完成 8 次通知(通知的间隔频率一般是: 2m,10m,10m,1h,2h,6h,15h);</div>
+<div>(6) 程序执行完成后,该页面不能执行页面跳转。如果执行页面跳转,支付宝会 收不到 success 字符,会被支付宝服务器判定为该页面程序运行出现异常, 而重发处理结果通知;</div>
+<div>(7) cookies、session 等在此页面会失效,即无法获取这些数据;</div>
+<div>(8) 该方式的调试与运行必须在服务器上,即互联网上能访问;</div>
+<div>(9) 该方式的作用主要防止订单丢失,即页面跳转同步通知没有处理订单更新,</div>
+<div>它则去处理;</div>
+<div>(10) 当商户收到服务器异步通知并打印出success时,服务器异步通知参数</div>
+<div>notify_id 才会失效。也就是说在支付宝发送同一条异步通知时(包含商户并 未成功打印出 success 导致支付宝重发数次通知),服务器异步通知参数 notify_id 是不变的。</div>
+</div>
+<div><br/></div>
+<div><img src="%E6%94%AF%E4%BB%98%E5%AE%9DSDK.resources/3C0C2641-0A82-4914-898E-8C0A75D3F598.jpg" height="168" width="677"/><br/></div>
+<div><br/></div>
+<div><br/></div>
+</body></html>

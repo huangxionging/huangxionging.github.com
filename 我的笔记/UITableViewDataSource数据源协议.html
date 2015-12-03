@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="17.4525146484375"/><meta name="author" content="Redman"/><meta name="created" content="2014-07-10 12:35:02 +0000"/><meta name="latitude" content="22.53816253328188"/><meta name="longitude" content="113.9402739219786"/><meta name="updated" content="2014-07-13 12:13:05 +0000"/><title>UITableViewDataSource数据源协议</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+<div>@protocol UITableViewDataSource&lt;NSObject]]
+<![CDATA[>]]>
+</div>
+<div><br/></div>
+<div><br/></div>
+<div>// 必须要实现的协议只有两个</div>
+<div>@required</div>
+<div><br/></div>
+<div><br/></div>
+<div><font color="#15E672">// 每一节中行的数目</font></div>
+<div><font color="#2B41FD">- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;</font></div>
+<div><br/></div>
+<div><font color="#00021D">// Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:</font></div>
+<div><br/></div>
+<div><font color="#00021D">// Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)</font></div>
+<div><br/></div>
+<div><font color="#15E672">// 行显示</font></div>
+<div><font color="#2B41FD">- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;</font></div>
+<div><br/></div>
+<div>@optional</div>
+<div><br/></div>
+<div><font color="#4BE79E">// 若不实现该方法，表示默认只有一节</font></div>
+<div>
+<div><font color="#4BE79E">// Default is 1 if not implemented</font></div>
+</div>
+<div><font color="#EE4787">- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;</font>        </div>
+<div><br/></div>
+<div><br/></div>
+<div>// 设置节头的标题</div>
+<div>
+<div> // fixed font style. use custom view (UILabel) if you want something different</div>
+</div>
+<div><font color="#FF3854">- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section; </font></div>
+<div><br/></div>
+<div>  // 设置节尾的标题</div>
+<div><font color="#FF3854">- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section;</font></div>
+<div><br/></div>
+<div><br/></div>
+<div><br/></div>
+<div>// Editing</div>
+<div><br/></div>
+<div>// Individual rows can opt out of having the -editing property set for them. If not implemented, all rows are assumed to be editable.</div>
+<div>- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath;</div>
+<div><br/></div>
+<div>// Moving/reordering</div>
+<div><br/></div>
+<div>// Allows the reorder accessory view to optionally be shown for a particular row. By default, the reorder control will be shown only if the datasource implements -tableView:moveRowAtIndexPath:toIndexPath:</div>
+<div><font color="#FF3854">- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath;</font></div>
+<div><br/></div>
+<div>// Index</div>
+<div>// 添加索引</div>
+<div><font color="#FF3854">- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView;                                                   </font> // return list of section titles to display in section index view (e.g. "ABCD...Z#")</div>
+<div><font color="#FF3854">- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index</font>;  // tell table which section corresponds to section title/index (e.g. "B",1))</div>
+<div><br/></div>
+<div>// Data manipulation - insert and delete support</div>
+<div><br/></div>
+<div>// After a row has the minus or plus button invoked (based on the UITableViewCellEditingStyle for the cell), the dataSource must commit the change</div>
+<div><font color="#EE4787">- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath;</font></div>
+<div><br/></div>
+<div>// Data manipulation - reorder / moving support</div>
+<div><br/></div>
+<div><font color="#EE4787">- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath;</font></div>
+</body></html>

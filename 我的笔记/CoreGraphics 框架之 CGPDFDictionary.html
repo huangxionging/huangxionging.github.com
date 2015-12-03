@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="22.00029754638672"/><meta name="author" content="Redman"/><meta name="created" content="2015-07-11 06:54:12 +0000"/><meta name="latitude" content="22.54691180044875"/><meta name="longitude" content="113.9366528780061"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2015-07-11 06:54:24 +0000"/><meta name="application-data:corenote-localUUID" content="49038DCA-65BE-489C-9FBD-FEE40C283A1D"/><meta name="application-data:corenote-hostUUID" content="6E90AC44-32ED-430B-B8DD-4A5112184527"/><title>CoreGraphics 框架之 CGPDFDictionary</title></head><body>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* CoreGraphics - CGPDFDictionary.h<br/>
+ * Copyright (c) 2002-2008 Apple Inc.<br/>
+ * All rights reserved. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#ifndef CGPDFDICTIONARY_H_<br/>
+#define CGPDFDICTIONARY_H_<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">typedef</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">struct</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFDictionary *CGPDFDictionaryRef;<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGPDFArray.h&gt;</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/>
+#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGPDFObject.h&gt;</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/>
+#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGPDFStream.h&gt;</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/>
+#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGPDFString.h&gt;</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Return the number of entries in `dictionary'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN size_t CGPDFDictionaryGetCount(CGPDFDictionaryRef dict)<br/>
+    CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Look up the object associated with `key' in `dict' and return the result<br/>
+   in `value'. Return true on success; false otherwise. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFDictionaryGetObject(CGPDFDictionaryRef dict,<br/>
+   </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">char</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*key, CGPDFObjectRef *value)<br/>
+    CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Look up the object associated with `key' in `dict' and, if it's a<br/>
+   boolean, return the result in `value'. Return true on success; false<br/>
+   otherwise. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFDictionaryGetBoolean(CGPDFDictionaryRef dict,<br/>
+   </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">char</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*key, CGPDFBoolean *value)<br/>
+    CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Look up the object associated with `key' in `dict' and, if it's an<br/>
+   integer, return the result in `value'. Return true on success; false<br/>
+   otherwise. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFDictionaryGetInteger(CGPDFDictionaryRef dict,<br/>
+   </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">char</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*key, CGPDFInteger *value)<br/>
+    CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Look up the object associated with `key' in `dict' and, if it's a number<br/>
+   (real or integer), return the result in `value'. Return true on success;<br/>
+   false otherwise. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFDictionaryGetNumber(CGPDFDictionaryRef dict,<br/>
+   </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">char</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*key, CGPDFReal *value)<br/>
+    CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Look up the object associated with `key' in `dict' and, if it's a name,<br/>
+   return the result in `value'. Return true on success; false otherwise. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFDictionaryGetName(CGPDFDictionaryRef dict,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">char</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*key,<br/>
+   </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">char</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">**value) CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Look up the object associated with `key' in `dict' and, if it's a string,<br/>
+   return the result in `value'. Return true on success; false otherwise. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFDictionaryGetString(CGPDFDictionaryRef dict,<br/>
+   </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">char</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*key, CGPDFStringRef *value)<br/>
+    CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Look up the object associated with `key' in `dict' and, if it's an array,<br/>
+   return the result in `value'. Return true on success; false otherwise. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFDictionaryGetArray(CGPDFDictionaryRef dict,<br/>
+   </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">char</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*key, CGPDFArrayRef *value)<br/>
+    CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Look up the object associated with `key' in `dict' and, if it's a<br/>
+   dictionary, return the result in `value'. Return true on success; false<br/>
+   otherwise. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFDictionaryGetDictionary(CGPDFDictionaryRef dict,<br/>
+   </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">char</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*key, CGPDFDictionaryRef *value)<br/>
+    CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Look up the object associated with `key' in `dict' and, if it's a stream,<br/>
+   return the result in `value'. Return true on success; false otherwise. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFDictionaryGetStream(CGPDFDictionaryRef dict,<br/>
+   </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">char</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*key, CGPDFStreamRef *value)<br/>
+    CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* The callback for `CGPDFDictionaryApplyFunction'. `key' is the current<br/>
+   key, `value' is the value for `key', and `info' is the parameter passed<br/>
+   to `CGPDFDictionaryApplyFunction'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">typedef</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(*CGPDFDictionaryApplierFunction)(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">char</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*key,<br/>
+    CGPDFObjectRef value,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*info);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Enumerate all of the keys in `dict', calling `function' once for each<br/>
+   key/value pair. Passes the current key, the associated value, and `info'<br/>
+   to `function'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFDictionaryApplyFunction(CGPDFDictionaryRef dict,<br/>
+    CGPDFDictionaryApplierFunction function,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*info)<br/>
+    CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0);<br/>
+<br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#endif</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* CGPDFDICTIONARY_H_ */</span></div>
+</body></html>

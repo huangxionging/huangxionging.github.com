@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="22.33774757385254"/><meta name="author" content="Redman"/><meta name="created" content="2015-05-27 08:19:38 +0000"/><meta name="latitude" content="22.54695650659071"/><meta name="longitude" content="113.9366430446965"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2015-05-27 08:19:55 +0000"/><meta name="application-data:corenote-localUUID" content="2902E791-49DA-45B3-9082-6D48400DAE39"/><meta name="application-data:corenote-hostUUID" content="6E90AC44-32ED-430B-B8DD-4A5112184527"/><title>使用Quartz 2D 绘图</title></head><body>
+<div>
+<div>
+<h1><a shape="rect" href="http://blog.csdn.net/meegomeego/article/details/8481921" target="_blank"/><br clear="none"/></h1>
+</div>
+<div><br clear="none"/></div>
+<p>使用Quartz 2D 可以对图片进行裁剪，简单的可以裁剪一个矩形，复杂的可以根据CGPath实现裁剪，也可以使用UIBezierPath进行裁剪，也可以使用一个UIImage做为mask进行裁剪。</p>
+<p>对于如下图片，不使用裁剪时，显示全部内容</p>
+<p><br clear="none"/></p>
+<div><img src="%E4%BD%BF%E7%94%A8Quartz%202D%20%E7%BB%98%E5%9B%BE.resources/ADDA947C-9D96-44CC-B816-912961E9C00B.png" height="390" width="260"/></div>
+<p><br clear="none"/></p>
+<p>使用CGContextClipToRect裁剪矩形，</p>
+<div>
+<ol>
+<li>UIImage* imageSrc = [UIImage imageNamed:@"island.png"</li>
+<li>    CGColorSpaceRef colorRef = CGColorSpaceCreateDeviceRGB();  </li>
+<li>    CGContextRef contextRef = CGBitmapContextCreate(nil, imageSrc.size.width, imageSrc.size.height, 8, imageSrc.size.width*4, colorRef, kCGImageAlphaPremultipliedFirst);  </li>
+<li>    CGContextClipToRect(contextRef, CGRectMake(30, 100, 200, 200));  </li>
+<li>    CGContextDrawImage(contextRef, CGRectMake(0, 0, imageSrc.size.width, imageSrc.size.height), imageSrc.CGImage);  </li>
+<li>    CGImageRef imageRef = CGBitmapContextCreateImage(contextRef);  </li>
+<li>    UIImage* imageDst = [UIImage imageWithCGImage:imageRef scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];  </li>
+<li>    CGContextRelease(contextRef);  </li>
+<li>    CGColorSpaceRelease(colorRef);  </li>
+<li>    return imageDst;  </li>
+</ol>
+</div>
+结果如下：
+<p><br clear="none"/></p>
+<div><img src="%E4%BD%BF%E7%94%A8Quartz%202D%20%E7%BB%98%E5%9B%BE.resources/13592A3C-9246-480A-A91D-03FC9F49250E.png" height="545" width="348"/></div>
+<p><br clear="none"/></p>
+<p>使用CGPath 设定一个区域，然后裁剪path，</p>
+<div>
+<ol>
+<li>UIImage* imageSrc = [UIImage imageNamed:@"island.png"</li>
+<li>    CGColorSpaceRef colorRef = CGColorSpaceCreateDeviceRGB();  </li>
+<li>    CGContextRef contextRef = CGBitmapContextCreate(nil, imageSrc.size.width, imageSrc.size.height, 8, imageSrc.size.width*4, colorRef, kCGImageAlphaPremultipliedFirst);  </li>
+<li>    //[path addCurveToPoint:CGPointMake(120, 80) controlPoint1:CGPointMake(&lt;#CGFloat x#&gt;, &lt;#CGFloat y#&gt;) controlPoint2:&lt;#(CGPoint)#&gt;]</li>
+<li>    CGMutablePathRef mutPath = CGPathCreateMutable();  </li>
+<li>    CGPathMoveToPoint(mutPath, NULL, 30, 160);  </li>
+<li>    CGPathAddLineToPoint(mutPath, NULL, 120, 80);  </li>
+<li>    CGPathAddLineToPoint(mutPath, NULL, 210, 160);  </li>
+<li>    CGPathAddLineToPoint(mutPath, NULL, 120, 280);  </li>
+<li>    CGPathCloseSubpath(mutPath);  </li>
+<li>    CGContextAddPath(contextRef, mutPath);  </li>
+<li>    CGContextClip(contextRef);  </li>
+<li>    CGContextDrawImage(contextRef, CGRectMake(0, 0, imageSrc.size.width, imageSrc.size.height), imageSrc.CGImage);  </li>
+<li>    CGImageRef imageRef = CGBitmapContextCreateImage(contextRef);  </li>
+<li>    UIImage* imageDst = [UIImage imageWithCGImage:imageRef scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];  </li>
+<li>    CGContextRelease(contextRef);  </li>
+<li>    CGColorSpaceRelease(colorRef);  </li>
+<li>    return imageDst;  </li>
+</ol>
+</div>
+结果如下：
+<p><br clear="none"/></p>
+<div><img src="%E4%BD%BF%E7%94%A8Quartz%202D%20%E7%BB%98%E5%9B%BE.resources/D73FE760-DB72-453C-95B6-0DB355F27ECD.png" height="604" width="347"/></div>
+<p><br clear="none"/></p>
+<p>使用UIBezierPath 创建一个裁剪区域，</p>
+<div>
+<ol>
+<li>UIImage* imageSrc = [UIImage imageNamed:@"island.png"</li>
+<li>    CGColorSpaceRef colorRef = CGColorSpaceCreateDeviceRGB();  </li>
+<li>    CGContextRef contextRef = CGBitmapContextCreate(nil, imageSrc.size.width, imageSrc.size.height, 8, imageSrc.size.width*4, colorRef, kCGImageAlphaPremultipliedFirst);  </li>
+<li>    UIBezierPath* path = [UIBezierPath bezierPath];  </li>
+<li>    [path moveToPoint:CGPointMake(30, 160)];  </li>
+<li>//  [path addCurveToPoint:CGPointMake(140, 80) controlPoint1:CGPointMake(60, 60) controlPoint2:CGPointMake(90, 60)];</li>
+<li>//  [path addCurveToPoint:CGPointMake(210, 160) controlPoint1:CGPointMake(130, 90) controlPoint2:CGPointMake(160, 120)];</li>
+<li>//  [path addCurveToPoint:CGPointMake(140, 280) controlPoint1:CGPointMake(180, 200) controlPoint2:CGPointMake(140, 160)];</li>
+<li>    [path addQuadCurveToPoint:CGPointMake(140, 100) controlPoint:CGPointMake(80, 120)];  </li>
+<li>    [path addQuadCurveToPoint:CGPointMake(240, 180) controlPoint:CGPointMake(180, 100)];  </li>
+<li>    [path addQuadCurveToPoint:CGPointMake(140, 280) controlPoint:CGPointMake(210, 240)];  </li>
+<li>    [path addQuadCurveToPoint:CGPointMake(30, 160) controlPoint:CGPointMake(80, 260)];  </li>
+<li>    [path closePath];  </li>
+<li>    [path addClip];  </li>
+<li>    CGContextDrawImage(contextRef, CGRectMake(0, 0, imageSrc.size.width, imageSrc.size.height), imageSrc.CGImage);  </li>
+<li>    CGImageRef imageRef = CGBitmapContextCreateImage(contextRef);  </li>
+<li>    UIImage* imageDst = [UIImage imageWithCGImage:imageRef scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];  </li>
+<li>    CGContextRelease(contextRef);  </li>
+<li>    CGColorSpaceRelease(colorRef);  </li>
+<li>    return imageDst;  </li>
+</ol>
+</div>
+结果如下：
+<p><br clear="none"/></p>
+<div><img src="%E4%BD%BF%E7%94%A8Quartz%202D%20%E7%BB%98%E5%9B%BE.resources/92C39DDB-D674-418E-9D0F-22D14B27A223.png" height="537" width="352"/></div>
+<p><br clear="none"/></p>
+<p>使用UIImage做为mask进行裁剪</p>
+<p>使用  CGContextClipToMask(CGContextRef c, CGRect rect,  CGImageRef mask) </p>
+<p>第一个参数表示context 指针</p>
+<p>第二个参数表示clip到context的区域，也是mask 图片映射到context的区域</p>
+<p>第三个参数表示mask的图片，对于裁剪区域Rect中的点是否变化取决于mask图中的alpha值，若alpha为0，则对应clip rect中的点为透明，如果alpha为1，则对应clip Rect中的点无变化。</p>
+<p>另外CGContextClipToMask执行了类似  CGContextDrawImage 到rect区域的操作，不需要另外调用CGContextDrawImage。</p>
+<p>下图为具有mask图片，图片中只有alpha值对于mask是有用的。</p>
+<p><img src="%E4%BD%BF%E7%94%A8Quartz%202D%20%E7%BB%98%E5%9B%BE.resources/4EAB6CBD-D0C8-4C35-9522-B55789E3547B.png" height="82" width="165"/></p>
+<div>
+<ol>
+<li>- (UIImage*)imageWithColor:(UIColor*)color maskImage:(UIImage*)maskImage  </li>
+<li>    UIImage* image =  maskImage;  </li>
+<li>    CGColorSpaceRef colorRef = CGColorSpaceCreateDeviceRGB();  </li>
+<li>    CGContextRef contextRef = CGBitmapContextCreate(nil, image.size.width, image.size.height, 8, image.size.width*4, colorRef, kCGImageAlphaPremultipliedFirst);  </li>
+<li>    CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);  </li>
+<li>    CGContextClipToMask(contextRef, rect, image.CGImage);  </li>
+<li>    CGContextSetFillColorWithColor(contextRef, color.CGColor);  </li>
+<li>    CGContextFillRect(contextRef,rect);  </li>
+<li>    CGImageRef imageRef = CGBitmapContextCreateImage(contextRef);  </li>
+<li>    UIImage* imageDst = [UIImage imageWithCGImage:imageRef scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];  </li>
+<li>    CGImageRelease(imageRef);  </li>
+<li>    CGContextRelease(contextRef);  </li>
+<li>    CGColorSpaceRelease(colorRef);  </li>
+<li>    return imageDst;  </li>
+</ol>
+</div>
+在DrawRect中使用上述方法后，
+<div>
+<ol>
+<li>)drawRect:(CGRect)rect  </li>
+<li>    UIImage* image1 = [UIImage imageNamed:@"cloud.png"</li>
+<li>    [[self imageWithColor:[UIColor redColor] maskImage:image1] drawAtPoint:CGPointMake(0, 0)];  </li>
+</ol>
+</div>
+<p><br clear="none"/></p>
+<div><img src="%E4%BD%BF%E7%94%A8Quartz%202D%20%E7%BB%98%E5%9B%BE.resources/98FEFF98-FAEF-4C2B-8FA6-1A13CBA4B714.png" height="546" width="349"/></div>
+<p><br clear="none"/></p>
+<p>修改maskRect区域，并为查看方便显示蓝色背景，代码如下</p>
+<div>
+<ol>
+<li>- (UIImage*)imageWithColor:(UIColor*)color maskImage:(UIImage*)maskImage  </li>
+<li>    UIImage* image =  maskImage;  </li>
+<li>    CGColorSpaceRef colorRef = CGColorSpaceCreateDeviceRGB();  </li>
+<li>    CGContextRef contextRef = CGBitmapContextCreate(nil, image.size.width, image.size.height, 8, image.size.width*4, colorRef, kCGImageAlphaPremultipliedFirst);  </li>
+<li>    CGContextSetFillColorWithColor(contextRef, [UIColor blueColor].CGColor);  </li>
+<li>    CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);  </li>
+<li>    CGContextFillRect(contextRef,rect);  </li>
+<li>    CGRect maskRect = CGRectMake(60, 0, image.size.width, image.size.height);  </li>
+<li>    CGContextClipToMask(contextRef, maskRect, image.CGImage);  </li>
+<li>    CGContextSetFillColorWithColor(contextRef, color.CGColor);  </li>
+<li>    CGContextFillRect(contextRef,rect);  </li>
+<li>    CGImageRef imageRef = CGBitmapContextCreateImage(contextRef);  </li>
+<li>    UIImage* imageDst = [UIImage imageWithCGImage:imageRef scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];  </li>
+<li>    CGImageRelease(imageRef);  </li>
+<li>    CGContextRelease(contextRef);  </li>
+<li>    CGColorSpaceRelease(colorRef);  </li>
+<li>    return imageDst;  </li>
+</ol>
+</div>
+向右偏移60像素，结果如下
+<p><br clear="none"/></p>
+<div><img src="%E4%BD%BF%E7%94%A8Quartz%202D%20%E7%BB%98%E5%9B%BE.resources/136F0811-D4BF-4D4B-8996-1359A7443F39.png" height="538" width="352"/></div>
+</div>
+<div><br/></div>
+<div><br/></div>
+</body></html>

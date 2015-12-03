@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="20.83641624450684"/><meta name="author" content="Redman"/><meta name="created" content="2014-07-10 12:53:06 +0000"/><meta name="latitude" content="22.53785341252112"/><meta name="longitude" content="113.9401917314675"/><meta name="updated" content="2014-07-10 12:55:26 +0000"/><title>UISearchDisplayDelegate代理协议</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+<div>@protocol UISearchDisplayDelegate &lt;NSObject
+<![CDATA[>]]>
+</div>
+<div><br/></div>
+<div>@optional</div>
+<div><br/></div>
+<div>// when we start/end showing the search UI</div>
+<div><font color="#FF3854">- (void) searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller;</font></div>
+<div><font color="#FF3854">- (void) searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller;</font></div>
+<div><font color="#FF3854">- (void) searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller;</font></div>
+<div><font color="#FF3854">- (void) searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller;</font></div>
+<div><br/></div>
+<div>// called when the table is created destroyed, shown or hidden. configure as necessary.</div>
+<div><font color="#FF3854">- (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView;</font></div>
+<div><font color="#FF3854">- (void)searchDisplayController:(UISearchDisplayController *)controller willUnloadSearchResultsTableView:(UITableView *)tableView;</font></div>
+<div><br/></div>
+<div>// called when table is shown/hidden</div>
+<div><font color="#2B41FD">- (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView;</font></div>
+<div><font color="#2B41FD">- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView;</font></div>
+<div><font color="#2B41FD">- (void)searchDisplayController:(UISearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView;</font></div>
+<div><font color="#2B41FD">- (void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView;</font></div>
+<div><br/></div>
+<div>// return YES to reload table. called when search string/option changes. convenience methods on top UISearchBar <font color="#2B41FD">delegate methods</font></div>
+<div><font color="#2B41FD">- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString;</font></div>
+<div><font color="#2B41FD">- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption;</font></div>
+<div><br/></div>
+<div>@end</div>
+</body></html>

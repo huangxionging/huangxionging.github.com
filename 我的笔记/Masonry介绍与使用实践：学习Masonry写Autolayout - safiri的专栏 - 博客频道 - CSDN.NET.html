@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="created" content="2015-03-14 02:50:14 +0000"/><meta name="source" content="Clearly"/><meta name="source-url" content="http://blog.csdn.net/safiri/article/details/43794013"/><meta name="updated" content="2015-03-17 02:05:41 +0000"/><title>Masonry介绍与使用实践：学习Masonry写Autolayout - safiri的专栏 - 博客频道 - CSDN.NET</title></head><body>
+<div>
+<div>
+<h1><a shape="rect" href="http://blog.csdn.net/safiri/article/details/43794013" target="_blank">Masonry介绍与使用实践：学习Masonry写Autolayout</a></h1>
+</div>
+<div>分类： <a shape="rect" href="http://blog.csdn.net/safiri/article/category/2895109" target="_blank">第三方库学习</a> 2015-02-13 14:26 18人阅读 <a shape="rect" href="#comments" target="_blank">评论</a>(0) <a shape="rect" href="#" title="收藏" target="_blank">收藏</a> <a shape="rect" href="#report" title="举报" target="_blank">举报</a></div>
+<p>参考文章:  http://www.cocoachina.com/ios/20141219/10702.html</p>
+<p> MASViewAttribute属性</p>
+<p>MASViewAttribute           |  NSLayoutAttribute</p>
+<p>-------------------------  |  --------------------------</p>
+<p>view.mas_left              |  NSLayoutAttributeLeft左侧</p>
+<p>view.mas_right             |  NSLayoutAttributeRight右侧</p>
+<p>view.mas_top               |  NSLayoutAttributeTop上侧</p>
+<p>view.mas_bottom            |  NSLayoutAttributeBottom下侧</p>
+<p>view.mas_leading           |  NSLayoutAttributeLeading首部</p>
+<p>view.mas_trailing          |  NSLayoutAttributeTrailing尾部</p>
+<p>view.mas_width             |  NSLayoutAttributeWidth宽度</p>
+<p>view.mas_height            |  NSLayoutAttributeHeight高度</p>
+<p>view.mas_centerX           |  NSLayoutAttributeCenterX横向中点</p>
+<p>view.mas_centerY           |  NSLayoutAttributeCenterY纵向中点</p>
+<p>view.mas_baseline          |  NSLayoutAttributeBaseline文本基线</p>
+<p>2. UIView/NSView</p>
+<p>if you want view.left to be greater than or equal to label.left :</p>
+<p>//these two constraints are exactly the same</p>
+<p>make.left.greaterThanOrEqualTo(label);</p>
+<p>make.left.greaterThanOrEqualTo(label.mas_left);</p>
+<p>3. NSNumber</p>
+<p>Auto Layout allows width and height to be set to constant values.</p>
+<p>if you want to set view to have a minimum and maximum width you could pass a number to the equality blocks:</p>
+<p>//width &gt;= 200 &amp;&amp; width &lt;= 400</p>
+<p>make.width.greaterThanOrEqualTo(@200);</p>
+<p>make.width.lessThanOrEqualTo(@400)</p>
+<p>4. NSArray</p>
+<p>An array of a mixture of any of the previous types</p>
+<p>make.height.equalTo(@[view1.mas_height, view2.mas_height]);</p>
+<p>make.height.equalTo(@[view1, view2]);</p>
+<p>make.left.equalTo(@[view1, @100, view3.right]);</p>
+<p>5.Learn to prioritize n. 优先；优先权</p>
+<p> `.priority` allows you to specify an exact priority</p>
+<p> `.priorityHigh` equivalent to **UILayoutPriorityDefaultHigh**</p>
+<p> `.priorityMedium` is half way between high and low</p>
+<p> `.priorityLow` equivalent to **UILayoutPriorityDefaultLow**</p>
+<p>Priorities are can be tacked on to the end of a constraint chain like so:</p>
+<p>make.left.greaterThanOrEqualTo(label.mas_left).with.priorityLow();</p>
+<p>make.top.equalTo(label.mas_top).with.priority(600);</p>
+<p>6.Composition, composition, composition</p>
+<p>Masonry also gives you a few convenience methods which create multiple constraints at the same time. These are called MASCompositeConstraints</p>
+<p><u>edges:</u></p>
+<p>// make top, left, bottom, right equal view2</p>
+<p>make.edges.equalTo(view2);</p>
+<p>// make top = superview.top + 5, left = superview.left + 10,</p>
+<p>//      bottom = superview.bottom - 15, right = superview.right - 20</p>
+<p>make.edges.equalTo(superview).insets(UIEdgeInsetsMake(5, 10, 15, 20))</p>
+<p><u>size:</u></p>
+<p>// make width and height greater than or equal to titleLabel</p>
+<p>make.size.greaterThanOrEqualTo(titleLabel)</p>
+<p>// make width = superview.width + 100, height = superview.height - 50</p>
+<p>make.size.equalTo(superview).sizeOffset(CGSizeMake(100, -50))</p>
+<p><u>center:</u></p>
+<p>// make centerX and centerY = button1</p>
+<p>make.center.equalTo(button1)</p>
+<p>// make centerX = superview.centerX - 5, centerY = superview.centerY + 10</p>
+<p>make.center.equalTo(superview).centerOffset(CGPointMake(-5, 10))</p>
+<div>
+<p>You can chain view attributes for increased readability:</p>
+你可以链视图属性增加可读性：</div>
+<p>// All edges but the top should equal those of the superview 链接</p>
+<p>make.left.right.and.bottom.equalTo(superview); </p>
+<p>make.top.equalTo(otherView);</p>
+<p>Hold on for dear life</p>
+<p>Sometimes you need modify existing constraints in order to animate or remove/replace constraints.</p>
+<p>In Masonry there are a few different approaches to updating constraints.</p>
+有时你需要修改现有的约束.
+<p>在Masonry中你有几个不同的方法来更新约束</p>
+<p>8.1. References 参考, 查阅</p>
+<p>You can hold on to a reference of a particular constraint by assigning the result of a constraint make expression to a local variable or a class property.</p>
+<p>You could also reference multiple constraints by storing them away in an array.</p>
+<p>// in public/private interface</p>
+<p>@property (nonatomic, strong) MASConstraint *topConstraint;</p>
+<p>// when making constraints</p>
+<p>[view1 mas_makeConstraints:^(MASConstraintMaker *make) {</p>
+<p>    self.topConstraint = make.top.equalTo(superview.mas_top).with.offset(padding.top);</p>
+<p>    make.left.equalTo(superview.mas_left).with.offset(padding.left);</p>
+<p>// then later you can call</p>
+<p>[self.topConstraint uninstall];</p>
+</div>
+<div>
+<p>8.2 mas_updateConstraints</p>
+<p>Alternatively if you are only updating the constant value of the constraint you can use the convience method `mas_updateConstraints` instead of `mas_makeConstraints`</p>
+<p>// this is Apple's recommended place for adding/updating constraints</p>
+<p>// this method can get called multiple times in response to setNeedsUpdateConstraints</p>
+<p>// which can be called by UIKit internally or in your code if you need to trigger an update to your constraints</p>
+<p>- (void)updateConstraints {</p>
+<p>    [self.growingButton mas_updateConstraints:^(MASConstraintMaker *make) {</p>
+<p>        make.center.equalTo(self);</p>
+<p>        make.width.equalTo(@(self.buttonSize.width)).priorityLow();</p>
+<p>        make.height.equalTo(@(self.buttonSize.height)).priorityLow();</p>
+<p>        make.width.lessThanOrEqualTo(self);</p>
+<p>        make.height.lessThanOrEqualTo(self);</p>
+<p>    //according to apple super should be called at end of method</p>
+<p>    [super updateConstraints];</p>
+<p>8.3. mas_remakeConstraints</p>
+<p>`mas_updateConstraints` is useful for updating a set of constraints, but doing anything beyond updating constant values can get exhausting. That's where `mas_remakeConstraints` comes in.</p>
+<p>`mas_remakeConstraints` is similar to `mas_updateConstraints`, but instead of updating constant values, it will remove all of its contraints before installing them again. This lets you provide different constraints without having to keep around references to ones which you want to remove. 在安装之前会删除其所有的约束</p>
+<p>- (void)changeButtonPosition {</p>
+<p>    [self.button mas_remakeConstraints:^(MASConstraintMaker *make) {</p>
+<p>        make.size.equalTo(self.buttonSize);</p>
+<p>        if (topLeft) {</p>
+<p>       make.top.and.left.offset(10);</p>
+<p>        } else {</p>
+<p>       make.bottom.and.right.offset(-10);</p>
+<p>You can find more detailed examples of all three approaches in the **Masonry iOS Examples** project.</p>
+</div>
+<div>
+<p>UIView *superview = ;</p>
+<p>    padding = 10;</p>
+<p>//if you want to use Masonry without the mas_ prefix</p>
+<p>//define MAS_SHORTHAND before importing Masonry.h see Masonry iOS Examples-Prefix.pch</p>
+<p>    [view1 makeConstraints:^(MASConstraintMaker *make) {</p>
+</div>
+<div>        make.top.greaterThanOrEqualTo(superview.top).offset(padding);</div>
+<div>        make.left.equalTo(superview.left).offset(padding);</div>
+<div>        make.bottom.equalTo(view3.top).offset(-padding);</div>
+<div>
+<p>        make.right.equalTo(view2.left).offset(-padding);</p>
+<p>        make.width.equalTo(view2.width);</p>
+<p>        make.height.equalTo(view2.height);</p>
+<p>        make.height.equalTo(view3.height);</p>
+<p>//with is semantic and option</p>
+</div>
+<div>    [view2 mas_makeConstraints:^(MASConstraintMaker *make) {</div>
+<div>        make.top.equalTo(superview.top).offset(padding);//with with</div>
+<div>        make.left.equalTo(view1.mas_right).offset(padding);//without with</div>
+<div>
+<p>        make.bottom.equalTo(view3.mas_top).offset(-padding);</p>
+<p>        make.right.equalTo(superview.mas_right).offset(-padding);</p>
+<p>        make.width.equalTo(view1.mas_width);</p>
+<p>        make.height.equalTo(view1, view3);//can pass array of views</p>
+<p>    [view3 mas_makeConstraints:^(MASConstraintMaker *make) {</p>
+</div>
+<div>        make.top.equalTo(view1.mas_bottom).offset(padding);</div>
+<div>        make.left.equalTo(superview.mas_left).offset(padding);</div>
+<div>
+<p>        make.bottom.equalTo(superview.mas_bottom).offset(-padding);</p>
+<p>        make.right.equalTo(superview.mas_right).offset(-padding);</p>
+<p>        make.height.equalTo(view1.mas_height, view2.mas_height);//can pass array of attributes</p>
+<div><img src="Masonry%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8%E5%AE%9E%E8%B7%B5%EF%BC%9A%E5%AD%A6%E4%B9%A0Masonry%E5%86%99Autolayout%20-%20safiri%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/56EE94C7-7BBD-4829-9294-3520B1F2BE31.png" height="704" width="434"/></div>
+</div>
+<div>
+<div>
+<div><img src="Masonry%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8%E5%AE%9E%E8%B7%B5%EF%BC%9A%E5%AD%A6%E4%B9%A0Masonry%E5%86%99Autolayout%20-%20safiri%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/EB63B402-B6B2-4CF8-84C0-3159ED36670F.png" height="704" width="434"/></div>
+<div><img src="Masonry%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8%E5%AE%9E%E8%B7%B5%EF%BC%9A%E5%AD%A6%E4%B9%A0Masonry%E5%86%99Autolayout%20-%20safiri%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET.resources/253D4FC0-BC39-4662-89A9-1E9B06063D83.png" height="704" width="434"/></div>
+</div>
+<div>(二): 点击按钮增大的效果</div>
+<div>
+<p>- ()init {</p>
+<p>    = [super];</p>
+<p>ifselfreturnnil</p>
+<p>growingButtonUIButtonbuttonWithTypeUIButtonTypeSystem</p>
+<p>growingButtonsetTitle@"Grow Me!"forStateUIControlStateNormal</p>
+<p>growingButtonlayerborderColorUIColorgreenColorCGColor</p>
+<p>growingButtonlayerborderWidth</p>
+<p>growingButtonaddTargetaction@selector(didTapGrowButton:)forControlEventsUIControlEventTouchUpInside</p>
+<p>addSubviewgrowingButton</p>
+<p>    .buttonSize =CGSizeMake(,);</p>
+<p>return self</p>
+<p>+ ()requiresConstraintBasedLayout</p>
+<p>return YES</p>
+<p>// this is Apple's recommended place for adding/updating constraints</p>
+<p>- ()updateConstraints {  </p>
+<p>    [.growingButtonupdateConstraints:^(MASConstraintMaker *make) {</p>
+<p>        make.center.equalTo();</p>
+<p>        make.width.equalTo(.buttonSize.width).priorityLow();</p>
+<p>        make.height.equalTo(.buttonSize.height).priorityLow();</p>
+<p>        make.width.lessThanOrEqualTo();</p>
+<p>        make.height.lessThanOrEqualTo();</p>
+<p>//according to apple super should be called at end of method</p>
+<p>superupdateConstraints</p>
+<p>- ()didTapGrowButton:(UIButton *)button {</p>
+<p>buttonSizeCGSizeMakebuttonSizewidth buttonSizeheight</p>
+<p>// tell constraints they need updating 然后调用updateConstraints方法</p>
+<p>setNeedsUpdateConstraints</p>
+<p>// update constraints now so we can animate the change</p>
+<p>updateConstraintsIfNeeded</p>
+<p>UIViewanimateWithDurationanimations</p>
+<p>layoutIfNeeded</p>
+上面用到的UIView的方法UIConstraintBasedLayoutCoreMethods</div>
+<div>
+<p>@interface UIView (UIConstraintBasedLayoutCoreMethods) </p>
+<p>)updateConstraintsIfNeeded NS_AVAILABLE_IOS// Updates the constraints from the bottom up for the view hierarchy rooted at the receiver. UIWindow's implementation creates a layout engine if necessary first.</p>
+<p>)updateConstraints NS_AVAILABLE_IOS// Override this to adjust your special constraints during a constraints update pass</p>
+<p>- ()needsUpdateConstraints NS_AVAILABLE_IOS(_0);</p>
+<p>- ()setNeedsUpdateConstraints NS_AVAILABLE_IOS(_0);</p>
+<p>// Allows you to perform layout before the drawing cycle happens. -layoutIfNeeded forces layout early</p>
+<p>- ()setNeedsLayout;</p>
+<p>- ()layoutIfNeeded;</p>
+</div>
+</div>
+</body></html>

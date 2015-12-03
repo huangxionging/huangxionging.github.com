@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="24.3920726776123"/><meta name="author" content="Redman"/><meta name="created" content="2015-04-15 02:45:24 +0000"/><meta name="latitude" content="22.54689851109342"/><meta name="longitude" content="113.9364823127759"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2015-04-15 02:51:56 +0000"/><title>在使用 Xcode 的 storyboard 时报没有入口的错误</title></head><body>
+<div><b><span style="font-family: Menlo;"><span style="font-style: normal; font-variant: normal; font-weight: normal;"><b>错误信息: <span style="color: rgb(253, 64, 103);">Failed to instantiate the default view controller for UIMainStoryboardFile 'Main' - perhaps the designated entry point is not set?</span></b></span></span></b></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(253, 64, 103);">其实就是我们没有为应用设置入口控制器. 在 storyboard 中通常会有一个单向箭头指向控制器, 尾部为空. 表示入口.</span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(253, 64, 103);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(253, 64, 103);">解决办法</span></span></div>
+<div><br/></div>
+<div><img src="%E5%9C%A8%E4%BD%BF%E7%94%A8%20Xcode%20%E7%9A%84%20storyboard%20%E6%97%B6%E6%8A%A5%E6%B2%A1%E6%9C%89%E5%85%A5%E5%8F%A3%E7%9A%84%E9%94%99%E8%AF%AF.resources/B64043BA-658F-415F-AC46-F6D0AC8D1C96.png" height="806" width="950"/></div>
+<div>勾选中 is Initial View Controller 后</div>
+<div><img src="%E5%9C%A8%E4%BD%BF%E7%94%A8%20Xcode%20%E7%9A%84%20storyboard%20%E6%97%B6%E6%8A%A5%E6%B2%A1%E6%9C%89%E5%85%A5%E5%8F%A3%E7%9A%84%E9%94%99%E8%AF%AF.resources/91525373-AED0-4F72-BEE1-1455BB4DEE7C.png" height="825" width="941"/></div>
+<div>多出来一个箭头, 现在就有入口了. 问题解决.</div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(253, 64, 103);"><br/></span></span></div>
+</body></html>

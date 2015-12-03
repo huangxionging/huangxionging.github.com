@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="22.01890754699707"/><meta name="author" content="Redman"/><meta name="created" content="2015-07-11 06:55:46 +0000"/><meta name="latitude" content="22.54693986393123"/><meta name="longitude" content="113.9366129443012"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2015-07-11 06:55:58 +0000"/><meta name="application-data:corenote-localUUID" content="252D6B1D-3F50-4433-B17A-C35AF6C9D368"/><meta name="application-data:corenote-hostUUID" content="6E90AC44-32ED-430B-B8DD-4A5112184527"/><title>CoreGraphics 框架之 CGPDFOperatorTable</title></head><body>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* CoreGraphics - CGPDFOperatorTable.h<br/>
+ * Copyright (c) 2004-2008 Apple Inc.<br/>
+ * All rights reserved. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#ifndef CGPDFOPERATORTABLE_H_<br/>
+#define CGPDFOPERATORTABLE_H_<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">typedef</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">struct</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFOperatorTable *CGPDFOperatorTableRef;<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGPDFScanner.h&gt;</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+CF_IMPLICIT_BRIDGING_ENABLED<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">typedef</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(*CGPDFOperatorCallback)(CGPDFScannerRef scanner,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*info);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Return an empty operator table. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGPDFOperatorTableRef CGPDFOperatorTableCreate(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)<br/>
+    CG_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Increment the retain count of `table'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGPDFOperatorTableRef CGPDFOperatorTableRetain(CGPDFOperatorTableRef<br/>
+    table) CG_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Decrement the retain count of `table'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFOperatorTableRelease(CGPDFOperatorTableRef table)<br/>
+    CG_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Set the callback for the operator named `name' to `callback' */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFOperatorTableSetCallback(CGPDFOperatorTableRef table,<br/>
+   </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">char</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*name, CGPDFOperatorCallback callback)<br/>
+    CG_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_2_0);<br/>
+<br/>
+CF_IMPLICIT_BRIDGING_DISABLED<br/>
+<br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#endif </span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* CGPDFOPERATORTABLE_H_ */</span></div>
+</body></html>

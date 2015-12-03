@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="author" content="Redman"/><meta name="created" content="2015-01-14 07:06:37 +0000"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2015-02-05 16:21:46 +0000"/><title>HXAlertViewController</title></head><body>
+<div>警告框背景颜色<img src="HXAlertViewController.resources/2E273C0C-C4ED-4EFC-B753-573F9B115284.png" height="206" width="374"/></div>
+<div><br/></div>
+<div>取消按钮的颜色<img src="HXAlertViewController.resources/870253D2-E982-4747-8B22-B4E16983C51A.png" height="206" width="374"/></div>
+<div><br/></div>
+<div>破坏按钮的颜色<img src="HXAlertViewController.resources/1E0B38F8-D18C-48A4-9ECD-D308D980EECB.png" height="206" width="374"/></div>
+<div><br/></div>
+<div>普通按钮颜色<img src="HXAlertViewController.resources/B759DD87-BF26-42E7-897C-ACA669958902.png" height="206" width="374"/></div>
+<div><br/></div>
+<div><img src="HXAlertViewController.resources/A9F6463F-789B-43A9-A8B4-B05B6CA89BCD.png" height="412" width="748"/><br/></div>
+<div><br/></div>
+<div><br/></div>
+<div>算法流程</div>
+<div><br/></div>
+<div>创建AlertAction 为每个AlertAction添加一个按钮，每次HXAlertViewController 调用 <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">addAction方法的时候，就将alertAction的按钮添加到HXAlertViewController的alertView上。</span></div>
+<div><span style="font-family: Menlo;">当添加完之后，上一个控制器调用模态方法弹出视图，这样我们就在HXAlertViewController的</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">viewWillAppear方法中编写alertView的弹出动画，以及调整其上面的按钮的位置。正确调整位置，当用户点击了上面的按钮，通过Block回传给调用者</span></div>
+<div><span style="font-size: 18px;"><span style="font-family: Menlo;"><br/></span></span></div>
+<div><br/></div>
+</body></html>

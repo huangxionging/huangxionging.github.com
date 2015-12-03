@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="author" content="Redman"/><meta name="created" content="2014-09-03 04:56:54 +0000"/><meta name="updated" content="2014-09-03 04:58:06 +0000"/><title>在一个XIB文件中定制多个Cell</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+<div>NSArray *nibTableCells = [[NSBundle mainBundle] loadNibNamed:@"DetailListCell" owner:self options:nil];</div>
+<div>cell = [nibTableCells objectAtIndex:索引值];</div>
+<div>根据这个来去不同的cell；</div>
+</body></html>

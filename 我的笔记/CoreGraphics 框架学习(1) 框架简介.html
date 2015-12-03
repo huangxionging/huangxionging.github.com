@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="23.87261390686035"/><meta name="author" content="Redman"/><meta name="created" content="2015-04-16 03:25:06 +0000"/><meta name="latitude" content="22.54691839389923"/><meta name="longitude" content="113.9365546612669"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2015-04-16 07:39:02 +0000"/><title>CoreGraphics 框架学习(1) 框架简介</title></head><body>
+<div>CoreGraphics 框架是 iOS 和 OS X 通用的 c 语言接口. 是一套图形接口, 用来处理各种图形处理.</div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* CoreGraphics - CoreGraphics.h<br/>
+   Copyright (c) 2000-2011 Apple Inc.<br/>
+   All rights reserved. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#ifndef COREGRAPHICS_H_<br/>
+#define COREGRAPHICS_H_<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGBase.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">// represents a matrix used for affine transformations<br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGAffineTransform.h&gt;</span></div>
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td>
+<p/>
+</td>
+<td>
+<div><br/></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// Describes an opaque type for managing drawing operations in a bitmap.</span></span></div>
+</td>
+</tr>
+</tbody>
+</table>
+<div><span style="font-family: Menlo;"><span style="color: rgb(4, 51, 255);">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGBitmapContext.h&gt;</span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// 颜色 <span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">Describes a representation of color and opacity (alpha value).</span></span></span></span></div>
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td>
+<div><br/></div>
+</td>
+<td>
+<div><br/></div>
+</td>
+</tr>
+</tbody>
+</table>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGColor.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(4, 51, 255);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(4, 51, 255);">// 颜色空间 Describes an opaque type for specifying color space information.</span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(4, 51, 255);">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGColorSpace.h&gt;</span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// 上下文 Describes a Quartz 2D drawing destination.</span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGContext.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// 数据消费 <span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">Describes an opaque data type for writing image or PDF data.</span></span></span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGDataConsumer.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// 数据提供 Describes an opaque data type for reading image data.</span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(4, 51, 255);">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGDataProvider.h&gt;</span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// 错误 </span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGError.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// 字体 Describes a representation of a font.</span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGFont.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="color: rgb(180, 38, 26);"><span style="font-family: Menlo;">// 函数 D<span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">escribes a facility for defining and using callback functions.</span></span></span></span></span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGFunction.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// 几何</span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGGeometry.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// 斜度 Describes the functions that create and operate on Quartz gradient objects.</span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGGradient.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// 图像 <span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">Describes a representation of an image.</span></span></span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGImage.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// 层 Describes the opaque type for creating and drawing to a Quartz layer</span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGLayer.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// PDF 数组 Describes an array structure in a PDF document</span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGPDFArray.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// PDF 内容流 Describes the appearance of a PDF page.</span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGPDFContentStream.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// PDF上下文 <span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">Describes a Quartz PDF drawing destination.</span></span></span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGPDFContext.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// PDF 字典 Describes a dictionary structure in a PDF document</span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGPDFDictionary.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// PDF 文档 Describes a document containing PDF data</span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGPDFDocument.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// PDF 对象 Describes a PDF object in a PDF document</span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGPDFObject.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// PDF 操作表 <span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">Describes a collection of PDF operators and associated callback functions</span></span></span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGPDFOperatorTable.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// PDF 页面 Describes a page in a PDF document</span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGPDFPage.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// PDF 查看器 Describes an opaque type for parsing a PDF content stream</span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGPDFScanner.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// PDF 流 Describes a PDF data stream, which typically represents an image or a page description</span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGPDFStream.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// PDF 字符串 Describes a character string in a PDF document</span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGPDFString.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// 路径 Describes a vector-based path consisting of line and curve segments.</span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGPath.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// 模式 Describes a representation of a fill pattern</span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGPattern.h&gt;</span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);"><br/></span></span></div>
+<div><span style="font-family: Menlo;"><span style="color: rgb(180, 38, 26);">// Describes a gradient fill pattern.</span></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGShading.h&gt;</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#endif</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* COREGRAPHICS_H_ */</span></div>
+</body></html>

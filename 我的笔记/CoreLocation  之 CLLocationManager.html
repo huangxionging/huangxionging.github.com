@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="22.96393585205078"/><meta name="author" content="Redman"/><meta name="created" content="2015-08-05 06:00:29 +0000"/><meta name="latitude" content="22.54706516403647"/><meta name="longitude" content="113.9366834542036"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2015-08-12 02:05:59 +0000"/><title>CoreLocation  之 CLLocationManager</title></head><body>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  CLLocationManager.h<br/>
+ *  CoreLocation<br/>
+ *<br/>
+ *  Copyright (c) 2008-2010 Apple Inc. All rights reserved.<br/>
+ *<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#import</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;Foundation/Foundation.h&gt;</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/>
+#import</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreLocation/CLAvailability.h&gt;</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/>
+#import</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreLocation/CLLocation.h&gt;</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/>
+#import</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreLocation/CLRegion.h&gt;</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  CLDeviceOrientation<br/>
+ * <br/>
+ *  Discussion:<br/>
+ *      Specifies a physical device orientation, equivalent to UIDeviceOrientation.<br/>
+ *     <br/>
+ */</span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">typedef</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">NS_ENUM</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">int</span><span style="font-family: Menlo;">, CLDeviceOrientation) {</span></div>
+<div><span style="font-family: Menlo;">// 设备位置方向</span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CLDeviceOrientationUnknown = 0,<br/>
+CLDeviceOrientationPortrait,<br/>
+CLDeviceOrientationPortraitUpsideDown,<br/>
+CLDeviceOrientationLandscapeLeft,<br/>
+CLDeviceOrientationLandscapeRight,<br/>
+CLDeviceOrientationFaceUp,<br/>
+CLDeviceOrientationFaceDown<br/>
+};<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  CLAuthorizationStatus<br/>
+ * <br/>
+ *  Discussion:<br/>
+ *      Represents the current authorization state of the application.<br/>
+ *     <br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">typedef</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">NS_ENUM</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">int</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">, CLAuthorizationStatus) {<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">// User has not yet made a choice with regards to this application</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+kCLAuthorizationStatusNotDetermined = 0,<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">// This application is not authorized to use location services.  Due</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">// to active restrictions on location services, the user cannot change</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">// this status, and may not have personally denied authorization</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+kCLAuthorizationStatusRestricted,<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">// User has explicitly denied authorization for this application, or</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">// location services are disabled in Settings.</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+kCLAuthorizationStatusDenied,<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">// User has granted authorization to use their location at any time,</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">// including monitoring for regions, visits, or significant location changes.</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+kCLAuthorizationStatusAuthorizedAlways</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">NS_ENUM_AVAILABLE</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(NA, 8_0),<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">// User has granted authorization to use their location only when your app</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">// is visible to them (it will be made visible to them if you continue to</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">// receive location updates while in the background).  Authorization to use</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">// launch APIs has not been granted.</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+kCLAuthorizationStatusAuthorizedWhenInUse</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">NS_ENUM_AVAILABLE</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(NA, 8_0),<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">// This value is deprecated, but was equivalent to the new -Always value.</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+kCLAuthorizationStatusAuthorized</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">NS_ENUM_DEPRECATED</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(10_6, NA, 2_0, 8_0,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">"Use kCLAuthorizationStatusAuthorizedAlways"</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">) =</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">kCLAuthorizationStatusAuthorizedAlways</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+};<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ * CLActivityType<br/>
+ *<br/>
+ *  Discussion:<br/>
+ * Enumerates the different possible activity types. This currently<br/>
+ * affects behavior such as the determination of when location updates<br/>
+ * may be automatically paused.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">typedef</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">NS_ENUM</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(NSInteger, CLActivityType) {<br/>
+    CLActivityTypeOther = 1,<br/>
+    CLActivityTypeAutomotiveNavigation,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">// for automotive navigation</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+    CLActivityTypeFitness,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">// includes any pedestrian activities</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+    CLActivityTypeOtherNavigation</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">// for other navigation cases (excluding pedestrian navigation), e.g. navigation for boats, trains, or planes</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+};<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">@class</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CLLocation</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">;<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">@class</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CLHeading</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">;<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">@class</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CLBeaconRegion</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">;<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">@protocol</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CLLocationManagerDelegate</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">;<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  CLLocationManager<br/>
+ * <br/>
+ *  Discussion:<br/>
+ *    The CLLocationManager object is your entry point to the location service.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">NS_CLASS_AVAILABLE</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(10_6, 2_0)<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">@interface</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CLLocationManager :</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">NSObject</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+{<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">@private</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">id</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">_internal;<br/>
+}<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  locationServicesEnabled<br/>
+ *<br/>
+ *  Discussion:<br/>
+ *      Determines whether the user has location services enabled.<br/>
+ *      If NO, and you proceed to call other CoreLocation API, user will be prompted with the warning<br/>
+ *      dialog. You may want to check this property and use location services only when explicitly requested by the user.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
++ (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">BOOL</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)locationServicesEnabled</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_10_7,__IPHONE_4_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  headingAvailable<br/>
+ *<br/>
+ *  Discussion:<br/>
+ *      Returns YES if the device supports the heading service, otherwise NO.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
++ (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">BOOL</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)headingAvailable</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_10_7,__IPHONE_4_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  significantLocationChangeMonitoringAvailable<br/>
+ * <br/>
+ *  Discussion:<br/>
+ *      Returns YES if the device supports significant location change monitoring, otherwise NO.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
++ (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">BOOL</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)significantLocationChangeMonitoringAvailable</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_10_7,__IPHONE_4_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  isMonitoringAvailableForClass:<br/>
+ *<br/>
+ *  Discussion:<br/>
+ *      Determines whether the device supports monitoring for the specified type of region.<br/>
+ *      If NO, all attempts to monitor the specified type of region will fail.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
++ (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">BOOL</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)isMonitoringAvailableForClass:(Class)regionClass</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA,__IPHONE_7_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  regionMonitoringAvailable<br/>
+ * <br/>
+ *  Discussion:<br/>
+ *      Deprecated. Use +isMonitoringAvailableForClass: instead.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
++ (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">BOOL</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)regionMonitoringAvailable</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_BUT_DEPRECATED</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_10_7,__MAC_NA,__IPHONE_4_0,__IPHONE_7_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  regionMonitoringEnabled<br/>
+ * <br/>
+ *  Discussion:<br/>
+ *      Deprecated. Use +isMonitoringAvailableForClass: and +authorizationStatus instead.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
++ (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">BOOL</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)regionMonitoringEnabled</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_BUT_DEPRECATED</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA, __MAC_NA,__IPHONE_4_0, __IPHONE_6_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  isRangingAvailable<br/>
+ *<br/>
+ *  Discussion:<br/>
+ *      Determines whether the device supports ranging.<br/>
+ *      If NO, all attempts to range beacons will fail.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
++ (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">BOOL</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)isRangingAvailable</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA,__IPHONE_7_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  authorizationStatus<br/>
+ * <br/>
+ *  Discussion:<br/>
+ *      Returns the current authorization status of the calling application.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
++ (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CLAuthorizationStatus</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)authorizationStatus</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_10_7,__IPHONE_4_2);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">@property</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">assign</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">nonatomic</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">id</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">&lt;</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CLLocationManagerDelegate</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">&gt; delegate;<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  locationServicesEnabled<br/>
+ * <br/>
+ *  Discussion:<br/>
+ *      Deprecated. Use +locationServicesEnabled instead.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">@property</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">readonly</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">nonatomic</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">BOOL</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">locationServicesEnabled</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_BUT_DEPRECATED</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA,__MAC_NA,__IPHONE_2_0,__IPHONE_4_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  purpose<br/>
+ * <br/>
+ *  Discussion:<br/>
+ *      Allows the application to specify what location will be used for in their app. This<br/>
+ *      will be displayed along with the standard Location permissions dialogs. This property will need to be<br/>
+ *      set prior to calling startUpdatingLocation.<br/>
+ *<br/>
+ *      Deprecated.  Set the purpose string in Info.plist using key NSLocationUsageDescription.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">@property</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">copy</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">nonatomic</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">NSString</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*purpose</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_BUT_DEPRECATED</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_10_7, __MAC_NA, __IPHONE_3_2, __IPHONE_6_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ * activityType<br/>
+ *<br/>
+ *  Discussion:<br/>
+ * Specifies the type of user activity. Currently affects behavior such as<br/>
+ * the determination of when location updates may be automatically paused.<br/>
+ * By default, CLActivityTypeOther is used.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">@property</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">assign</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">nonatomic</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CLActivityType</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">activityType</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA,__IPHONE_6_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  distanceFilter<br/>
+ * <br/>
+ *  Discussion:<br/>
+ *      Specifies the minimum update distance in meters. Client will not be notified of movements of less<br/>
+ *      than the stated value, unless the accuracy has improved. Pass in kCLDistanceFilterNone to be<br/>
+ *      notified of all movements. By default, kCLDistanceFilterNone is used.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">@property</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">assign</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">nonatomic</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CLLocationDistance</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">distanceFilter;<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  desiredAccuracy<br/>
+ * <br/>
+ *  Discussion:<br/>
+ *      The desired location accuracy. The location service will try its best to achieve<br/>
+ *      your desired accuracy. However, it is not guaranteed. To optimize<br/>
+ *      power performance, be sure to specify an appropriate accuracy for your usage scenario (eg,<br/>
+ *      use a large accuracy value when only a coarse location is needed). Use kCLLocationAccuracyBest to<br/>
+ *      achieve the best possible accuracy. Use kCLLocationAccuracyBestForNavigation for navigation.<br/>
+ *      By default, kCLLocationAccuracyBest is used.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">@property</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">assign</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">nonatomic</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CLLocationAccuracy</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">desiredAccuracy;<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ * pausesLocationUpdatesAutomatically<br/>
+ *<br/>
+ *  Discussion:<br/>
+ * Specifies that location updates may automatically be paused when possible.<br/>
+ * By default, this is YES for applications linked against iOS 6.0 or later.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">@property</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">assign</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">nonatomic</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">BOOL</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">pausesLocationUpdatesAutomatically</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA,__IPHONE_6_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  location<br/>
+ * <br/>
+ *  Discussion:<br/>
+ *      The last location received. Will be nil until a location has been received.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">@property</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">readonly</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">nonatomic</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">copy</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CLLocation</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*location;<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  headingAvailable<br/>
+ *<br/>
+ *  Discussion:<br/>
+ *      Deprecated. Use +headingAvailable instead.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">@property</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">readonly</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">nonatomic</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">BOOL</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">headingAvailable</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_BUT_DEPRECATED</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA,__MAC_NA,__IPHONE_3_0,__IPHONE_4_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  headingFilter<br/>
+ * <br/>
+ *  Discussion:<br/>
+ *      Specifies the minimum amount of change in degrees needed for a heading service update. Client will not<br/>
+ *      be notified of updates less than the stated filter value. Pass in kCLHeadingFilterNone to be<br/>
+ *      notified of all updates. By default, 1 degree is used.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">@property</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">assign</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">nonatomic</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CLLocationDegrees</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">headingFilter</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA,__IPHONE_3_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  headingOrientation<br/>
+ * <br/>
+ *  Discussion:<br/>
+ *      Specifies a physical device orientation from which heading calculation should be referenced. By default,<br/>
+ *      CLDeviceOrientationPortrait is used. CLDeviceOrientationUnknown, CLDeviceOrientationFaceUp, and<br/>
+ *      CLDeviceOrientationFaceDown are ignored.<br/>
+ *     <br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">@property</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">assign</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">nonatomic</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CLDeviceOrientation</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">headingOrientation</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA,__IPHONE_4_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  heading<br/>
+ * <br/>
+ *  Discussion:<br/>
+ *      Returns the latest heading update received, or nil if none is available.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">@property</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">readonly</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">nonatomic</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">copy</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CLHeading</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*heading</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA,__IPHONE_4_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  maximumRegionMonitoringDistance<br/>
+ * <br/>
+ *  Discussion:<br/>
+ *       the maximum region size, in terms of a distance from a central point, that the framework can support.<br/>
+ *       Attempts to register a region larger than this will generate a kCLErrorRegionMonitoringFailure.<br/>
+ *       This value may vary based on the hardware features of the device, as well as on dynamically changing resource constraints.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">@property</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">readonly</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">nonatomic</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CLLocationDistance</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">maximumRegionMonitoringDistance</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_10_7,__IPHONE_4_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  monitoredRegions<br/>
+ * <br/>
+ *  Discussion:<br/>
+ *       Retrieve a set of objects for the regions that are currently being monitored.  If any location manager<br/>
+ *       has been instructed to monitor a region, during this or previous launches of your application, it will<br/>
+ *       be present in this set.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">@property</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">readonly</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">nonatomic</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">copy</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">NSSet</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*monitoredRegions</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_10_7,__IPHONE_4_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  rangedRegions<br/>
+ *<br/>
+ *  Discussion:<br/>
+ *       Retrieve a set of objects representing the regions for which this location manager is actively providing ranging.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">@property</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">readonly</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">nonatomic</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">copy</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">NSSet</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*rangedRegions</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA,__IPHONE_7_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  requestWhenInUseAuthorization<br/>
+ *<br/>
+ *  Discussion:<br/>
+ *      When +authorizationStatus == kCLAuthorizationStatusNotDetermined,<br/>
+ *      calling this method will trigger a prompt to request "when-in-use"<br/>
+ *      authorization from the user.  If possible, perform this call in response<br/>
+ *      to direct user request for a location-based service so that the reason<br/>
+ *      for the prompt will be clear.  Any authorization change as a result of<br/>
+ *      the prompt will be reflected via the usual delegate callback:<br/>
+ *      -locationManager:didChangeAuthorizationStatus:.<br/>
+ *<br/>
+ *      If received, "when-in-use" authorization grants access to the user's<br/>
+ *      location via -startUpdatingLocation/-startRangingBeaconsInRegion while<br/>
+ *      in the foreground.  If updates have been started when going to the<br/>
+ *      background, then a status bar banner will be displayed to maintain<br/>
+ *      visibility to the user, and updates will continue until stopped<br/>
+ *      normally, or the app is killed by the user.<br/>
+ *<br/>
+ *      "When-in-use" authorization does NOT enable monitoring API on regions,<br/>
+ *      significant location changes, or visits, and -startUpdatingLocation will<br/>
+ *      not succeed if invoked from the background.<br/>
+ *<br/>
+ *      When +authorizationStatus != kCLAuthorizationStatusNotDetermined, (ie<br/>
+ *      generally after the first call) this method will do nothing.<br/>
+ *<br/>
+ *      If the NSLocationWhenInUseUsageDescription key is not specified in your<br/>
+ *      Info.plist, this method will do nothing, as your app will be assumed not<br/>
+ *      to support WhenInUse authorization.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+- (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)requestWhenInUseAuthorization</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA, __IPHONE_8_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  requestAlwaysAuthorization<br/>
+ *<br/>
+ *  Discussion:<br/>
+ *      When +authorizationStatus == kCLAuthorizationStatusNotDetermined,<br/>
+ *      calling this method will trigger a prompt to request "always"<br/>
+ *      authorization from the user.  If possible, perform this call in response<br/>
+ *      to direct user request for a location-based service so that the reason<br/>
+ *      for the prompt will be clear.  Any authorization change as a result of<br/>
+ *      the prompt will be reflected via the usual delegate callback:<br/>
+ *      -locationManager:didChangeAuthorizationStatus:.<br/>
+ *<br/>
+ *      If received, "always" authorization grants access to the user's<br/>
+ *      location via any CLLocationManager API, and grants access to<br/>
+ *      launch-capable monitoring API such as geofencing/region monitoring,<br/>
+ *      significante location visits, etc.  Even if killed by the user, launch<br/>
+ *      events triggered by monitored regions or visit patterns will cause a<br/>
+ *      relaunch.<br/>
+ *<br/>
+ *      "Always" authorization presents a significant risk to user privacy, and<br/>
+ *      as such requesting it is discouraged unless background launch behavior<br/>
+ *      is genuinely required.  Do not call +requestAlwaysAuthorization unless<br/>
+ *      you think users will thank you for doing so.<br/>
+ *<br/>
+ *      When +authorizationStatus != kCLAuthorizationStatusNotDetermined, (ie<br/>
+ *      generally after the first call) this method will do nothing.<br/>
+ *<br/>
+ *      If the NSLocationAlwaysUsageDescription key is not specified in your<br/>
+ *      Info.plist, this method will do nothing, as your app will be assumed not<br/>
+ *      to support Always authorization.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+- (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)requestAlwaysAuthorization</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA, __IPHONE_8_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  startUpdatingLocation<br/>
+ * <br/>
+ *  Discussion:<br/>
+ *      Start updating locations.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+- (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)startUpdatingLocation;<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  stopUpdatingLocation<br/>
+ * <br/>
+ *  Discussion:<br/>
+ *      Stop updating locations.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+- (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)stopUpdatingLocation;<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  startUpdatingHeading<br/>
+ *<br/>
+ *  Discussion:<br/>
+ *      Start updating heading.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+- (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)startUpdatingHeading</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA,__IPHONE_3_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  stopUpdatingHeading<br/>
+ *<br/>
+ *  Discussion:<br/>
+ *      Stop updating heading.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+- (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)stopUpdatingHeading</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA,__IPHONE_3_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  dismissHeadingCalibrationDisplay<br/>
+ * <br/>
+ *  Discussion:<br/>
+ *      Dismiss the heading calibration immediately.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+- (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)dismissHeadingCalibrationDisplay</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA,__IPHONE_3_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  startMonitoringSignificantLocationChanges<br/>
+ *<br/>
+ *  Discussion:<br/>
+ *      Start monitoring significant location changes.  The behavior of this service is not affected by the desiredAccuracy<br/>
+ *      or distanceFilter properties.  Locations will be delivered through the same delegate callback as the standard<br/>
+ *      location service.<br/>
+ *<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+- (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)startMonitoringSignificantLocationChanges</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_10_7,__IPHONE_4_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  stopMonitoringSignificantLocationChanges<br/>
+ *<br/>
+ *  Discussion:<br/>
+ *      Stop monitoring significant location changes.<br/>
+ *<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+- (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)stopMonitoringSignificantLocationChanges</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_10_7,__IPHONE_4_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  startMonitoringForRegion:desiredAccuracy:<br/>
+ *<br/>
+ *  Discussion:<br/>
+ *      Start monitoring the specified region.  desiredAccuracy represents the distance past the border of the region at<br/>
+ *      which the application would like to be notified that the region border has been crossed.  This is useful to prevent<br/>
+ *      repeated notifications when the user is on the border of the region.  This value will be honored on a best-effort basis,<br/>
+ *      and may not be respected if desiredAccuracy is large with respect to the size of the region, or if the device is not<br/>
+ *      capable of providing the precision desired.<br/>
+ *<br/>
+ *      If a region of the same type with the same identifier is already being monitored for this application, it will be<br/>
+ *      removed from monitoring.<br/>
+ *<br/>
+ *      This is done asynchronously and may not be immediately reflected in monitoredRegions.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+- (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)startMonitoringForRegion:(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CLRegion</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*)region<br/>
+                 desiredAccuracy:(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CLLocationAccuracy</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)accuracy</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_BUT_DEPRECATED</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA, __MAC_NA,__IPHONE_4_0, __IPHONE_6_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  stopMonitoringForRegion:<br/>
+ *<br/>
+ *  Discussion:<br/>
+ *      Stop monitoring the specified region.  It is valid to call stopMonitoringForRegion: for a region that was registered<br/>
+ *      for monitoring with a different location manager object, during this or previous launches of your application.<br/>
+ *<br/>
+ *      This is done asynchronously and may not be immediately reflected in monitoredRegions.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+- (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)stopMonitoringForRegion:(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CLRegion</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*)region</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_10_7,__IPHONE_4_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  startMonitoringForRegion:<br/>
+ *<br/>
+ *  Discussion:<br/>
+ *      Start monitoring the specified region.<br/>
+ *<br/>
+ *      If a region of the same type with the same identifier is already being monitored for this application,<br/>
+ *      it will be removed from monitoring. For circular regions, the region monitoring service will prioritize<br/>
+ *      regions by their size, favoring smaller regions over larger regions.<br/>
+ *<br/>
+ *      This is done asynchronously and may not be immediately reflected in monitoredRegions.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+- (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)startMonitoringForRegion:(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CLRegion</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*)region</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_TBD,__IPHONE_5_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  requestStateForRegion:<br/>
+ *<br/>
+ *  Discussion:<br/>
+ *      Asynchronously retrieve the cached state of the specified region. The state is returned to the delegate via<br/>
+ *      locationManager:didDetermineState:forRegion:.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+- (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)requestStateForRegion:(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CLRegion</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*)region</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA,__IPHONE_7_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  startRangingBeaconsInRegion:<br/>
+ *<br/>
+ *  Discussion:<br/>
+ *      Start calculating ranges for beacons in the specified region.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+- (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)startRangingBeaconsInRegion:(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CLBeaconRegion</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*)region</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA,__IPHONE_7_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  stopRangingBeaconsInRegion:<br/>
+ *<br/>
+ *  Discussion:<br/>
+ *      Stop calculating ranges for the specified region.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+- (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)stopRangingBeaconsInRegion:(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CLBeaconRegion</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*)region</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA,__IPHONE_7_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ * allowDeferredLocationUpdatesUntilTraveled:timeout:<br/>
+ *<br/>
+ * Discussion:<br/>
+ * Indicate that the application will allow the location manager to defer<br/>
+ * location updates until an exit criterion is met. This may allow the<br/>
+ * device to enter a low-power state in which updates are held for later<br/>
+ * delivery. Once an exit condition is met, the location manager will<br/>
+ * continue normal updates until this method is invoked again.<br/>
+ *<br/>
+ * Exit conditions, distance and timeout, can be specified using the constants<br/>
+ * CLLocationDistanceMax and CLTimeIntervalMax, respectively, if you are<br/>
+ * trying to achieve an unlimited distance or timeout.<br/>
+ *<br/>
+ * The CLLocationManagerDelegate will continue to receive normal updates as<br/>
+ * long as the application remains in the foreground. While the process is<br/>
+ * in the background, the device may be able to enter a low-power state for<br/>
+ * portions of the specified distance and time interval. While in this<br/>
+ * state, locations will be coalesced for later delivery.<br/>
+ *<br/>
+ * Location updates will be deferred as much as is reasonable to save<br/>
+ * power. If another process is using location, the device may not enter a<br/>
+ * low-power state and instead updates will continue normally. Deferred<br/>
+ * updates may be interspersed with normal updates if the device exits and<br/>
+ * re-enters a low-power state.<br/>
+ *<br/>
+ * All location updates, including deferred updates, will be delivered via<br/>
+ * the delegate callback locationManager:didUpdateLocations:<br/>
+ *<br/>
+ * When deferred updates have ended, the manager will invoke the delegate<br/>
+ * callback locationManagerDidFinishDeferredUpdates:withError:. An error<br/>
+ * will be returned if the manager will not defer updates and the exit<br/>
+ * criteria have not been met.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+- (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)allowDeferredLocationUpdatesUntilTraveled:(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">CLLocationDistance</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)distance<br/>
+  timeout:(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #3495af">NSTimeInterval</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)timeout</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA,__IPHONE_6_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ * disallowDeferredLocationUpdates<br/>
+ *<br/>
+ * Discussion:<br/>
+ * Disallow deferred location updates if previously enabled. Any outstanding<br/>
+ * updates will be sent and regular location updates will resume.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+- (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)disallowDeferredLocationUpdates</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA,__IPHONE_6_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/*<br/>
+ *  deferredLocationUpdatesAvailable<br/>
+ *<br/>
+ *  Discussion:<br/>
+ *      Returns YES if the device supports deferred location updates, otherwise NO.<br/>
+ */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
++ (</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">BOOL</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)deferredLocationUpdatesAvailable</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">__OSX_AVAILABLE_STARTING</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">(__MAC_NA,__IPHONE_6_0);<br/>
+<br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">@end</span></div>
+</body></html>

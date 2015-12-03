@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="22.02565956115723"/><meta name="author" content="Redman"/><meta name="created" content="2015-07-11 06:54:39 +0000"/><meta name="latitude" content="22.54690931510592"/><meta name="longitude" content="113.9366276303006"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2015-07-11 06:54:51 +0000"/><meta name="application-data:corenote-localUUID" content="B01C0FC8-A2D4-4647-92E4-36DBB63FC7D5"/><meta name="application-data:corenote-hostUUID" content="6E90AC44-32ED-430B-B8DD-4A5112184527"/><title>CoreGraphics 框架之 CGPDFDocument</title></head><body>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* CoreGraphics - CGPDFDocument.h<br/>
+   Copyright (c) 2000-2011 Apple Inc.<br/>
+   All rights reserved. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#ifndef CGPDFDOCUMENT_H_<br/>
+#define CGPDFDOCUMENT_H_<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">typedef</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">struct</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFDocument *CGPDFDocumentRef;<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGDataProvider.h&gt;</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/>
+#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGGeometry.h&gt;</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/>
+#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreGraphics/CGPDFPage.h&gt;</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/>
+#include</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #b4261a">&lt;CoreFoundation/CFURL.h&gt;</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff"><br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+CF_IMPLICIT_BRIDGING_ENABLED<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Create a PDF document, using `provider' to obtain the document's data. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGPDFDocumentRef CGPDFDocumentCreateWithProvider(CGDataProviderRef<br/>
+  provider) CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Create a PDF document from `url'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGPDFDocumentRef CGPDFDocumentCreateWithURL(CFURLRef url)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Equivalent to `CFRetain(document)', except it doesn't crash (as CFRetain<br/>
+   does) if `document' is NULL. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGPDFDocumentRef CGPDFDocumentRetain(CGPDFDocumentRef document)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Equivalent to `CFRelease(document)', except it doesn't crash (as<br/>
+   CFRelease does) if `document' is NULL. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFDocumentRelease(CGPDFDocumentRef document)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Return the major and minor version numbers of `document'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFDocumentGetVersion(CGPDFDocumentRef document,<br/>
+ </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">int</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*majorVersion,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">int</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*minorVersion)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Return true if the PDF file associated with `document' is encrypted;<br/>
+   false otherwise. If the PDF file is encrypted, then a password must be<br/>
+   supplied before certain operations are enabled; different passwords may<br/>
+   enable different operations. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFDocumentIsEncrypted(CGPDFDocumentRef document)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_2, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Use `password' to decrypt `document' and grant permission for certain<br/>
+   operations. Returns true if `password' is a valid password; false<br/>
+   otherwise. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFDocumentUnlockWithPassword(CGPDFDocumentRef document,<br/>
+ </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">const</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">char</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">*password) CG_AVAILABLE_STARTING(__MAC_10_2, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Return true if `document' is unlocked; false otherwise. A document is<br/>
+   unlocked if it isn't encrypted, or if it is encrypted and a valid<br/>
+   password was specified with `CGPDFDocumentUnlockWithPassword'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFDocumentIsUnlocked(CGPDFDocumentRef document)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_2, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Return true if `document' allows printing; false otherwise. Typically,<br/>
+   this function returns false only if the document is encrypted and the<br/>
+   document's current password doesn't grant permission to perform<br/>
+   printing. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFDocumentAllowsPrinting(CGPDFDocumentRef document)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_2, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Return true if `document' allows copying; false otherwise. Typically,<br/>
+   this function returns false only if the document is encrypted and the<br/>
+   document's current password doesn't grant permission to perform<br/>
+   copying. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">bool</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFDocumentAllowsCopying(CGPDFDocumentRef document)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_2, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Return the number of pages in `document'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN size_t CGPDFDocumentGetNumberOfPages(CGPDFDocumentRef document)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_0, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Return the page corresponding to `pageNumber', or NULL if no such page<br/>
+   exists in the document. Pages are numbered starting at 1. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGPDFPageRef CGPDFDocumentGetPage(CGPDFDocumentRef document,<br/>
+  size_t pageNumber) CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Return the document catalog of `document'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGPDFDictionaryRef CGPDFDocumentGetCatalog(CGPDFDocumentRef document)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_3, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Return the info dictionary of `document'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGPDFDictionaryRef CGPDFDocumentGetInfo(CGPDFDocumentRef document)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Return the "file identifier" array of `document'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGPDFArrayRef CGPDFDocumentGetID(CGPDFDocumentRef document)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* Return the CFTypeID for CGPDFDocumentRefs. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CFTypeID CGPDFDocumentGetTypeID(</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">void</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">)<br/>
+  CG_AVAILABLE_STARTING(__MAC_10_2, __IPHONE_2_0);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* The following functions are deprecated in favor of the CGPDFPage API. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* DEPRECATED; return the media box of page number `page' in `document'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGRect CGPDFDocumentGetMediaBox(CGPDFDocumentRef document,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">int</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">page)<br/>
+  CG_AVAILABLE_BUT_DEPRECATED(__MAC_10_0, __MAC_10_5,<br/>
+    __IPHONE_NA, __IPHONE_NA);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* DEPRECATED; return the crop box of page number `page' in `document'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGRect CGPDFDocumentGetCropBox(CGPDFDocumentRef document,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">int</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">page)<br/>
+  CG_AVAILABLE_BUT_DEPRECATED(__MAC_10_0, __MAC_10_5,<br/>
+    __IPHONE_NA, __IPHONE_NA);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* DEPRECATED; return the bleed box of page number `page' in `document'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGRect CGPDFDocumentGetBleedBox(CGPDFDocumentRef document,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">int</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">page)<br/>
+  CG_AVAILABLE_BUT_DEPRECATED(__MAC_10_0, __MAC_10_5,<br/>
+    __IPHONE_NA, __IPHONE_NA);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* DEPRECATED; return the trim box of page number `page' in `document'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGRect CGPDFDocumentGetTrimBox(CGPDFDocumentRef document,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">int</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">page)<br/>
+  CG_AVAILABLE_BUT_DEPRECATED(__MAC_10_0, __MAC_10_5,<br/>
+    __IPHONE_NA, __IPHONE_NA);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* DEPRECATED; return the art box of page number `page' in `document'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN CGRect CGPDFDocumentGetArtBox(CGPDFDocumentRef document,</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">int</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">page)<br/>
+  CG_AVAILABLE_BUT_DEPRECATED(__MAC_10_0, __MAC_10_5,<br/>
+    __IPHONE_NA, __IPHONE_NA);<br/>
+<br/></span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* DEPRECATED; return the rotation angle (in degrees) of page number `page'<br/>
+   in `document'. */</span><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures"><br/>
+<br/>
+CG_EXTERN</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">int</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">CGPDFDocumentGetRotationAngle(CGPDFDocumentRef document,<br/>
+ </span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">int</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures">page) CG_AVAILABLE_BUT_DEPRECATED(__MAC_10_0, __MAC_10_5,<br/>
+    __IPHONE_NA, __IPHONE_NA);<br/>
+<br/>
+CF_IMPLICIT_BRIDGING_DISABLED<br/>
+<br/></span></div>
+<div><span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #0433ff">#endif</span> <span style="font: 18.0px Menlo; font-variant-ligatures: no-common-ligatures; color: #008f00">/* CGPDFDOCUMENT_H_ */</span></div>
+</body></html>

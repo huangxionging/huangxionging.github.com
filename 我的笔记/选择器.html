@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="altitude" content="19.25937843322754"/><meta name="author" content="Redman"/><meta name="created" content="2014-07-09 12:27:52 +0000"/><meta name="latitude" content="22.53795031753563"/><meta name="longitude" content="113.9401735227713"/><meta name="updated" content="2014-07-09 12:38:19 +0000"/><title>选择器</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+日期选择器UIDatePicker
+<div><br/></div>
+<div><span><a href="%E9%80%89%E6%8B%A9%E5%99%A8.resources/DatePicker.zip">DatePicker.zip</a></span></div>
+<div><br/>
+<div>
+<div>- (IBAction)onClick:(id)sender</div>
+<div>{</div>
+<div>     // 从日期选择器获取日期</div>
+<div>    NSDate  *date = self.datePicker.date;</div>
+<div>    NSLog(@"the date picked is: %@", [date descriptionWithLocale: [NSLocale currentLocale]]);</div>
+<div/>
+<div>    </div>
+<div>    // 使用日期格式器来格式化日期，并输出到标签</div>
+<div>    NSDateFormatter *setDateFormatter = [[NSDateFormatter alloc]init];</div>
+<div/>
+<div>    [setDateFormatter setDateFormat: @"YYYY-MM-dd HH:MM:SS"];</div>
+<div/>
+<div>    NSLog(@"the date formatter is %@", [setDateFormatter stringFromDate: date]);</div>
+<div/>
+<div>    self.label.text = [setDateFormatter stringFromDate: date];</div>
+<div/>
+<div/>
+<div>}</div>
+</div>
+</div>
+</body></html>

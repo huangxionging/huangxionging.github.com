@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="created" content="2015-07-06 01:29:44 +0000"/><meta name="source" content="Clearly"/><meta name="source-url" content="http://blog.sina.com.cn/s/blog_4b892b790100de9g.html"/><meta name="updated" content="2015-07-06 01:30:13 +0000"/><title>色空间映射方式</title></head><body><div>
+ <div>
+  <div>
+   <h1>色空间映射方式 zz_郑眼观色_新浪博客</h1>
+  </div> 
+  <p>      映射方式 (Rendering Intent) 一词是指打印机色域内外的各种颜色如何“映射”为打印机中的各种颜色（参见打印机 ICC 特征分析文件）。对于不同的设备，打印机或显示器可以显示的颜色范围，或者扫描仪或数码相机可以捕捉的颜色范围不尽相同。此外，对于打印机，纸张白度也会产生影响。</p> 
+  <p>      这些映射方式的影响在许多图像中十分细微，或者几乎难以察觉，而渲染对于目的输出设备色域之外的各种颜色将会产生较大影响，而对于色域内颜色的影响较小。对于某个图像，映射方式可以产生重大影响，而对于拥有不同颜色比例的其他图像只能产生细微（或者几乎无法察觉）的影响。</p> 
+  <p>       两个深红颜色的比较：左面的原始照片拥有完整的橙色与黄色系；而右面是色域窄得多的某个设备可能产生的渲染效果。不能忠实再现的颜色将由最为接近的颜色所替代。当然，这里的影响差距有所夸张。最终结果是右面图像的精细程度大受损失。</p> 
+  <p>        对于颜色管理工作流中的图像处理，International Color Consortium（ICC，国际颜色协会）设定了四个映射方式。这四个映射方式适用于校样、图形复制、颜色处理的精度以及商务图形的饱和度。每个映射方式均有一个适用目的。</p> 
+  <p>四个映射方式包括：</p> 
+  <div> 
+   <ul><li> <p>Perceptual</p> </li></ul> 
+  </div> 
+  <div> 
+   <ul><li> <p>Saturation</p> </li></ul> 
+  </div> 
+  <div> 
+   <ul><li> <p>Relative colorimetric</p> </li></ul> 
+  </div> 
+  <div> 
+   <ul><li> <p>Absolute colorimetric</p> </li></ul> 
+  </div> 
+  <p><b>Perceptual</b></p> 
+  <p>      所有颜色均映射至目的色域中的点。源头色域得到线性或非线性压缩，以求适合目的色域。所有颜色均会受到影响，而不只是色域外颜色。</p> 
+  <p>Perceptual 映射方式的颜色映射精度不及 Relative Colorimetric 映射方式。 然而，Perceptual 能够生成颜色赏心悦目的图像，尽管在映射过程中可能会略微损失色度、亮度与饱和度。各种颜色可以顺利进行映射，从而避免损失类似色调之间的区别，而其他映射方式可能会映射为相同颜色。</p> 
+  <p>如果整体效果的重要性高于颜色精确度（例如照片），那么这是一个不错的默认映射方式。</p> 
+  <p><a shape="rect" href="http://photo.blog.sina.com.cn/showpic.html#blogid=4b892b790100de9g&amp;url=http://s14.sinaimg.cn/orignal/4b892b79g955631933b9d" target="_blank"/></p>
+  <div>
+   <a shape="rect" href="http://photo.blog.sina.com.cn/showpic.html#blogid=4b892b790100de9g&amp;url=http://s14.sinaimg.cn/orignal/4b892b79g955631933b9d" target="_blank"><img src="%E8%89%B2%E7%A9%BA%E9%97%B4%E6%98%A0%E5%B0%84%E6%96%B9%E5%BC%8F.resources/983083F0-9106-4365-B59A-87F884E886D5.jpg" height="241" width="235"/></a>
+  </div>
+  <p/> 
+  <p><strong>图1:Perceptual 映射方式</strong></p> 
+  <p><b>Relative colorimetric</b></p> 
+  <p>       Relative Colorimetric 映射方式能将色域外颜色映射为最为接近的色域内颜色，并且根据需要牺牲色度、亮度与饱和度。对于色域内颜色，Relative Colorimetric 映射方式可以更为精确地映射颜色（保持不变）。 然而，尽管 Perceptual 映射方式能够生成色度与饱和度均“赏心悦目”的图像，但色域外颜色却有可能遭到严重的精度损失，而 Relative Colorimetric 映射方式能将色域外颜色映射为最为接近的色域内颜色，</p> 
+  <p>Relative Colorimetric 将图像的“白色”映射为绝对（纸张）白色，从而尽可能地提高最终图像的亮度。在此方面，所有颜色的亮度可能会有细微变化，因为亮度将会得到调整，以求匹配打印介质的色域。</p> 
+  <p><a shape="rect" href="http://photo.blog.sina.com.cn/showpic.html#blogid=4b892b790100de9g&amp;url=http://s5.sinaimg.cn/orignal/4b892b79g9556328776e4" target="_blank"/></p>
+  <div>
+   <a shape="rect" href="http://photo.blog.sina.com.cn/showpic.html#blogid=4b892b790100de9g&amp;url=http://s5.sinaimg.cn/orignal/4b892b79g9556328776e4" target="_blank"><img src="%E8%89%B2%E7%A9%BA%E9%97%B4%E6%98%A0%E5%B0%84%E6%96%B9%E5%BC%8F.resources/F8DFAC2D-ADED-41CB-B91C-8728152DF659.jpg" height="240" width="226"/></a>
+  </div>
+  <p/> 
+  <p><strong>图2:Relative colorimetric 映射方式</strong>  </p> 
+  <p><b>Absolute colorimetric</b></p> 
+  <p>       除了没有为了匹配打印介质的色域而调整亮度，Absolute Colorimetric 映射方式与 Relative Colorimetric 映射方式没有区别。如果在源头图像中有亮度高于打印介质的颜色，那么这些颜色将会调整为打印介质的颜色。如果源头图像的白色比打印介质更暗，那么将会使用特定墨水执行打印，从而尽量精确地模拟输入白色。</p> 
+  <p>这就是说，绝对方法所影射的最白“白色”是生成特征分析文件时测量得到的打印介质的白色。使用非白色打印介质（例如新闻纸）的打印进程的校样工作更适宜采用 Absolute Colorimetric 映射方式，因为测量得到的纸张白色是最终图像中的“最白”颜色。</p> 
+  <p>相对于其他任何映射方式，最终校样更能准确地反映实际打印产品。对于各种专色，这种映射方式是最为有效的映射方式（只要这些颜色在打印介质的色域之内）。</p> 
+  <p>对于可以比较的输入与输出白点，因为有可能会调整或打印图像白色，Relative Colorimetric 优于 Absolute Colorimetric。</p> 
+  <p><a shape="rect" href="http://photo.blog.sina.com.cn/showpic.html#blogid=4b892b790100de9g&amp;url=http://s6.sinaimg.cn/orignal/4b892b79g955633dd4725" target="_blank"/></p>
+  <div>
+   <a shape="rect" href="http://photo.blog.sina.com.cn/showpic.html#blogid=4b892b790100de9g&amp;url=http://s6.sinaimg.cn/orignal/4b892b79g955633dd4725" target="_blank"><img src="%E8%89%B2%E7%A9%BA%E9%97%B4%E6%98%A0%E5%B0%84%E6%96%B9%E5%BC%8F.resources/C8B00061-F80E-48C2-A36B-4E02657662E1.gif" height="1" width="1"/></a>
+  </div>
+  <p/> 
+  <p><strong>图3:Absolute Colorimetric 映射方式</strong></p> 
+  <p><b>Saturation</b></p> 
+  <p>       Saturation 映射方式能将饱和颜色映射为输出特征分析文件色域内的最为饱和的颜色。主要适用于商务图形（插图、图表、图形等等），Saturation 映射方式可将色域外颜色映射为最为饱和的颜色，在映射过程中为了保持饱和度偶尔可能会损失颜色的精度。 Saturation 映射方式通常用于处理需要得到实心填充颜色的图像。 为了保持颜色饱和度将会损失颜色精度。</p> 
+  <p><strong>图4:Saturation 映射方式</strong></p> 
+ </div>
+</div></body></html>

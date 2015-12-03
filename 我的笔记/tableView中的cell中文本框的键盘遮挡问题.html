@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 6.2.1 (452715)"/><meta name="author" content="Redman"/><meta name="created" content="2014-08-24 08:12:22 +0000"/><meta name="updated" content="2014-08-24 08:23:31 +0000"/><title>tableView中的cell中文本框的键盘遮挡问题</title></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+因为tableView继承自scrollView，所以考虑通过设置其偏移量来避免文本框被遮挡，在文本框开始编辑的时候，tableView偏移，恰好不让文本框被键盘遮挡住。
+<div>利用 [cell convertRect: cell.textField.frame toView: _tableViiew]; 获取转换后的位置</div>
+<div>先记录下当前的tableview的偏移量</div>
+<div>然后利用 tableView.contentOffSet 来设置偏移量；</div>
+<div><br/></div>
+<div>在文本框停止编辑的时候从新设置tableView的偏移量，这样便返回原处了;</div>
+<div>
+<div><br/></div>
+<div><br/></div>
+<div>/*下面几个方法用于坐标系转换*/</div>
+<div>
+<div>- (CGPoint)convertPoint:(CGPoint)point toView:(UIView *)view;</div>
+<div>- (CGPoint)convertPoint:(CGPoint)point fromView:(UIView *)view;</div>
+<div>- (CGRect)convertRect:(CGRect)rect toView:(UIView *)view;</div>
+<div>- (CGRect)convertRect:(CGRect)rect fromView:(UIView *)view;</div>
+</div>
+</div>
+</body></html>
